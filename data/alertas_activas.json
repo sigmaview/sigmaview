@@ -2,7 +2,7 @@
   "generado": "2026-06-17",
   "precio_referencia": 65727.1,
   "direccion_setup": "LONG",
-  "veredicto": "SEÑAL",
+  "veredicto": "ESPERAR",
   "alertas": [
     {
       "id": "resolutorio_59108",
@@ -30,58 +30,18 @@
     },
     {
       "id": "anticipada_nivel_c_1x",
-      "nivel": 59095.64,
+      "nivel": 59108.0,
       "direccion": "cruce_abajo",
       "tipo": "MODO_B_ANTICIPADO",
-      "mensaje": "🔔 ZONA C PROYECTADA (1.0×A): BTC tocó $59,096. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $67,254.73 | A size: $8,159.09 pts",
+      "mensaje": "🔔 ZONA C PROYECTADA (1.0×A): BTC tocó $59,108. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $67,254.73 | A size: $8,146.73 pts",
       "fired": false
     },
     {
       "id": "anticipada_nivel_c_1618",
-      "nivel": 53067.07,
+      "nivel": 53651.0,
       "direccion": "cruce_abajo",
       "tipo": "MODO_B_ANTICIPADO",
-      "mensaje": "🔔 ZONA C PROYECTADA (1.618×A): BTC tocó $53,067. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $67,254.73 | A size: $8,159.09 pts",
-      "fired": false
-    },
-    {
-      "id": "entrada",
-      "nivel": 62212.41,
-      "direccion": "cruce_abajo",
-      "tipo": "ENTRADA",
-      "mensaje": "🟢 ENTRADA LONG (FUERTE): BTC tocó $62,212.\nStop $59,096 | O1 $68,813 | O2 $75,414 | O3 $83,573",
-      "fired": false
-    },
-    {
-      "id": "stop",
-      "nivel": 59095.64,
-      "direccion": "cruce_abajo",
-      "tipo": "STOP",
-      "mensaje": "🛑 BTC tocó el STOP $59,096. Setup invalidado.",
-      "fired": false
-    },
-    {
-      "id": "o1",
-      "nivel": 68813.12,
-      "direccion": "cruce_arriba",
-      "tipo": "OBJETIVO",
-      "mensaje": "🎯 BTC alcanzó O1 $68,813 — cerrar 50%",
-      "fired": false
-    },
-    {
-      "id": "o2",
-      "nivel": 75413.82,
-      "direccion": "cruce_arriba",
-      "tipo": "OBJETIVO",
-      "mensaje": "🎯 BTC alcanzó O2 $75,414 — cerrar 25%, subir stop a entrada",
-      "fired": false
-    },
-    {
-      "id": "o3",
-      "nivel": 83572.91,
-      "direccion": "cruce_arriba",
-      "tipo": "OBJETIVO",
-      "mensaje": "🎯 BTC alcanzó O3 $83,573 — cerrar 25% restante",
+      "mensaje": "🔔 ZONA C PROYECTADA (1.618×A): BTC tocó $53,651. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $67,254.73 | A size: $8,146.73 pts",
       "fired": false
     }
   ]
