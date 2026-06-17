@@ -54,6 +54,8 @@ jobs:
       - name: Run L3 — señal de trade
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: PYTHONPATH=src python3 src/signal_generator.py
 
       - name: Commit outputs

@@ -28,6 +28,20 @@ def clean_api_key() -> str:
         sys.exit("ERROR: no se encontró una API key válida (sk-ant-...) en ANTHROPIC_API_KEY")
     return match.group(0)
 
+def _enviar_telegram(mensaje: str) -> None:
+    import urllib.parse, urllib.request
+    token = os.environ.get("TELEGRAM_TOKEN")
+    chat  = os.environ.get("TELEGRAM_CHAT_ID")
+    if not token or not chat:
+        return
+    url  = f"https://api.telegram.org/bot{token}/sendMessage"
+    data = urllib.parse.urlencode({"chat_id": chat, "text": mensaje}).encode()
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, data=data), timeout=20) as r:
+            r.read()
+    except Exception:
+        pass
+
 # ── Datos ─────────────────────────────────────────────────────────────────────
 
 def fetch_4h_data(candles: int, asof: str | None = None) -> str:
@@ -387,6 +401,30 @@ def run(model: str | None = None) -> dict:
             database.log_signal(date, TICKER, result)
     except Exception as e:
         print(f"  ⚠ No se pudo guardar en DB: {e}")
+
+    # Notificación Telegram inmediata cuando hay SEÑAL o alerta anticipatoria
+    if result.get("veredicto") == "SEÑAL" and trade:
+        d    = result.get("direccion", "")
+        cal  = result.get("calidad_señal", "")
+        ent  = trade["entrada"]
+        stp  = trade["stop"]
+        risk = abs(ent - stp)
+        def rr(t): return abs(t - ent) / risk if risk > 0 else 0
+        msg = (f"⚡ SEÑAL {d} ({cal}) — {date}\n"
+               f"Entrada: ${ent:,.0f}\n"
+               f"Stop:    ${stp:,.0f}\n"
+               f"O1: ${trade['O1']:,.0f} ({rr(trade['O1']):.1f}x) → cerrar 50%\n"
+               f"O2: ${trade['O2']:,.0f} ({rr(trade['O2']):.1f}x) → cerrar 25%\n"
+               f"O3: ${trade['O3']:,.0f} ({rr(trade['O3']):.1f}x) → cerrar 25%\n"
+               f"Precio actual: ${result.get('precio_actual', 0):,.0f}")
+        _enviar_telegram(msg)
+    aa = result.get("alerta_anticipada") or {}
+    if aa.get("activa") and aa.get("nivel_c_1x"):
+        d = result.get("direccion", "")
+        msg = (f"🔔 ALERTA ANTICIPATORIA {d} — {date}\n"
+               f"Zona C proyectada: ${aa['nivel_c_1x']:,.0f} – ${aa.get('nivel_c_1618', aa['nivel_c_1x']):,.0f}\n"
+               f"Pre-armar orden límite en esa zona.")
+        _enviar_telegram(msg)
 
     return result
 
