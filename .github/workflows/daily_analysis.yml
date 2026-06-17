@@ -58,12 +58,15 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: PYTHONPATH=src python3 src/signal_generator.py
 
+      - name: Export dashboard data
+        run: PYTHONPATH=src python3 src/export_dashboard.py
+
       - name: Commit outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/l1_btc_latest.json data/l2_btc_latest.json \
                   data/l3_btc_latest.json data/alertas_activas.json \
-                  data/sigmaview.db
+                  data/sigmaview.db docs/data/
           git diff --staged --quiet || git commit -m "auto: análisis BTC $(date +%Y-%m-%d)"
           git push
