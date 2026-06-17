@@ -1,0 +1,67 @@
+name: Daily BTC Analysis
+
+on:
+  schedule:
+    - cron: '0 13 * * *'   # 13:00 UTC = 9am Chile invierno / 10am verano
+  workflow_dispatch:        # permite correr manualmente desde GitHub
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-analysis
+  cancel-in-progress: false
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Collect price data (acumula historia 1h en DB)
+        run: PYTHONPATH=src python3 src/data_collector.py
+
+      - name: Run L1 — análisis semanal (lunes o si no hay cache)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          IS_MONDAY=$([ $(date +%u) -eq 1 ] && echo true || echo false)
+          if [ "$IS_MONDAY" = "true" ] || [ ! -f data/l1_btc_latest.json ]; then
+            echo "Corriendo L1..."
+            PYTHONPATH=src python3 src/analyzer_weekly.py
+          else
+            echo "L1: usando cache (se refresca los lunes)"
+          fi
+
+      - name: Run L2 — monitor diario
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: PYTHONPATH=src python3 src/monitor_daily.py
+
+      - name: Run L3 — señal de trade
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: PYTHONPATH=src python3 src/signal_generator.py
+
+      - name: Commit outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/l1_btc_latest.json data/l2_btc_latest.json \
+                  data/l3_btc_latest.json data/alertas_activas.json \
+                  data/sigmaview.db
+          git diff --staged --quiet || git commit -m "auto: análisis BTC $(date +%Y-%m-%d)"
+          git push
