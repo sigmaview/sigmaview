@@ -1,0 +1,89 @@
+{
+  "fecha_analisis": "2026-06-15",
+  "activo": "BTC/USD",
+  "techo_operativo": {
+    "precio": 126198.07,
+    "fecha": "2025-10-06",
+    "tipo": "máximo"
+  },
+  "escenarios_eliminados": [
+    {
+      "descripcion": "Conteo donde la caída desde 126K es solo una Wave 4 de grado menor con W4 solapando territorio de W1 del impulso 2023-2025",
+      "regla_violada": "W4 no se solapa con W1",
+      "evidencia": "El mínimo de 2026-02 (60074) solapa profundamente con la zona de W1 de 2023 (~30K-48K no aplica, pero respecto al impulso final de 2024-2025 desde 49K, el solape de 60K invalida una W4 interna pequeña). La estructura corregida es de grado mayor."
+    }
+  ],
+  "escenarios": [
+    {
+      "id": "E1",
+      "etiqueta_macro": "Wave IV (Superciclo) en curso — corrección ABC mayor tras techo de Wave III",
+      "wave_III_fin": "126198 (2025-10-06)",
+      "posicion_hoy": "En onda C de un zigzag correctivo de grado IV, posible suelo formándose cerca de 60K-65K",
+      "sesgo_corto_plazo": "NEUTRO",
+      "objetivo": "Suelo 58000-63000; luego Wave V hacia 150000+",
+      "se_confirma_si": "Precio recupera 73000 y mantiene mínimo sobre 60074 (mín 2026-02)",
+      "se_invalida_si": "Cierre semanal bajo 49000 (territorio de W1 del impulso 2024)",
+      "extension": "Wave III extendida (>161.8% de Wave I), típica en BTC"
+    },
+    {
+      "id": "E2",
+      "etiqueta_macro": "Wave III aún no terminó — la caída es Wave 4 de grado intermedio dentro de III, Wave 5 final pendiente",
+      "wave_III_fin": "pendiente (proyección 150K+ tras completar W5 interna)",
+      "posicion_hoy": "Fin de onda 4 intermedia (suelo 60K), iniciando onda 5 final de Wave III",
+      "sesgo_corto_plazo": "ALCISTA",
+      "objetivo": "130000-160000 para completar Wave III",
+      "se_confirma_si": "Ruptura sostenida sobre 73856 (máx 2026-04) y luego sobre 82792",
+      "se_invalida_si": "Cierre bajo 59108 (mín 2026-06), que rompería estructura de onda 4",
+      "extension": "Wave 3 de III extendida; onda 5 de III en desarrollo"
+    },
+    {
+      "id": "E3",
+      "etiqueta_macro": "Inicio de Wave V alcista — Wave IV completada en suelo de 2026, gran impulso final pendiente",
+      "wave_III_fin": "126198 (2025-10-06)",
+      "posicion_hoy": "Wave IV terminada (ABC completo en 59108, 2026-06), comenzando Wave V",
+      "sesgo_corto_plazo": "ALCISTA",
+      "objetivo": "180000-220000 (Wave V proyectada)",
+      "se_confirma_si": "Ruptura de línea 2-4 y cierre sobre 82792, confirmando con perforación rápida",
+      "se_invalida_si": "Nuevo mínimo bajo 59108 (2026-06), reabriendo corrección IV",
+      "extension": "Wave V no extendida; Wave III fue la extendida del superciclo"
+    }
+  ],
+  "acuerdo": {
+    "sesgo_cercano": "Zona de suelo en torno a 59000-65000 está actuando como soporte estructural; sesgo de rebote desde área de valor mientras se mantenga sobre 59108",
+    "niveles_compartidos": [
+      59108,
+      65969,
+      73856,
+      82792
+    ],
+    "como_operar_hoy": "Esperar confirmación de suelo: comprar/acumular sobre 65969 con stop bajo 59108; el rebote es común a todos los escenarios alcistas."
+  },
+  "divergencia": {
+    "pregunta_abierta": "¿La caída desde 126K fue Wave IV completa (próxima Wave V) o solo una corrección intermedia dentro de Wave III aún viva? Y si es IV, ¿ya tocó suelo?",
+    "se_resuelve_si": "Cierre semanal sobre 82792 confirma reanudación alcista mayor (E2/E3 activos); cierre bajo 59108 invalida suelo y mantiene E1 con C extendiéndose hacia 49000-55000"
+  },
+  "niveles_para_l2": {
+    "extremo_impulso": {
+      "precio": 126198.07,
+      "fecha": "2025-10-06"
+    },
+    "retroceso_382": 84736.97,
+    "retroceso_618": 100570.01,
+    "w2_fin_precio": 49000,
+    "w4_fin_precio": 59108,
+    "w5_duracion_dias": null,
+    "niveles_resolutorios": [
+      59108,
+      73856,
+      82792
+    ],
+    "low_operativo": 59108.92,
+    "retroceso_50": 92653.49,
+    "_fib_calculado_por": "python"
+  },
+  "resumen": "Techo operativo en 126198 (oct-2025), desde donde BTC corrigió hasta 59108 (jun-2026). Todos los escenarios supervivientes comparten un sesgo de rebote desde la zona 59-65K mientras se mantenga el mínimo de 59108. La divergencia clave (Wave IV completa vs Wave III aún viva) se resuelve por encima de 82792 (confirma reanudación alcista mayor) o por debajo de 59108 (extiende la corrección hacia 49-55K).",
+  "_meta": {
+    "generado": "2026-06-15",
+    "modelo": "claude-opus-4-8"
+  }
+}

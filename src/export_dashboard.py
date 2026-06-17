@@ -49,6 +49,16 @@ def export():
     ).dropna().reset_index()
     prices_daily["ts"] = prices_daily["ts"].dt.strftime("%Y-%m-%d")
 
+    # ── Historial L1 desde DB ──────────────────────────────────────────────────
+    try:
+        l1_hist = pd.read_sql(
+            "SELECT fecha, techo_precio, techo_fecha, acuerdo_sesgo, resumen, modelo "
+            "FROM analysis_weekly ORDER BY fecha DESC LIMIT 52",
+            conn,
+        )
+    except Exception:
+        l1_hist = pd.DataFrame()
+
     conn.close()
 
     # ── Summary stats ──────────────────────────────────────────────────────────
@@ -89,6 +99,16 @@ def export():
     (OUT_DIR / "prices.json").write_text(
         prices_daily.to_json(orient="records", force_ascii=False)
     )
+
+    # ── L1 semanal (visión mediano plazo) ─────────────────────────────────────
+    l1_path = Path(__file__).parent.parent / "data" / "l1_btc_latest.json"
+    if l1_path.exists():
+        (OUT_DIR / "l1_vision.json").write_text(l1_path.read_text(encoding="utf-8"))
+
+    if not l1_hist.empty:
+        (OUT_DIR / "l1_history.json").write_text(
+            l1_hist.to_json(orient="records", force_ascii=False)
+        )
 
     print(f"Dashboard exportado: {n_analysis} análisis | {n_señales} señales | "
           f"{len(prices_daily)} días de precio")

@@ -184,6 +184,14 @@ def run() -> dict:
     OUTPUT_FILE.write_text(json.dumps(result, ensure_ascii=False, indent=2))
     print(f"\n  Guardado en: {OUTPUT_FILE}")
 
+    try:
+        sys.path.insert(0, str(Path(__file__).parent))
+        import database
+        database.log_l1(date, "BTC-USD", result)
+        print("  L1 guardado en DB.")
+    except Exception as e:
+        print(f"  (db log_l1 error: {e})")
+
     return result
 
 if __name__ == "__main__":

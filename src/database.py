@@ -53,6 +53,21 @@ def init_db() -> None:
             estado      TEXT DEFAULT 'ABIERTO',
             UNIQUE(fecha, ticker)
         );
+        CREATE TABLE IF NOT EXISTS analysis_weekly (
+            id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha                TEXT NOT NULL UNIQUE,
+            ticker               TEXT NOT NULL,
+            techo_precio         REAL,
+            techo_fecha          TEXT,
+            escenarios_json      TEXT,
+            acuerdo_sesgo        TEXT,
+            acuerdo_niveles      TEXT,
+            acuerdo_operar       TEXT,
+            divergencia_pregunta TEXT,
+            divergencia_resuelve TEXT,
+            resumen              TEXT,
+            modelo               TEXT
+        );
         CREATE TABLE IF NOT EXISTS alerts_fired (
             id            INTEGER PRIMARY KEY AUTOINCREMENT,
             fired_at      TEXT NOT NULL,
@@ -223,6 +238,34 @@ def update_signal_resultado(ticker: str, alert_id: str, precio: float) -> None:
                 "UPDATE signals SET resultado_r=?, estado=?, fecha_cierre=? WHERE id=?",
                 (r, estado, now, sid),
             )
+
+
+def log_l1(fecha: str, ticker: str, result: dict) -> None:
+    import json as _json
+    init_db()
+    techo   = result.get("techo_operativo", {})
+    acuerdo = result.get("acuerdo", {})
+    div     = result.get("divergencia", {})
+    with _conn() as c:
+        c.execute("""
+            INSERT OR REPLACE INTO analysis_weekly
+            (fecha, ticker, techo_precio, techo_fecha, escenarios_json,
+             acuerdo_sesgo, acuerdo_niveles, acuerdo_operar,
+             divergencia_pregunta, divergencia_resuelve, resumen, modelo)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (
+            fecha, ticker,
+            techo.get("precio"),
+            techo.get("fecha"),
+            _json.dumps(result.get("escenarios", []), ensure_ascii=False),
+            acuerdo.get("sesgo_cercano"),
+            _json.dumps(acuerdo.get("niveles_compartidos", []), ensure_ascii=False),
+            acuerdo.get("como_operar_hoy"),
+            div.get("pregunta_abierta"),
+            div.get("se_resuelve_si"),
+            result.get("resumen"),
+            result.get("_meta", {}).get("modelo"),
+        ))
 
 
 def log_alert_fired(ticker: str, alert: dict, precio: float) -> None:

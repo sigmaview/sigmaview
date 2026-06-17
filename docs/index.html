@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SigmaView — BTC Elliott Wave</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
   <style>
     :root {
       --bg: #0d1117; --card: #161b22; --border: #30363d;
@@ -17,30 +17,88 @@
     header h1 { font-size: 18px; font-weight: 600; }
     header .meta { color: var(--muted); font-size: 12px; }
     .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
     .card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-    .card .value { font-size: 24px; font-weight: 700; }
+    .card .value { font-size: 22px; font-weight: 700; }
     .card .sub   { color: var(--muted); font-size: 11px; margin-top: 4px; }
     .green { color: var(--green); } .red { color: var(--red); } .yellow { color: var(--yellow); } .blue { color: var(--blue); }
+
+    /* Section */
     .section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
-    .section h2 { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-    .chart-wrap { position: relative; height: 240px; }
+    .section h2 { font-size: 13px; font-weight: 600; margin-bottom: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+
+    /* Chart */
+    .chart-wrap { position: relative; height: 280px; }
+
+    /* Table */
     table { width: 100%; border-collapse: collapse; font-size: 12px; }
     th { color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); font-weight: 500; white-space: nowrap; }
     td { padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
     tr:last-child td { border-bottom: none; }
+    .clickable-row { cursor: pointer; transition: background .1s; }
+    .clickable-row:hover { background: #1c2128; }
+
+    /* Badge */
     .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-    .badge-senal  { background: #1a3a1a; color: var(--green); }
-    .badge-esperar{ background: #2a2a0a; color: var(--yellow); }
-    .badge-long   { background: #0d2a3a; color: var(--blue); }
-    .badge-short  { background: #3a0d0d; color: var(--red); }
-    .badge-abierto{ background: #1a2a3a; color: var(--blue); }
-    .badge-ganador{ background: #1a3a1a; color: var(--green); }
-    .badge-perdedor{background: #3a1a1a; color: var(--red); }
+    .badge-senal   { background: #1a3a1a; color: var(--green); }
+    .badge-esperar { background: #2a2a0a; color: var(--yellow); }
+    .badge-long    { background: #0d2a3a; color: var(--blue); }
+    .badge-short   { background: #3a0d0d; color: var(--red); }
+    .badge-abierto { background: #1a2a3a; color: var(--blue); }
+    .badge-ganador { background: #1a3a1a; color: var(--green); }
+    .badge-perdedor{ background: #3a1a1a; color: var(--red); }
+
+    /* Price header */
     .price-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
     .price-header .price { font-size: 32px; font-weight: 700; }
     @media(max-width: 600px) { .price-header .price { font-size: 24px; } }
+
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 4px; }
+    .tab-btn { padding: 10px 18px; cursor: pointer; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-weight: 500; transition: color .15s, border-color .15s; }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--blue); }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
+    .modal-close:hover { color: var(--text); }
+    .modal h3 { font-size: 15px; font-weight: 700; margin-bottom: 18px; padding-right: 24px; }
+    .modal-section { margin-bottom: 20px; }
+    .modal-section h4 { font-size: 11px; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .modal-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #21262d; font-size: 13px; gap: 12px; }
+    .modal-row:last-child { border-bottom: none; }
+    .modal-row .mkey { color: var(--muted); flex-shrink: 0; }
+    .modal-row .mval { text-align: right; font-weight: 500; }
+
+    /* Vision semanal */
+    .resumen-box { background: #0d1117; border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 20px; }
+    .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .sc-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .sc-card .sc-id { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+    .sc-card .sc-title { font-size: 12px; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
+    .sc-card .sc-row { font-size: 11px; color: var(--muted); padding: 3px 0; line-height: 1.4; }
+    .sc-card .sc-row strong { color: var(--text); }
+    .acuerdo-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    .acuerdo-box h4 { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+    .nivel-chip { display: inline-block; background: #21262d; border: 1px solid var(--border); border-radius: 4px; padding: 3px 9px; font-size: 12px; font-weight: 600; margin: 2px; }
+    .div-box { background: #1a1500; border: 1px solid #3a3000; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+    .div-box .div-label { font-size: 11px; color: var(--yellow); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; font-weight: 600; }
+    .div-box p { font-size: 13px; line-height: 1.5; margin-bottom: 8px; }
+    .div-box p:last-child { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+
+    /* L1 history table */
+    .hist-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .hist-table th { color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+    .hist-table td { padding: 6px 8px; border-bottom: 1px solid #21262d; vertical-align: top; }
+    .hist-table tr:last-child td { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -52,7 +110,7 @@
 
 <div class="container">
 
-  <!-- Precio actual + veredicto -->
+  <!-- Precio actual + veredicto (siempre visible) -->
   <div class="section" style="margin-bottom:20px">
     <div class="price-header">
       <span class="price" id="precio">—</span>
@@ -62,139 +120,397 @@
     <span class="meta" id="fase-texto" style="color:var(--muted)"></span>
   </div>
 
-  <!-- Cards de stats -->
-  <div class="cards">
-    <div class="card">
-      <div class="label">Análisis corridos</div>
-      <div class="value" id="stat-analisis">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Señales totales</div>
-      <div class="value" id="stat-señales">—</div>
-      <div class="sub" id="stat-tasa">— tasa de señal</div>
-    </div>
-    <div class="card">
-      <div class="label">Win rate</div>
-      <div class="value" id="stat-winrate">—</div>
-      <div class="sub">trades cerrados</div>
-    </div>
-    <div class="card">
-      <div class="label">R total</div>
-      <div class="value" id="stat-r">—</div>
-      <div class="sub" id="stat-r-trade">— R/trade</div>
-    </div>
-    <div class="card">
-      <div class="label">Capital 1% riesgo</div>
-      <div class="value" id="cap-1p">—</div>
-      <div class="sub">desde $100 base</div>
-    </div>
-    <div class="card">
-      <div class="label">Capital 2% riesgo</div>
-      <div class="value" id="cap-2p">—</div>
-      <div class="sub">desde $100 base</div>
-    </div>
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">📊 Dashboard</button>
+    <button class="tab-btn" data-tab="vision" onclick="switchTab('vision')">🌊 Visión Semanal</button>
   </div>
 
-  <!-- Gráfico precio BTC -->
-  <div class="section">
-    <h2>Precio BTC — últimos 180 días</h2>
-    <div class="chart-wrap"><canvas id="chartPrecio"></canvas></div>
-  </div>
+  <!-- ═══ TAB: Dashboard ═══ -->
+  <div id="tab-dashboard" class="tab-content active">
 
-  <!-- Señales -->
-  <div class="section">
-    <h2>Señales de trade</h2>
-    <div style="overflow-x:auto">
-    <table>
-      <thead>
-        <tr>
-          <th>Fecha</th><th>Dir</th><th>Modo</th><th>Calidad</th>
-          <th>Entrada</th><th>Stop</th><th>O1</th><th>O2</th><th>O3</th>
-          <th>R:R O3</th><th>Resultado</th><th>G/P 1%</th><th>G/P 2%</th><th>Estado</th>
-        </tr>
-      </thead>
-      <tbody id="tbl-signals"></tbody>
-    </table>
+    <!-- Cards de stats -->
+    <div class="cards">
+      <div class="card">
+        <div class="label">Análisis corridos</div>
+        <div class="value" id="stat-analisis">—</div>
+      </div>
+      <div class="card">
+        <div class="label">Señales totales</div>
+        <div class="value" id="stat-señales">—</div>
+        <div class="sub" id="stat-tasa">— tasa de señal</div>
+      </div>
+      <div class="card">
+        <div class="label">Win rate</div>
+        <div class="value" id="stat-winrate">—</div>
+        <div class="sub">trades cerrados</div>
+      </div>
+      <div class="card">
+        <div class="label">R total</div>
+        <div class="value" id="stat-r">—</div>
+        <div class="sub" id="stat-r-trade">— R/trade</div>
+      </div>
+      <div class="card">
+        <div class="label">Capital 1% riesgo</div>
+        <div class="value" id="cap-1p">—</div>
+        <div class="sub">desde $100 base</div>
+      </div>
+      <div class="card">
+        <div class="label">Capital 2% riesgo</div>
+        <div class="value" id="cap-2p">—</div>
+        <div class="sub">desde $100 base</div>
+      </div>
     </div>
-  </div>
 
-  <!-- Historial de análisis -->
-  <div class="section">
-    <h2>Historial de análisis diarios</h2>
-    <div style="overflow-x:auto">
-    <table>
-      <thead>
-        <tr>
-          <th>Fecha</th><th>Precio</th><th>Veredicto</th><th>Modo</th>
-          <th>Sub-onda</th><th>Sesgo</th><th>Fase</th><th>Modelo</th>
-        </tr>
-      </thead>
-      <tbody id="tbl-analysis"></tbody>
-    </table>
+    <!-- Gráfico precio BTC (candlesticks) -->
+    <div class="section">
+      <h2>Precio BTC — últimos 180 días</h2>
+      <div class="chart-wrap" id="chartPrecio"></div>
     </div>
-  </div>
 
-  <!-- Alertas disparadas -->
-  <div class="section">
-    <h2>Alertas disparadas (price watcher)</h2>
-    <div style="overflow-x:auto">
-    <table>
-      <thead>
-        <tr><th>Fecha/hora</th><th>Tipo</th><th>Nivel</th><th>Precio</th><th>Mensaje</th></tr>
-      </thead>
-      <tbody id="tbl-alerts"></tbody>
-    </table>
+    <!-- Señales (click para detalle) -->
+    <div class="section">
+      <h2>Señales de trade <span style="font-weight:400;font-size:11px">(click para detalle)</span></h2>
+      <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th><th>Dir</th><th>Modo</th><th>Calidad</th>
+            <th>Entrada</th><th>Stop</th><th>O1</th><th>O2</th><th>O3</th>
+            <th>R:R O3</th><th>Resultado</th><th>G/P 1%</th><th>G/P 2%</th><th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-signals"></tbody>
+      </table>
+      </div>
     </div>
-  </div>
 
+    <!-- Historial de análisis -->
+    <div class="section">
+      <h2>Historial de análisis diarios</h2>
+      <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th><th>Precio</th><th>Veredicto</th><th>Modo</th>
+            <th>Sub-onda</th><th>Sesgo</th><th>Fase</th><th>Modelo</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-analysis"></tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- Alertas disparadas -->
+    <div class="section">
+      <h2>Alertas disparadas (price watcher)</h2>
+      <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr><th>Fecha/hora</th><th>Tipo</th><th>Nivel</th><th>Precio</th><th>Mensaje</th></tr>
+        </thead>
+        <tbody id="tbl-alerts"></tbody>
+      </table>
+      </div>
+    </div>
+
+  </div><!-- /tab-dashboard -->
+
+  <!-- ═══ TAB: Visión Semanal ═══ -->
+  <div id="tab-vision" class="tab-content">
+
+    <div class="section" style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <h2 style="margin-bottom:0">Análisis semanal (L1 — Opus)</h2>
+        <span style="color:var(--muted);font-size:12px" id="l1-fecha">—</span>
+      </div>
+      <span style="color:var(--muted);font-size:12px">Techo operativo: <span id="l1-techo" style="color:var(--text)">—</span></span>
+    </div>
+
+    <!-- Resumen -->
+    <div class="resumen-box" id="l1-resumen">—</div>
+
+    <!-- Escenarios -->
+    <div class="section">
+      <h2>Escenarios Elliott Wave vigentes</h2>
+      <div class="scenarios-grid" id="l1-escenarios"></div>
+    </div>
+
+    <!-- Acuerdo -->
+    <div class="acuerdo-box">
+      <h4>Acuerdo entre escenarios — qué hacer hoy</h4>
+      <div style="margin-bottom:10px;font-size:13px;line-height:1.5" id="l1-sesgo">—</div>
+      <div style="margin-bottom:8px;font-size:11px;color:var(--muted)">Niveles clave compartidos:</div>
+      <div id="l1-niveles" style="margin-bottom:12px"></div>
+      <div style="font-size:13px;line-height:1.5;color:var(--text)" id="l1-operar">—</div>
+    </div>
+
+    <!-- Divergencia -->
+    <div class="div-box">
+      <div class="div-label">⚠ Divergencia — pregunta abierta</div>
+      <p id="l1-divergencia">—</p>
+      <p id="l1-resuelve">—</p>
+    </div>
+
+    <!-- Historial L1 -->
+    <div class="section">
+      <h2>Historial de visión semanal</h2>
+      <div style="overflow-x:auto">
+      <table class="hist-table">
+        <thead>
+          <tr><th>Fecha</th><th>Techo op.</th><th>Sesgo acuerdo</th><th>Modelo</th><th>Resumen</th></tr>
+        </thead>
+        <tbody id="tbl-l1-hist"></tbody>
+      </table>
+      </div>
+    </div>
+
+  </div><!-- /tab-vision -->
+
+</div><!-- /container -->
+
+<!-- ═══ Modal de señal ═══ -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modal-content"></div>
+  </div>
 </div>
 
 <script>
 const BASE = './data/';
-const fmt  = n => n != null ? '$' + Number(n).toLocaleString('es-CL', {maximumFractionDigits:0}) : '—';
-const fmtR = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + 'R' : '—';
+const fmt    = n => n != null ? '$' + Number(n).toLocaleString('es-CL', {maximumFractionDigits:0}) : '—';
+const fmtR   = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + 'R' : '—';
 const fmtPct = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + '%' : '—';
 
 function badge(text, cls) {
   return `<span class="badge ${cls}">${text}</span>`;
 }
 
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+let _allSignals = [], _allAnalysis = [];
+
+function openSignalModal(i) {
+  const s = _allSignals[i];
+  const a = _allAnalysis.find(x => x.fecha === s.fecha) || {};
+  const entry = s.entrada, stop = s.stop;
+  const risk  = entry && stop ? Math.abs(entry - stop) : 0;
+  const rr    = t => risk > 0 && t ? (Math.abs(t - entry) / risk).toFixed(1) + 'x' : '—';
+  const estado = (s.estado || 'ABIERTO').toUpperCase();
+  const estadoBadge = estado === 'GANADOR'   ? badge(estado,'badge-ganador') :
+                      estado === 'PERDEDOR'  ? badge(estado,'badge-perdedor') :
+                      badge(estado,'badge-abierto');
+
+  document.getElementById('modal-content').innerHTML = `
+    <h3>⚡ SEÑAL ${s.direccion==='LONG'?badge('LONG','badge-long'):badge('SHORT','badge-short')} — ${s.fecha}</h3>
+
+    <div class="modal-section">
+      <h4>Plan de trade (Enfoque B — Parciales)</h4>
+      <div class="modal-row"><span class="mkey">Entrada</span><span class="mval">${fmt(entry)}</span></div>
+      <div class="modal-row"><span class="mkey" style="color:var(--red)">Stop Loss</span><span class="mval" style="color:var(--red)">${fmt(stop)}</span></div>
+      <div class="modal-row">
+        <span class="mkey">O1 — cerrar 50%</span>
+        <span class="mval">${fmt(s.o1)} <span style="color:var(--muted);font-weight:400">${rr(s.o1)}</span>
+        ${s.o1_hit ? '<span style="color:var(--green);margin-left:4px">✓</span>' : ''}</span>
+      </div>
+      <div class="modal-row">
+        <span class="mkey">O2 — cerrar 25%, SL→BE</span>
+        <span class="mval">${fmt(s.o2)} <span style="color:var(--muted);font-weight:400">${rr(s.o2)}</span>
+        ${s.o2_hit ? '<span style="color:var(--green);margin-left:4px">✓</span>' : ''}</span>
+      </div>
+      <div class="modal-row">
+        <span class="mkey">O3 — cerrar 25%</span>
+        <span class="mval">${fmt(s.o3)} <span style="color:var(--muted);font-weight:400">${rr(s.o3)}</span>
+        ${s.o3_hit ? '<span style="color:var(--green);margin-left:4px">✓</span>' : ''}</span>
+      </div>
+      <div class="modal-row"><span class="mkey">Calidad señal</span><span class="mval">${s.calidad||'—'}</span></div>
+      <div class="modal-row">
+        <span class="mkey">Resultado</span>
+        <span class="mval ${s.resultado_r > 0 ? 'green' : s.resultado_r < 0 ? 'red' : ''}">${fmtR(s.resultado_r)}</span>
+      </div>
+      <div class="modal-row"><span class="mkey">Estado</span><span class="mval">${estadoBadge}</span></div>
+      ${s.fecha_cierre ? `<div class="modal-row"><span class="mkey">Fecha cierre</span><span class="mval" style="color:var(--muted)">${(s.fecha_cierre||'').slice(0,10)}</span></div>` : ''}
+    </div>
+
+    <div class="modal-section">
+      <h4>Contexto Elliott Wave — L3 (${s.fecha})</h4>
+      <div class="modal-row">
+        <span class="mkey">Onda actual</span>
+        <span class="mval" style="font-size:11px;font-weight:400;max-width:300px;text-align:right;white-space:normal;line-height:1.4">${a.sub_onda||'—'}</span>
+      </div>
+      <div class="modal-row"><span class="mkey">Fase impulso macro</span><span class="mval">${a.fase_impulso||'—'}</span></div>
+      <div class="modal-row">
+        <span class="mkey">Sesgo</span>
+        <span class="mval">${a.sesgo_macro==='ALCISTA' ? badge('▲ ALCISTA','badge-long') : a.sesgo_macro==='BAJISTA' ? badge('▼ BAJISTA','badge-short') : (a.sesgo_macro||'—')}</span>
+      </div>
+      <div class="modal-row"><span class="mkey">Modelo</span><span class="mval" style="color:var(--muted)">${(a.modelo||'').replace('claude-','')}</span></div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Live price ────────────────────────────────────────────────────────────────
 async function fetchLivePrice() {
   try {
     const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
     if (!r.ok) return null;
-    const data = await r.json();
-    return data?.bitcoin?.usd || null;
+    const d = await r.json();
+    return d?.bitcoin?.usd || null;
   } catch(e) { return null; }
 }
 
+// ── Compounding ───────────────────────────────────────────────────────────────
 function compound(signals, riskPct) {
   const closed = signals
     .filter(s => s.resultado_r != null)
-    .sort((a, b) => a.fecha > b.fecha ? 1 : -1);
+    .sort((a,b) => a.fecha > b.fecha ? 1 : -1);
   let cap = 100;
   for (const s of closed) cap *= (1 + s.resultado_r * riskPct / 100);
   return cap;
 }
 
+// ── Candlestick chart ─────────────────────────────────────────────────────────
+function buildPriceChart(prices, signals) {
+  const container = document.getElementById('chartPrecio');
+  const chart = LightweightCharts.createChart(container, {
+    layout: { background: { color: '#161b22' }, textColor: '#8b949e' },
+    grid:   { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
+    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    rightPriceScale: { borderColor: '#30363d' },
+    timeScale: { borderColor: '#30363d', timeVisible: false },
+    handleScroll: true,
+    handleScale: true,
+    width:  container.clientWidth,
+    height: 280,
+  });
+
+  new ResizeObserver(() => chart.applyOptions({ width: container.clientWidth })).observe(container);
+
+  const candles = chart.addCandlestickSeries({
+    upColor:        '#2ea043', downColor:       '#da3633',
+    borderUpColor:  '#2ea043', borderDownColor: '#da3633',
+    wickUpColor:    '#2ea043', wickDownColor:   '#da3633',
+  });
+
+  candles.setData(prices.map(p => ({
+    time: p.ts, open: p.open, high: p.high, low: p.low, close: p.close,
+  })));
+
+  const signalDates = new Set(signals.map(s => s.fecha));
+  const markers = [...signalDates]
+    .filter(d => prices.some(p => p.ts === d))
+    .map(d => ({ time: d, position: 'belowBar', color: '#f7c948', shape: 'circle', text: '⚡' }))
+    .sort((a,b) => a.time > b.time ? 1 : -1);
+  if (markers.length) candles.setMarkers(markers);
+
+  chart.timeScale().fitContent();
+}
+
+// ── Visión Semanal ────────────────────────────────────────────────────────────
+function buildVisionSemanal(l1, l1hist) {
+  if (!l1) {
+    document.getElementById('l1-resumen').textContent = 'Análisis semanal no disponible aún.';
+    return;
+  }
+
+  const techo    = l1.techo_operativo || {};
+  const acuerdo  = l1.acuerdo || {};
+  const div      = l1.divergencia || {};
+  const escenarios = l1.escenarios || [];
+
+  document.getElementById('l1-fecha').textContent   = l1.fecha_analisis || '—';
+  document.getElementById('l1-techo').textContent   = `${fmt(techo.precio)} (${techo.fecha||'—'}) — ${techo.tipo||''}`;
+  document.getElementById('l1-resumen').textContent = l1.resumen || '—';
+  document.getElementById('l1-sesgo').textContent   = acuerdo.sesgo_cercano || '—';
+  document.getElementById('l1-operar').textContent  = acuerdo.como_operar_hoy || '—';
+
+  const nivelesEl = document.getElementById('l1-niveles');
+  (acuerdo.niveles_compartidos || []).forEach(n => {
+    const chip = document.createElement('span');
+    chip.className = 'nivel-chip';
+    chip.textContent = fmt(n);
+    nivelesEl.appendChild(chip);
+  });
+
+  document.getElementById('l1-divergencia').textContent = div.pregunta_abierta || '—';
+  document.getElementById('l1-resuelve').textContent    = '→ Se resuelve si: ' + (div.se_resuelve_si || '—');
+
+  const scenEl = document.getElementById('l1-escenarios');
+  const sesgoColor = s => s === 'ALCISTA' ? 'var(--green)' : s === 'BAJISTA' ? 'var(--red)' : 'var(--yellow)';
+  escenarios.forEach((e, i) => {
+    const div = document.createElement('div');
+    div.className = 'sc-card';
+    div.innerHTML = `
+      <div class="sc-id" style="color:var(--blue)">${e.id}</div>
+      <div class="sc-title">${e.etiqueta_macro}</div>
+      <div class="sc-row" style="margin-bottom:6px"><span style="color:${sesgoColor(e.sesgo_corto_plazo)};font-weight:600">⚡ Sesgo CP: ${e.sesgo_corto_plazo}</span></div>
+      <div class="sc-row">📍 <strong>Hoy:</strong> ${e.posicion_hoy}</div>
+      <div class="sc-row">🎯 <strong>Objetivo:</strong> ${e.objetivo}</div>
+      <div class="sc-row" style="margin-top:6px">✅ <strong>Confirma:</strong> ${e.se_confirma_si}</div>
+      <div class="sc-row">❌ <strong>Invalida:</strong> ${e.se_invalida_si}</div>
+    `;
+    scenEl.appendChild(div);
+  });
+
+  // Historial L1
+  const histEl = document.getElementById('tbl-l1-hist');
+  if (!l1hist || !l1hist.length) {
+    histEl.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:12px">Sin historial aún (se acumula cada lunes)</td></tr>';
+  } else {
+    histEl.innerHTML = l1hist.map(h => `<tr>
+      <td>${h.fecha||'—'}</td>
+      <td>${fmt(h.techo_precio)}</td>
+      <td style="font-size:11px;max-width:200px;white-space:normal;line-height:1.4">${(h.acuerdo_sesgo||'—').slice(0,120)}${(h.acuerdo_sesgo||'').length>120?'…':''}</td>
+      <td style="color:var(--muted)">${(h.modelo||'').replace('claude-','')}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:250px;white-space:normal;line-height:1.4">${(h.resumen||'—').slice(0,150)}${(h.resumen||'').length>150?'…':''}</td>
+    </tr>`).join('');
+  }
+}
+
+// ── Main load ─────────────────────────────────────────────────────────────────
 async function load() {
-  const [summary, analysis, signals, alerts, prices] = await Promise.all([
+  const [summary, analysis, signals, alerts, prices, l1, l1hist] = await Promise.all([
     fetch(BASE+'summary.json').then(r=>r.json()),
     fetch(BASE+'analysis.json').then(r=>r.json()),
     fetch(BASE+'signals.json').then(r=>r.json()),
     fetch(BASE+'alerts.json').then(r=>r.json()),
     fetch(BASE+'prices.json').then(r=>r.json()),
+    fetch(BASE+'l1_vision.json').then(r=>r.json()).catch(()=>null),
+    fetch(BASE+'l1_history.json').then(r=>r.json()).catch(()=>null),
   ]);
+
+  _allSignals  = signals;
+  _allAnalysis = analysis;
 
   // Header
   document.getElementById('last-update').textContent =
     'Último análisis: ' + (summary.ultima_fecha || '—');
 
-  // Precio live (CoinGecko) o fallback a análisis
+  // Precio live (CoinGecko) o fallback
   const livePrice = await fetchLivePrice();
   const precioEl = document.getElementById('precio');
   if (livePrice) {
-    precioEl.textContent = '$' + Number(livePrice).toLocaleString('es-CL', {maximumFractionDigits: 0});
+    precioEl.textContent = '$' + Number(livePrice).toLocaleString('es-CL', {maximumFractionDigits:0});
     precioEl.title = 'Precio en vivo (CoinGecko)';
   } else {
     precioEl.textContent = summary.ultimo_precio ? fmt(summary.ultimo_precio) : '—';
@@ -202,12 +518,12 @@ async function load() {
 
   const vd = summary.ultimo_veredicto;
   document.getElementById('veredicto-badge').innerHTML =
-    vd === 'SEÑAL' ? badge('⚡ SEÑAL', 'badge-senal') : badge('⏸ ESPERAR', 'badge-esperar');
+    vd === 'SEÑAL' ? badge('⚡ SEÑAL','badge-senal') : badge('⏸ ESPERAR','badge-esperar');
 
   const sg = summary.ultimo_sesgo;
   document.getElementById('sesgo-badge').innerHTML =
-    sg === 'ALCISTA' ? badge('▲ ALCISTA', 'badge-long') :
-    sg === 'BAJISTA' ? badge('▼ BAJISTA', 'badge-short') : badge(sg||'—', '');
+    sg === 'ALCISTA' ? badge('▲ ALCISTA','badge-long') :
+    sg === 'BAJISTA' ? badge('▼ BAJISTA','badge-short') : badge(sg||'—','');
 
   document.getElementById('fase-texto').textContent =
     'Fase impulso macro: ' + (summary.ultima_fase || '—');
@@ -230,69 +546,38 @@ async function load() {
   document.getElementById('stat-r-trade').textContent =
     (summary.r_por_trade != null ? fmtR(summary.r_por_trade) : '—') + ' por trade';
 
-  // Cards compounded
-  const cap1 = compound(signals, 1);
-  const cap2 = compound(signals, 2);
+  const cap1 = compound(signals, 1), cap2 = compound(signals, 2);
+  const hasClosed = signals.some(s => s.resultado_r != null);
   const cap1El = document.getElementById('cap-1p');
   const cap2El = document.getElementById('cap-2p');
-  cap1El.textContent = signals.some(s => s.resultado_r != null) ? '$' + cap1.toFixed(2) : '—';
+  cap1El.textContent = hasClosed ? '$' + cap1.toFixed(2) : '—';
   cap1El.className = 'value ' + (cap1 >= 100 ? 'green' : 'red');
-  cap2El.textContent = signals.some(s => s.resultado_r != null) ? '$' + cap2.toFixed(2) : '—';
+  cap2El.textContent = hasClosed ? '$' + cap2.toFixed(2) : '—';
   cap2El.className = 'value ' + (cap2 >= 100 ? 'green' : 'red');
 
-  // Gráfico precio
-  const labels = prices.map(p => p.ts);
-  const closes = prices.map(p => p.close);
-  const signalDates = new Set(signals.map(s => s.fecha));
-  const pointColors = labels.map(l => signalDates.has(l) ? '#f7c948' : 'transparent');
-  const pointRadius = labels.map(l => signalDates.has(l) ? 5 : 0);
-
-  new Chart(document.getElementById('chartPrecio'), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'BTC/USD Close',
-        data: closes,
-        borderColor: '#388bfd',
-        borderWidth: 1.5,
-        fill: false,
-        tension: 0.1,
-        pointRadius,
-        pointBackgroundColor: pointColors,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#8b949e', maxTicksLimit: 8 }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e', callback: v => '$'+v.toLocaleString() }, grid: { color: '#21262d' } }
-      }
-    }
-  });
+  // Gráfico candlestick
+  buildPriceChart(prices, signals);
 
   // Tabla señales
   const tbS = document.getElementById('tbl-signals');
   if (!signals.length) {
-    tbS.innerHTML = '<tr><td colspan="14" style="color:var(--muted);text-align:center">Sin señales aún</td></tr>';
+    tbS.innerHTML = '<tr><td colspan="14" style="color:var(--muted);text-align:center;padding:16px">Sin señales aún</td></tr>';
   } else {
-    tbS.innerHTML = signals.map(s => {
+    tbS.innerHTML = signals.map((s, i) => {
       const entry = s.entrada, stop = s.stop, o3 = s.o3;
       const risk  = entry && stop ? Math.abs(entry - stop) : null;
       const rr3   = risk && o3 ? (Math.abs(o3 - entry) / risk).toFixed(1) + 'x' : '—';
-      const estado = (s.estado||'ABIERTO').toUpperCase();
+      const estado = (s.estado || 'ABIERTO').toUpperCase();
       const estadoBadge = estado === 'GANADOR'  ? badge(estado,'badge-ganador') :
                           estado === 'PERDEDOR' ? badge(estado,'badge-perdedor') :
                           badge(estado,'badge-abierto');
       const rColor = s.resultado_r > 0 ? 'green' : s.resultado_r < 0 ? 'red' : '';
       const gp1 = s.resultado_r != null ? s.resultado_r * 1 : null;
       const gp2 = s.resultado_r != null ? s.resultado_r * 2 : null;
-      return `<tr>
+      return `<tr class="clickable-row" onclick="openSignalModal(${i})">
         <td>${s.fecha||'—'}</td>
         <td>${s.direccion==='LONG' ? badge('LONG','badge-long') : badge('SHORT','badge-short')}</td>
-        <td style="color:var(--muted)">${(s.modo||'').replace('_',' ')}</td>
+        <td style="color:var(--muted)">${(s.modo||'').replace(/_/g,' ')}</td>
         <td style="color:var(--muted)">${s.calidad||'—'}</td>
         <td>${fmt(s.entrada)}</td>
         <td style="color:var(--red)">${fmt(s.stop)}</td>
@@ -301,21 +586,20 @@ async function load() {
         <td>${fmt(s.o3)}</td>
         <td>${rr3}</td>
         <td class="${rColor}">${fmtR(s.resultado_r)}</td>
-        <td class="${gp1 > 0 ? 'green' : gp1 < 0 ? 'red' : ''}">${fmtPct(gp1)}</td>
-        <td class="${gp2 > 0 ? 'green' : gp2 < 0 ? 'red' : ''}">${fmtPct(gp2)}</td>
+        <td class="${gp1>0?'green':gp1<0?'red':''}">${fmtPct(gp1)}</td>
+        <td class="${gp2>0?'green':gp2<0?'red':''}">${fmtPct(gp2)}</td>
         <td>${estadoBadge}</td>
       </tr>`;
     }).join('');
   }
 
   // Tabla análisis
-  const tbA = document.getElementById('tbl-analysis');
-  tbA.innerHTML = analysis.map(a => `<tr>
+  document.getElementById('tbl-analysis').innerHTML = analysis.map(a => `<tr>
     <td>${a.fecha||'—'}</td>
     <td>${fmt(a.precio_actual)}</td>
     <td>${a.veredicto==='SEÑAL' ? badge('SEÑAL','badge-senal') : badge('ESPERAR','badge-esperar')}</td>
-    <td style="color:var(--muted);font-size:11px">${(a.modo_entrada||'—').replace('_',' ')}</td>
-    <td style="color:var(--muted);font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis">${a.sub_onda||'—'}</td>
+    <td style="color:var(--muted);font-size:11px">${(a.modo_entrada||'—').replace(/_/g,' ')}</td>
+    <td style="color:var(--muted);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis">${a.sub_onda||'—'}</td>
     <td>${a.sesgo_macro==='ALCISTA' ? badge('▲','badge-long') : a.sesgo_macro==='BAJISTA' ? badge('▼','badge-short') : '—'}</td>
     <td style="color:var(--muted)">${a.fase_impulso||'—'}</td>
     <td style="color:var(--muted);font-size:11px">${(a.modelo||'').replace('claude-','')}</td>
@@ -324,7 +608,7 @@ async function load() {
   // Tabla alertas
   const tbAl = document.getElementById('tbl-alerts');
   if (!alerts.length) {
-    tbAl.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center">Sin alertas disparadas aún</td></tr>';
+    tbAl.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Sin alertas disparadas aún</td></tr>';
   } else {
     tbAl.innerHTML = alerts.map(a => `<tr>
       <td>${(a.fired_at||'').replace('T',' ').slice(0,16)}</td>
@@ -334,6 +618,9 @@ async function load() {
       <td style="color:var(--muted);font-size:11px;max-width:250px;overflow:hidden;text-overflow:ellipsis">${(a.mensaje||'').split('\n')[0]}</td>
     </tr>`).join('');
   }
+
+  // Visión Semanal
+  buildVisionSemanal(l1, l1hist);
 }
 
 load().catch(e => console.error(e));
