@@ -56,11 +56,19 @@ def check() -> None:
             try:
                 import database
                 database.log_alert_fired(TICKER, a, precio)
-            except Exception:
-                pass
+                if a.get("id") in ("stop", "o1", "o2", "o3"):
+                    database.update_signal_resultado(TICKER, a["id"], precio)
+            except Exception as e:
+                print(f"  (db error: {e})")
 
     if disparadas:
         PLAN_FILE.write_text(json.dumps(plan, ensure_ascii=False, indent=2))
+        try:
+            import export_dashboard
+            export_dashboard.export()
+            print("  Dashboard exportado.")
+        except Exception as e:
+            print(f"  (export_dashboard error: {e})")
 
     activas = sum(1 for a in plan["alertas"] if not a["fired"])
     print(f"Precio ${precio:,.0f} — {disparadas} disparada(s), {activas} activa(s)")

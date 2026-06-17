@@ -83,6 +83,16 @@
       <div class="value" id="stat-r">—</div>
       <div class="sub" id="stat-r-trade">— R/trade</div>
     </div>
+    <div class="card">
+      <div class="label">Capital 1% riesgo</div>
+      <div class="value" id="cap-1p">—</div>
+      <div class="sub">desde $100 base</div>
+    </div>
+    <div class="card">
+      <div class="label">Capital 2% riesgo</div>
+      <div class="value" id="cap-2p">—</div>
+      <div class="sub">desde $100 base</div>
+    </div>
   </div>
 
   <!-- Gráfico precio BTC -->
@@ -100,7 +110,7 @@
         <tr>
           <th>Fecha</th><th>Dir</th><th>Modo</th><th>Calidad</th>
           <th>Entrada</th><th>Stop</th><th>O1</th><th>O2</th><th>O3</th>
-          <th>R:R O3</th><th>Resultado</th><th>Estado</th>
+          <th>R:R O3</th><th>Resultado</th><th>G/P 1%</th><th>G/P 2%</th><th>Estado</th>
         </tr>
       </thead>
       <tbody id="tbl-signals"></tbody>
@@ -143,9 +153,28 @@
 const BASE = './data/';
 const fmt  = n => n != null ? '$' + Number(n).toLocaleString('es-CL', {maximumFractionDigits:0}) : '—';
 const fmtR = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + 'R' : '—';
+const fmtPct = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + '%' : '—';
 
 function badge(text, cls) {
   return `<span class="badge ${cls}">${text}</span>`;
+}
+
+async function fetchLivePrice() {
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+    if (!r.ok) return null;
+    const data = await r.json();
+    return data?.bitcoin?.usd || null;
+  } catch(e) { return null; }
+}
+
+function compound(signals, riskPct) {
+  const closed = signals
+    .filter(s => s.resultado_r != null)
+    .sort((a, b) => a.fecha > b.fecha ? 1 : -1);
+  let cap = 100;
+  for (const s of closed) cap *= (1 + s.resultado_r * riskPct / 100);
+  return cap;
 }
 
 async function load() {
@@ -161,9 +190,15 @@ async function load() {
   document.getElementById('last-update').textContent =
     'Último análisis: ' + (summary.ultima_fecha || '—');
 
-  // Precio y veredicto
-  document.getElementById('precio').textContent =
-    summary.ultimo_precio ? fmt(summary.ultimo_precio) : '—';
+  // Precio live (CoinGecko) o fallback a análisis
+  const livePrice = await fetchLivePrice();
+  const precioEl = document.getElementById('precio');
+  if (livePrice) {
+    precioEl.textContent = '$' + Number(livePrice).toLocaleString('es-CL', {maximumFractionDigits: 0});
+    precioEl.title = 'Precio en vivo (CoinGecko)';
+  } else {
+    precioEl.textContent = summary.ultimo_precio ? fmt(summary.ultimo_precio) : '—';
+  }
 
   const vd = summary.ultimo_veredicto;
   document.getElementById('veredicto-badge').innerHTML =
@@ -194,6 +229,16 @@ async function load() {
   rEl.className = 'value ' + (summary.total_r > 0 ? 'green' : summary.total_r < 0 ? 'red' : '');
   document.getElementById('stat-r-trade').textContent =
     (summary.r_por_trade != null ? fmtR(summary.r_por_trade) : '—') + ' por trade';
+
+  // Cards compounded
+  const cap1 = compound(signals, 1);
+  const cap2 = compound(signals, 2);
+  const cap1El = document.getElementById('cap-1p');
+  const cap2El = document.getElementById('cap-2p');
+  cap1El.textContent = signals.some(s => s.resultado_r != null) ? '$' + cap1.toFixed(2) : '—';
+  cap1El.className = 'value ' + (cap1 >= 100 ? 'green' : 'red');
+  cap2El.textContent = signals.some(s => s.resultado_r != null) ? '$' + cap2.toFixed(2) : '—';
+  cap2El.className = 'value ' + (cap2 >= 100 ? 'green' : 'red');
 
   // Gráfico precio
   const labels = prices.map(p => p.ts);
@@ -231,7 +276,7 @@ async function load() {
   // Tabla señales
   const tbS = document.getElementById('tbl-signals');
   if (!signals.length) {
-    tbS.innerHTML = '<tr><td colspan="12" style="color:var(--muted);text-align:center">Sin señales aún</td></tr>';
+    tbS.innerHTML = '<tr><td colspan="14" style="color:var(--muted);text-align:center">Sin señales aún</td></tr>';
   } else {
     tbS.innerHTML = signals.map(s => {
       const entry = s.entrada, stop = s.stop, o3 = s.o3;
@@ -242,6 +287,8 @@ async function load() {
                           estado === 'PERDEDOR' ? badge(estado,'badge-perdedor') :
                           badge(estado,'badge-abierto');
       const rColor = s.resultado_r > 0 ? 'green' : s.resultado_r < 0 ? 'red' : '';
+      const gp1 = s.resultado_r != null ? s.resultado_r * 1 : null;
+      const gp2 = s.resultado_r != null ? s.resultado_r * 2 : null;
       return `<tr>
         <td>${s.fecha||'—'}</td>
         <td>${s.direccion==='LONG' ? badge('LONG','badge-long') : badge('SHORT','badge-short')}</td>
@@ -254,6 +301,8 @@ async function load() {
         <td>${fmt(s.o3)}</td>
         <td>${rr3}</td>
         <td class="${rColor}">${fmtR(s.resultado_r)}</td>
+        <td class="${gp1 > 0 ? 'green' : gp1 < 0 ? 'red' : ''}">${fmtPct(gp1)}</td>
+        <td class="${gp2 > 0 ? 'green' : gp2 < 0 ? 'red' : ''}">${fmtPct(gp2)}</td>
         <td>${estadoBadge}</td>
       </tr>`;
     }).join('');

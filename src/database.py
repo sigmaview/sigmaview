@@ -64,6 +64,14 @@ def init_db() -> None:
             mensaje       TEXT
         );
         """)
+    # Migración: agrega columnas nuevas a signals si no existen (DB ya creada)
+    with _conn() as c:
+        for col in ["o1_hit INTEGER DEFAULT 0", "o2_hit INTEGER DEFAULT 0",
+                    "o3_hit INTEGER DEFAULT 0", "fecha_cierre TEXT"]:
+            try:
+                c.execute(f"ALTER TABLE signals ADD COLUMN {col}")
+            except sqlite3.OperationalError:
+                pass
 
 
 def upsert_ohlcv(ticker: str, df: pd.DataFrame) -> int:
@@ -168,6 +176,53 @@ def log_signal(fecha: str, ticker: str, result: dict) -> None:
             pt.get("O1"), pt.get("O2"), pt.get("O3"),
             rr(pt.get("O1")), rr(pt.get("O2")), rr(pt.get("O3")),
         ))
+
+
+def update_signal_resultado(ticker: str, alert_id: str, precio: float) -> None:
+    """Actualiza estado/resultado de la señal ABIERTA cuando price_watcher toca un nivel."""
+    init_db()
+    now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    with _conn() as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            "SELECT id, rr_o1, rr_o2, rr_o3, o1_hit, o2_hit FROM signals "
+            "WHERE ticker=? AND estado='ABIERTO' ORDER BY fecha DESC LIMIT 1",
+            (ticker,)
+        ).fetchone()
+        if not row:
+            return
+        sid    = row["id"]
+        rr_o1  = row["rr_o1"] or 0
+        rr_o2  = row["rr_o2"] or 0
+        rr_o3  = row["rr_o3"] or 0
+        o1_hit = row["o1_hit"]
+        o2_hit = row["o2_hit"]
+
+        if alert_id == "o1":
+            conn.execute("UPDATE signals SET o1_hit=1 WHERE id=?", (sid,))
+
+        elif alert_id == "o2":
+            conn.execute("UPDATE signals SET o2_hit=1 WHERE id=?", (sid,))
+
+        elif alert_id == "o3":
+            r = round(rr_o1 * 0.50 + rr_o2 * 0.25 + rr_o3 * 0.25, 2)
+            conn.execute(
+                "UPDATE signals SET o3_hit=1, resultado_r=?, estado='GANADOR', fecha_cierre=? WHERE id=?",
+                (r, now, sid),
+            )
+
+        elif alert_id == "stop":
+            if o1_hit and o2_hit:
+                r, estado = round(rr_o1 * 0.50 + rr_o2 * 0.25, 2), "GANADOR"
+            elif o1_hit:
+                r = round(rr_o1 * 0.50, 2)
+                estado = "GANADOR" if r > 0 else "BREAKEVEN"
+            else:
+                r, estado = -1.0, "PERDEDOR"
+            conn.execute(
+                "UPDATE signals SET resultado_r=?, estado=?, fecha_cierre=? WHERE id=?",
+                (r, estado, now, sid),
+            )
 
 
 def log_alert_fired(ticker: str, alert: dict, precio: float) -> None:
