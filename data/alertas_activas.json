@@ -1,6 +1,6 @@
 {
   "generado": "2026-06-17",
-  "precio_referencia": 65727.1,
+  "precio_referencia": 65961.79,
   "direccion_setup": "LONG",
   "veredicto": "ESPERAR",
   "alertas": [
@@ -26,22 +26,6 @@
       "direccion": "cruce_arriba",
       "tipo": "RESOLUTORIO",
       "mensaje": "⚠️ BTC alcanzó $82,792 — nivel resolutorio L1. Re-evaluar escenarios.",
-      "fired": false
-    },
-    {
-      "id": "anticipada_nivel_c_1x",
-      "nivel": 59108.0,
-      "direccion": "cruce_abajo",
-      "tipo": "MODO_B_ANTICIPADO",
-      "mensaje": "🔔 ZONA C PROYECTADA (1.0×A): BTC tocó $59,108. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $67,254.73 | A size: $8,146.73 pts",
-      "fired": false
-    },
-    {
-      "id": "anticipada_nivel_c_1618",
-      "nivel": 53651.0,
-      "direccion": "cruce_abajo",
-      "tipo": "MODO_B_ANTICIPADO",
-      "mensaje": "🔔 ZONA C PROYECTADA (1.618×A): BTC tocó $53,651. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $67,254.73 | A size: $8,146.73 pts",
       "fired": false
     }
   ]
