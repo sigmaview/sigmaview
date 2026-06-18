@@ -1,1 +1,1 @@
-[{"id":1,"fecha":"2026-06-17","ticker":"BTC-USD","modo":"A_enfoque_b","direccion":"LONG","calidad":"FUERTE","entrada":62212.41,"stop":59095.64,"o1":68813.12,"o2":75413.82,"o3":83572.91,"rr_o1":2.12,"rr_o2":4.24,"rr_o3":6.85,"resultado_r":null,"estado":"ABIERTO"}]
+[{"id":1,"fecha":"2026-06-17","ticker":"BTC-USD","modo":"A_enfoque_b","direccion":"LONG","calidad":"FUERTE","entrada":62212.41,"stop":59095.64,"o1":68813.12,"o2":75413.82,"o3":83572.91,"rr_o1":2.12,"rr_o2":4.24,"rr_o3":6.85,"resultado_r":null,"estado":"ABIERTO","o1_hit":0,"o2_hit":0,"o3_hit":0,"fecha_cierre":null}]
