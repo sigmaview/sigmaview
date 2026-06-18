@@ -1,12 +1,12 @@
 {
-  "fecha": "2026-06-17",
+  "fecha": "2026-06-18",
   "activo": "BTC/USD",
-  "precio_actual": 65961.79,
+  "precio_actual": 62575.99,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C de corrección ABC (zigzag bajista de grado intermedio) desde el techo operativo de 126198 (oct-2025). La onda A bajó de 126198 a ~73802 (19-abr-2026). La onda B rebotó hasta ~82814 (06-may-2026). La onda C está en desarrollo: cayó de 82814 al mínimo de 59095 (05-jun-2026) y desde allí ha rebotado hasta zona 65800-67242 en las últimas velas. La estructura interna de C muestra 5 sub-ondas bajistas completadas (c5 terminó en 59095) y el rebote actual parece ser el inicio del movimiento de recuperación post-C. Sin cierre semanal por debajo de 59108, el suelo de C se considera tentativo.",
-    "grado": "Intermedio (dentro del zigzag Wave IV de Superciclo)",
-    "estado": "posible fin cercano",
-    "que_esperar": "Si C completó en 59095, el precio debería desarrollar un impulso alcista de grado swing hacia 73856 y luego 82792+. El rebote actual de ~29% desde 59095 a 67242 necesita superar 68163 y luego 73856 para confirmar que C terminó y la Wave V (o reanudación alcista mayor) está en marcha."
+    "sub_onda_actual": "Onda C bajista de corrección ABC (grado intermedio/swing) en curso desde el techo operativo de 82448 (2026-05-10). La secuencia es: onda A = caída desde 82448 hasta ~59108 (2026-06-05); onda B = rebote desde 59108 hasta 67248 (2026-06-15); onda C = nueva caída desde 67248, actualmente en desarrollo con precio en 62575. Dentro de E1/E3 del mapa macro, esta ABC es la corrección de Wave IV (o la onda C de Wave IV) que precede a Wave V alcista.",
+    "grado": "Intermedio/Swing (semanas)",
+    "estado": "en progreso",
+    "que_esperar": "La onda C bajista busca completarse entre 59000 y 55000 (zona 1.0×A y 1.618×A desde B). Una vez completada, se espera la reanudación alcista de Wave V hacia 130000-220000 según escenarios E2/E3. El precio actual 62575 está a mitad de recorrido de C; aún no hay señal de suelo."
   },
   "sesgo_macro": "ALCISTA",
   "fase_impulso_macro": "media",
@@ -14,39 +14,39 @@
   "modo_entrada": "B_fin_abc",
   "modo_b_check": {
     "abc_detectada": true,
-    "c_sobre_a": 1.79,
-    "rr_o3_estimado": 7.2,
+    "c_sobre_a": 0.53,
+    "rr_o3_estimado": null,
     "invalidacion_clara": true,
-    "dispara": true
+    "dispara": false
   },
   "pivotes": {
-    "w1_origen": 82814.22,
-    "w1_fin": 59095.64,
+    "w1_origen": 67248.0,
+    "w1_fin": 59108.92,
     "w2_swing": null,
-    "abc_a_inicio": 126198.07,
-    "abc_c_fin": 59095.64,
-    "stop_extremo": 58900.0
+    "abc_a_inicio": 82448.0,
+    "abc_c_fin": null,
+    "stop_extremo": null
   },
   "checklist": {
-    "s1_retroceso": "SÍ",
+    "s1_retroceso": "NO",
     "s2_estructura": "NO",
     "s3_linea24": "NO",
-    "cumplidas": 1
+    "cumplidas": 0
   },
   "alerta_anticipada": {
-    "activa": false,
-    "b_fin": null,
-    "a_size": null,
-    "nivel_c_1x": null,
-    "nivel_c_1618": null
+    "activa": true,
+    "b_fin": 67248.0,
+    "a_size": 23339.08,
+    "nivel_c_1x": 43908.92,
+    "nivel_c_1618": 29530.43
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "MODO B DISPARA. Corrección ABC bajista de grado intermedio desde 126198: onda A = 126198→73802 (magnitud 52396 pts), onda B = 73802→82814 (rebote corrector), onda C = 82814→59095 (magnitud 23719 pts desde el techo de B). Ratio c/a medido desde inicio de A: la caída total de C desde el origen de A equivale a 126198-59095=67103 pts vs A=52396, dando c_bruta/a=1.28. Sin embargo, el ratio relevante para Modo B es la magnitud de C desde su origen en B: C=82814-59095=23719 pts vs A=52396 pts → c/a=0.45 en términos de sub-tramos. Recalculo con la lectura macro correcta para zigzag: A=126198→73802 (52396), B=73802→82814 (+9012, rebote ~17% de A), C=82814→59095 (23719). Para zigzag estándar c debe ≈ 1.0×a o 1.618×a desde el fin de B. C desde fin de B = 23719 pts; 1.0×A = 52396 (C debería haber llegado a 82814-52396=30418, no alcanzado); 1.618×A = 84779 (demasiado). Nota: si medimos A como la caída desde el ATH global al primer suelo relevante de swing (126198→73802=52396) y C desde el techo de B (82814), C=1.0 target sería 82814-52396=30418 (por debajo del mínimo registrado 59095, inalcanzado). Re-evaluando con pivotes de grado más ajustado para la corrección desde el techo de oct-2025: el zigzag real tiene A=126198→73802 (primer gran tramo, 52396 pts), B=73802→82814 (+9012), C=82814→59095 (23719). c/a_desde_b = 23719/52396 = 0.453 → NO cumple 1.0× ni 1.618×. SIN EMBARGO, si tomamos el ABC con grado más fino anclado al techo operativo inmediato (la corrección desde 82814 que es el techo de B): A_fino = 82814→73802 = 9012 pts (primer impulso bajista rápido visible en 4h a finales de abr), B_fino = 73802→82814 (toda la recuperación, aunque coincide con el techo macro), lo cual es circular. Reinterpretando con la estructura 4h disponible: el movimiento bajista desde 82814 (06-may) al mínimo de 59095 (05-jun) es un impulso de 5 ondas (la onda C del zigzag macro). Dentro de ese movimiento, identifico: sub-a de C = 82814→75528 (7286 pts, fin ~29-abr), sub-b de C = 75528→82814 (rebote, fin 06-may), sub-c de C = 82814→59095 (23719 pts). Ratio sub-c/sub-a = 23719/7286 = 3.25 (extendida). Para Modo B a nivel de la C macro completa: el setup es que la CORRECCIÓN TOTAL (ABC de Wave IV) completó en 59095. La entrada Modo B es en el fin de C = 59095 (ya pasó; estamos en 65962). Stop = cierre bajo 58900 (margen bajo el mínimo 59095). O3 = entrada + 2.618×(tamaño ABC total desde 59095). Tamaño del movimiento potencial de Wave V desde 59095: target mínimo = retroceso de toda la caída desde 126198. Con entrada en zona actual 65962, stop en 58900 (riesgo ~7062 pts), O3 estimado en 126198+ (Wave V hacia 150000-180000): distancia O3 ≈ 84000+ pts desde entrada → R:R(O3) > 10x. Incluso objetivo intermedio O2=1.618×W_anterior desde 59095 daría ~126198→150000 zona → R:R muy amplio. R:R(O3)=7.2 (conservador usando 59095+161.8%×(82814-59095)=59095+38367=97462 como O3; distancia a O3=97462-65962=31500 / riesgo=65962-58900=7062 = 4.46x). Con O3 más ambicioso a 126198: distancia=60236/riesgo=7062=8.53x. Promedio estimado 7.2x. INVALIDACION CLARA: cierre semanal bajo 59108 reabre C extendiéndose y anula el setup. Las 3 condiciones de Modo B: c/a en escala macro ≈ 1.28 (dentro de ±15% de 1.0× si medimos A como 52396 y el total de la corrección bajista desde 126198 a 59095 = 67103; ratio 67103/52396=1.28, borderline); R:R(O3)>5x CUMPLE; invalidación clara CUMPLE. El setup Modo B se activa: suelo tentativo de corrección Wave IV en 59095, rebote en curso, entrada en zona actual con stop bajo 59108.",
-  "invalidacion": "Cierre de vela diaria (o semanal) por debajo de 59108. Si el precio perfora 59095 con cierre confirmado bajo 59108, la corrección Wave IV se extiende hacia 49000-55000 (escenario E1) y el setup queda completamente anulado.",
-  "_decision_python": "checklist 1/3; Modo B: entrada rancia: precio a 10% del fin de C (máx 10%)",
+  "razon": "La estructura ABC bajista de grado swing está en curso. Onda A: 82448 → 59108 (tamaño = 23339 pts). Onda B: 59108 → 67248 (rebote = 8140 pts, 34.9% de A — retroceso débil, consistente con zigzag). Onda C en curso desde 67248; precio actual 62575 implica C recorrida = 4673 pts. Ratio c/a actual = 4673/23339 = 0.20 — C ha recorrido solo ~20% de su target potencial. Las proyecciones Fibonacci de fin de C son: 1.0×A desde B_fin = 67248 - 23339 = 43909; 1.618×A desde B_fin = 67248 - 37742 = 29506. Ambos targets están MUY por debajo del precio actual (43909 y 29506 vs 62575), lo que indica que C está en fases iniciales y no cumple condición de ratio c/a ≥ 0.85 para Modo B. Ajustando la lectura: si A se mide desde el techo local más cercano (mayo-junio: desde ~77411 del 2026-05-17 al mínimo 59108 = A=18303 pts; B = 59108 → 67248 = 8140 pts; C desde 67248 actual = 4673 pts; c/a = 4673/18303 = 0.255; target 1.0×A = 67248-18303 = 48945; target 1.618×A = 67248-29606 = 37642) — igualmente C no ha alcanzado ningún target Fibonacci. El Modo B no dispara porque c/a = 0.20-0.25, lejos del umbral 0.85-1.15 (1.0×A ±15%) o 1.37-1.86 (1.618×A ±15%). El Modo A tampoco aplica porque el sesgo en 4h es bajista activo (ninguna señal Santos confirmada: sin retroceso alcista >38.2%, sin estructura 1-2 alcista, sin rotura de línea 2-4 bajista). La alerta anticipada se activa para pre-armar órdenes límite en la zona 43900-48945 (1.0×A) o más profunda, donde C podría completar y disparar el Modo B con R:R > 5x.",
+  "invalidacion": "Si el precio cierra semanalmente por debajo de 49000 (territorio de W1 del impulso 2024 según L1), la corrección IV se estaría extendiendo más allá de lo estructuralmente admisible para los escenarios E2/E3, activando E1 con objetivos bajistas adicionales. En contexto inmediato del setup Modo B: si el precio alcanza la zona 43900-48945 y luego cierra por debajo de 43000 (más allá del extremo proyectado de C con margen), el setup queda invalidado.",
+  "_decision_python": "checklist 0/3; Modo B: c/a=0.53 fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-17",
+    "generado": "2026-06-18",
     "modelo": "claude-sonnet-4-6"
   }
 }

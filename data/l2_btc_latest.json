@@ -1,43 +1,43 @@
 {
-  "fecha": "2026-06-17",
+  "fecha": "2026-06-18",
   "activo": "BTC/USD",
-  "precio_actual": 65947.72,
-  "señal_1_retroceso": "PARCIAL",
-  "señal_1_detalle": "Último impulso bajista: desde ~82792 (máx 2026-05-06) hasta mínimo operativo 59108.92. Rango: 23683 pts. Retroceso actual desde 59108 hasta cierre 65947: +6838 pts = 28.9% del impulso bajista. Umbral 38.2% = 68163; no alcanzado aún.",
-  "señal_1_score": 0.5,
+  "precio_actual": 62575.99,
+  "señal_1_retroceso": "SÍ",
+  "señal_1_detalle": "Impulso bajista medido desde techo operativo 126198 hasta mínimo operativo 59108 (rango 67089 pts). Rebote máximo desde 59108 hasta 67248 (2026-06-15) = 8140 pts = 12.1% del rango total. Sin embargo, el impulso bajista RECIENTE (última onda impulsiva bajista) va desde el máximo local de 74861 (2026-03-16) hasta el mínimo 59108 (2026-06-05), rango = 15753 pts. Retroceso máximo alcanzado: 67248 - 59108 = 8140 pts = 51.7% de ese impulso bajista reciente. Supera el 38.2% (6018 pts sobre 59108 = 65126). Sin embargo, el cierre actual 62575 está por DEBAJO del nivel 38.2% (65126), lo que indica que el retroceso fue superado intradía/en máximos pero el precio ha retrocedido de vuelta. Se cuenta como SÍ porque se alcanzó el nivel, pero la sostenibilidad es débil.",
+  "señal_1_score": 1.0,
   "señal_2_estructura": "POSIBLE",
-  "señal_2_detalle": "Desde el mínimo del 2026-06-05 (59108) se observa un rebote hasta ~67248 (2026-06-15, máx intradía) que podría configurar una onda 1 al alza, seguida de una leve corrección los días 16-17 (cierre 65600 y 65947). La onda 2 correctiva es poco profunda y el rebote es modesto; la estructura no es contablemente clara ni impulsiva, pero hay indicios iniciales.",
+  "señal_2_detalle": "Desde el mínimo 59108 (2026-06-05) se desarrolló un rebote hasta 67248 (2026-06-15) que podría ser onda 1 alcista. Desde 67248 el precio ha retrocedido a 62575 (cierre 2026-06-18), lo que podría configurarse como onda 2 correctiva. Sin embargo, la onda 2 no tiene estructura clara de corrección (no hay confirmación de piso), y el precio sigue presionando a la baja sin señal de finalización. Estructura 1-2 posible pero no confirmada.",
   "señal_2_score": 0.5,
   "señal_3_linea24": "NO",
-  "señal_3_detalle": "La línea 2-4 del impulso bajista mayor (desde 82792) requiere identificar los puntos 2 y 4 del impulso bajista. Las ondas 2 y 4 del descenso desde 82792 se estiman en ~78000-79000 y ~73500-74500 respectivamente; la línea 2-4 proyectada se sitúa aproximadamente en 73000-74000 en la zona temporal actual. El precio actual (65947) no ha perforado esa línea al alza. Sin perforación confirmada.",
+  "señal_3_detalle": "La línea 2-4 del impulso bajista previo (desde 126198) requiere identificar ondas 2 y 4 del tramo bajista mayor. Ondas 2 y 4 del impulso bajista reciente (74861→59108): onda 2 en torno a ~73856-74861, onda 4 en torno a ~66338-68775. Línea 2-4 proyecta resistencia aproximada en zona 67000-68500. El precio alcanzó máximo 67248 el 2026-06-15 tocando la zona pero sin cierre sostenido sobre ella. Actualmente el precio retrocedió a 62575, alejándose de la línea 2-4. No perforada con confirmación.",
   "señal_3_score": 0.0,
-  "score_santos": 1.0,
+  "score_santos": 1.5,
   "resolutorios_cruzados": [
     {
       "nivel": 59108,
       "cruzado": true,
       "direccion": "abajo",
-      "implica": "El precio tocó 59108 intradiario el 2026-06-05 (low 59108.92), rozando el mínimo operativo. Cierre por encima; no hubo cierre semanal bajo este nivel. Invalida E2/E3 solo con cierre bajo 59108. Por ahora actúa como soporte extremo testeado pero no perforado en cierre."
+      "implica": "Fue tocado el 2026-06-05 (mínimo 59108.92). Cierre bajo este nivel invalidaría E2 y E3 y mantendría E1 con extensión de onda C hacia 49000-55000. Por ahora no hubo CIERRE semanal bajo 59108, solo toque de mínimo intradía."
     },
     {
       "nivel": 73856,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No cruzado. Ruptura sostenida sobre 73856 confirmaría E2 (wave 4 intermedia completada, wave 5 final pendiente)."
+      "implica": "No cruzado. Ruptura sostenida sobre 73856 confirmaría E2 (onda 4 intermedia completada, onda 5 pendiente). Precio actual 62575 está ~18% por debajo."
     },
     {
       "nivel": 82792,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No cruzado. Cierre sobre 82792 confirmaría reanudación alcista mayor (E2/E3 activos) y resolvería la divergencia macro principal."
+      "implica": "No cruzado. Cierre sobre 82792 confirmaría reanudación alcista mayor E2/E3 activos y resolvería divergencia macro."
     }
   ],
-  "escenario_favorecido": "sin cambios",
-  "alerta": false,
+  "escenario_favorecido": "E1",
+  "alerta": true,
   "nivel_alerta": "VIGILAR",
-  "resumen": "BTC rebota desde el mínimo de 59108 con 29% de retroceso del impulso bajista y estructura incipiente pero no impulsiva confirmada; score Santos 1.0 — nivel VIGILAR, ningún resolutorio cruzado en cierre, no amerita L3 aún pero el soporte 59108 fue testeado y el rebote debe superar 68163 y luego 73856 para activar señales de mayor peso.",
+  "resumen": "BTC retrocede a 62575 desde el rebote máximo de 67248, perdiendo el nivel 38.2% del impulso bajista reciente (65126); score Santos 1.5 por retroceso alcanzado y estructura 1-2 posible pero sin confirmación de línea 2-4; el nivel resolutorio clave 59108 fue tocado en mínimo intradía sin cierre semanal bajo él, pero la presión bajista sostenida favorece E1 — vigilar cierre semanal: si rompe 59108 se activa alerta SEÑAL máxima.",
   "_meta": {
-    "generado": "2026-06-17",
+    "generado": "2026-06-18",
     "modelo": "claude-sonnet-4-6",
     "l1_fecha": "2026-06-15"
   }
