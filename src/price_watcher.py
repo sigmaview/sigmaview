@@ -70,6 +70,12 @@ def check() -> None:
         except Exception as e:
             print(f"  (export_dashboard error: {e})")
 
+    try:
+        import database
+        database.actualizar_mfe_pendientes(TICKER)
+    except Exception as e:
+        print(f"  (mfe_48h error: {e})")
+
     activas = sum(1 for a in plan["alertas"] if not a["fired"])
     print(f"Precio ${precio:,.0f} — {disparadas} disparada(s), {activas} activa(s)")
 

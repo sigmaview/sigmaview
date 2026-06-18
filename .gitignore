@@ -5,5 +5,7 @@ __pycache__/
 data/backtest_cache/
 data/walkforward_results.json
 data/walkforward_l3/
+data/microstructure_breakout_test.json
+data/pilot_microstructure_result.json
 20260616 Contexto/
 .DS_Store

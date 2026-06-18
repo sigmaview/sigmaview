@@ -3,7 +3,7 @@ Acumula historia de precios (1h candles) y resultados del pipeline.
 """
 import sqlite3
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 DB_PATH = Path(__file__).parent.parent / "data" / "sigmaview.db"
@@ -82,7 +82,7 @@ def init_db() -> None:
     # Migración: agrega columnas nuevas a signals si no existen (DB ya creada)
     with _conn() as c:
         for col in ["o1_hit INTEGER DEFAULT 0", "o2_hit INTEGER DEFAULT 0",
-                    "o3_hit INTEGER DEFAULT 0", "fecha_cierre TEXT"]:
+                    "o3_hit INTEGER DEFAULT 0", "fecha_cierre TEXT", "mfe_48h REAL"]:
             try:
                 c.execute(f"ALTER TABLE signals ADD COLUMN {col}")
             except sqlite3.OperationalError:
@@ -266,6 +266,47 @@ def log_l1(fecha: str, ticker: str, result: dict) -> None:
             result.get("resumen"),
             result.get("_meta", {}).get("modelo"),
         ))
+
+
+def actualizar_mfe_pendientes(ticker: str) -> None:
+    """Calcula mfe_48h (momentum favorable a las 48h del fill) para señales C_breakout
+    que ya cumplieron esa ventana — solo captura el dato, no cambia el trade.
+    Hallazgo en estudio (ver backlog): tercio de menor MFE_48h tuvo win rate 9% en
+    backtest histórico vs 55% en terciles medio/alto."""
+    init_db()
+    with _conn() as conn:
+        conn.row_factory = sqlite3.Row
+        pendientes = conn.execute(
+            "SELECT id, fecha, direccion, entrada, stop FROM signals "
+            "WHERE ticker=? AND modo='C_breakout' AND mfe_48h IS NULL",
+            (ticker,)
+        ).fetchall()
+
+        for sig in pendientes:
+            entrada_fired = conn.execute(
+                "SELECT fired_at FROM alerts_fired WHERE ticker=? AND alert_id='entrada' "
+                "AND fired_at >= ? ORDER BY fired_at LIMIT 1",
+                (ticker, sig["fecha"])
+            ).fetchone()
+            if not entrada_fired:
+                continue
+            fired_dt = datetime.strptime(entrada_fired["fired_at"], "%Y-%m-%dT%H:%M:%SZ")
+            if datetime.utcnow() - fired_dt < timedelta(hours=48):
+                continue
+
+            df = pd.read_sql_query(
+                "SELECT high,low FROM ohlcv WHERE ticker=? AND ts >= ? ORDER BY ts LIMIT 49",
+                conn, params=[ticker, fired_dt.strftime("%Y-%m-%d %H:%M")]
+            )
+            if df.empty:
+                continue
+            long = (sig["direccion"] or "").upper() == "LONG"
+            riesgo = abs(sig["entrada"] - sig["stop"]) if sig["entrada"] and sig["stop"] else 0
+            if riesgo == 0:
+                continue
+            mfe = ((df["high"].max() - sig["entrada"]) / riesgo if long
+                   else (sig["entrada"] - df["low"].min()) / riesgo)
+            conn.execute("UPDATE signals SET mfe_48h=? WHERE id=?", (round(float(mfe), 2), sig["id"]))
 
 
 def log_alert_fired(ticker: str, alert: dict, precio: float) -> None:
