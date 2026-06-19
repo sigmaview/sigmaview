@@ -396,6 +396,9 @@ def run(model: str | None = None) -> dict:
     try:
         import database
         l2 = json.loads(L2_FILE.read_text()) if L2_FILE.exists() else {}
+        n_inv = database.invalidar_señales_pendientes(TICKER, date)
+        if n_inv:
+            print(f"  {n_inv} señal(es) anterior(es) invalidada(s) — entrada nunca se tocó")
         database.log_analysis(date, TICKER, result, l2.get("nivel_alerta", ""))
         if result.get("veredicto") == "SEÑAL":
             database.log_signal(date, TICKER, result)

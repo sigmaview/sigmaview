@@ -193,6 +193,36 @@ def log_signal(fecha: str, ticker: str, result: dict) -> None:
         ))
 
 
+def invalidar_señales_pendientes(ticker: str, fecha_hoy: str) -> int:
+    """Marca como INVALIDADA cualquier señal ABIERTA de un día anterior cuya entrada
+    nunca se tocó. alertas_activas.json se sobreescribe completo cada corrida de
+    signal_generator, así que si la entrada no se llenó antes de la corrida de hoy,
+    esos niveles dejaron de vigilarse — la señal queda huérfana en estado ABIERTO
+    para siempre si no se marca explícitamente. Retorna cuántas se invalidaron."""
+    init_db()
+    n = 0
+    with _conn() as conn:
+        conn.row_factory = sqlite3.Row
+        abiertas = conn.execute(
+            "SELECT id, fecha FROM signals WHERE ticker=? AND estado='ABIERTO' AND fecha < ?",
+            (ticker, fecha_hoy)
+        ).fetchall()
+        for sig in abiertas:
+            entrada_fired = conn.execute(
+                "SELECT 1 FROM alerts_fired WHERE ticker=? AND alert_id='entrada' "
+                "AND fired_at >= ? LIMIT 1",
+                (ticker, sig["fecha"])
+            ).fetchone()
+            if entrada_fired:
+                continue  # sí se llenó — sigue su curso normal vía update_signal_resultado
+            conn.execute(
+                "UPDATE signals SET estado='INVALIDADA', fecha_cierre=? WHERE id=?",
+                (fecha_hoy, sig["id"])
+            )
+            n += 1
+    return n
+
+
 def update_signal_resultado(ticker: str, alert_id: str, precio: float) -> None:
     """Actualiza estado/resultado de la señal ABIERTA cuando price_watcher toca un nivel."""
     init_db()

@@ -50,6 +50,7 @@
     .badge-abierto { background: #1a2a3a; color: var(--blue); }
     .badge-ganador { background: #1a3a1a; color: var(--green); }
     .badge-perdedor{ background: #3a1a1a; color: var(--red); }
+    .badge-invalidada{ background: #2a2a2a; color: var(--muted); }
 
     /* Price header */
     .price-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
@@ -307,6 +308,7 @@ function openSignalModal(i) {
   const estado = (s.estado || 'ABIERTO').toUpperCase();
   const estadoBadge = estado === 'GANADOR'   ? badge(estado,'badge-ganador') :
                       estado === 'PERDEDOR'  ? badge(estado,'badge-perdedor') :
+                      estado === 'INVALIDADA' ? badge(estado,'badge-invalidada') :
                       badge(estado,'badge-abierto');
 
   document.getElementById('modal-content').innerHTML = `
@@ -568,8 +570,9 @@ async function load() {
       const risk  = entry && stop ? Math.abs(entry - stop) : null;
       const rr3   = risk && o3 ? (Math.abs(o3 - entry) / risk).toFixed(1) + 'x' : '—';
       const estado = (s.estado || 'ABIERTO').toUpperCase();
-      const estadoBadge = estado === 'GANADOR'  ? badge(estado,'badge-ganador') :
-                          estado === 'PERDEDOR' ? badge(estado,'badge-perdedor') :
+      const estadoBadge = estado === 'GANADOR'   ? badge(estado,'badge-ganador') :
+                          estado === 'PERDEDOR'  ? badge(estado,'badge-perdedor') :
+                          estado === 'INVALIDADA' ? badge(estado,'badge-invalidada') :
                           badge(estado,'badge-abierto');
       const rColor = s.resultado_r > 0 ? 'green' : s.resultado_r < 0 ? 'red' : '';
       const gp1 = s.resultado_r != null ? s.resultado_r * 1 : null;
