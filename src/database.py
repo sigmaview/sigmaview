@@ -87,6 +87,10 @@ def init_db() -> None:
                 c.execute(f"ALTER TABLE signals ADD COLUMN {col}")
             except sqlite3.OperationalError:
                 pass
+        try:
+            c.execute("ALTER TABLE analysis ADD COLUMN analizado_at TEXT")
+        except sqlite3.OperationalError:
+            pass
 
 
 def upsert_ohlcv(ticker: str, df: pd.DataFrame) -> int:
@@ -146,8 +150,8 @@ def log_analysis(fecha: str, ticker: str, result: dict, l2_alerta: str = "") -> 
         c.execute("""
             INSERT OR REPLACE INTO analysis
             (fecha, ticker, precio_actual, veredicto, modo_entrada, sub_onda,
-             sesgo_macro, fase_impulso, calidad_senal, l2_alerta, modelo)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?)
+             sesgo_macro, fase_impulso, calidad_senal, l2_alerta, modelo, analizado_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
         """, (
             fecha, ticker,
             result.get("precio_actual"),
@@ -159,6 +163,7 @@ def log_analysis(fecha: str, ticker: str, result: dict, l2_alerta: str = "") -> 
             result.get("calidad_señal"),
             l2_alerta,
             result.get("_meta", {}).get("modelo"),
+            datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         ))
 
 

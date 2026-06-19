@@ -288,6 +288,15 @@ function badge(text, cls) {
   return `<span class="badge ${cls}">${text}</span>`;
 }
 
+function fmtTimestamp(iso, fallbackFecha) {
+  if (!iso) return fallbackFecha || '—';
+  const d = new Date(iso);
+  const opts = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+  const cl  = d.toLocaleString('es-CL', { ...opts, timeZone: 'America/Santiago' });
+  const utc = d.toLocaleString('es-CL', { ...opts, timeZone: 'UTC' });
+  return `${cl} CL  /  ${utc} UTC`;
+}
+
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -506,7 +515,7 @@ async function load() {
 
   // Header
   document.getElementById('last-update').textContent =
-    'Último análisis: ' + (summary.ultima_fecha || '—');
+    'Último análisis: ' + fmtTimestamp(summary.ultimo_timestamp, summary.ultima_fecha);
 
   // Precio live (CoinGecko) o fallback
   const livePrice = await fetchLivePrice();
@@ -598,11 +607,11 @@ async function load() {
 
   // Tabla análisis
   document.getElementById('tbl-analysis').innerHTML = analysis.map(a => `<tr>
-    <td>${a.fecha||'—'}</td>
+    <td>${a.fecha||'—'}${a.analizado_at ? `<br><span style="color:var(--muted);font-size:10px">${new Date(a.analizado_at).toLocaleString('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'})} CL</span>` : ''}</td>
     <td>${fmt(a.precio_actual)}</td>
     <td>${a.veredicto==='SEÑAL' ? badge('SEÑAL','badge-senal') : badge('ESPERAR','badge-esperar')}</td>
     <td style="color:var(--muted);font-size:11px">${(a.modo_entrada||'—').replace(/_/g,' ')}</td>
-    <td style="color:var(--muted);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis">${a.sub_onda||'—'}</td>
+    <td style="color:var(--muted);font-size:11px;max-width:280px;white-space:normal;line-height:1.4">${a.sub_onda||'—'}</td>
     <td>${a.sesgo_macro==='ALCISTA' ? badge('▲','badge-long') : a.sesgo_macro==='BAJISTA' ? badge('▼','badge-short') : '—'}</td>
     <td style="color:var(--muted)">${a.fase_impulso||'—'}</td>
     <td style="color:var(--muted);font-size:11px">${(a.modelo||'').replace('claude-','')}</td>

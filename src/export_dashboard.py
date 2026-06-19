@@ -78,6 +78,7 @@ def export():
         "r_por_trade":      round(total_r / n_señales, 2) if n_señales > 0 else None,
         "ultimo_veredicto": ultimo.get("veredicto"),
         "ultima_fecha":     ultimo.get("fecha"),
+        "ultimo_timestamp": ultimo.get("analizado_at"),
         "ultimo_precio":    ultimo.get("precio_actual"),
         "ultimo_sesgo":     ultimo.get("sesgo_macro"),
         "ultima_fase":      ultimo.get("fase_impulso"),
