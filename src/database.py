@@ -199,17 +199,19 @@ def log_signal(fecha: str, ticker: str, result: dict) -> None:
 
 
 def invalidar_señales_pendientes(ticker: str, fecha_hoy: str) -> int:
-    """Marca como INVALIDADA cualquier señal ABIERTA de un día anterior cuya entrada
-    nunca se tocó. alertas_activas.json se sobreescribe completo cada corrida de
-    signal_generator, así que si la entrada no se llenó antes de la corrida de hoy,
-    esos niveles dejaron de vigilarse — la señal queda huérfana en estado ABIERTO
-    para siempre si no se marca explícitamente. Retorna cuántas se invalidaron."""
+    """Marca como INVALIDADA cualquier señal ABIERTA de un día anterior (o de hoy mismo,
+    si signal_generator ya corrió antes en el mismo día — ej. corridas manuales repetidas)
+    cuya entrada nunca se tocó. alertas_activas.json se sobreescribe completo cada corrida
+    de signal_generator, así que si la entrada no se llenó antes de la corrida actual,
+    esos niveles dejaron de vigilarse — la señal queda huérfana en estado ABIERTO para
+    siempre si no se marca explícitamente. Se llama ANTES de log_signal(), así que nunca
+    invalida la señal que esta misma corrida está por crear. Retorna cuántas se invalidaron."""
     init_db()
     n = 0
     with _conn() as conn:
         conn.row_factory = sqlite3.Row
         abiertas = conn.execute(
-            "SELECT id, fecha FROM signals WHERE ticker=? AND estado='ABIERTO' AND fecha < ?",
+            "SELECT id, fecha FROM signals WHERE ticker=? AND estado='ABIERTO' AND fecha <= ?",
             (ticker, fecha_hoy)
         ).fetchall()
         for sig in abiertas:
