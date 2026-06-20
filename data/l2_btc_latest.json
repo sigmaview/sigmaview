@@ -1,41 +1,41 @@
 {
   "fecha": "2026-06-20",
   "activo": "BTC/USD",
-  "precio_actual": 63456.03,
+  "precio_actual": 63434.0,
   "señal_1_retroceso": "SÍ",
-  "señal_1_detalle": "Impulso bajista medido desde techo operativo 126198 hasta mínimo operativo 59108 (rango: 67089 puntos). Rebote máximo desde 59108 hasta 67248 (2026-06-15) = 8140 puntos = 12.1% del rango total. SIN EMBARGO, el contexto correcto es medir el último impulso bajista inmediato: desde el techo local 73856 (2026-04-19, nivel resolutorio) hasta el mínimo 59108 (2026-06-05), rango = 14748 pts. Máximo rebote = 67248 - 59108 = 8140 pts = 55.2% de ese impulso bajista. Supera el 38.2% (5614 pts sobre 59108 = 64722). El precio alcanzó 67248 el 2026-06-15, retrocediendo ~55% del último impulso bajista. CONFIRMADO.",
-  "señal_1_score": 1.0,
+  "señal_1_detalle": "Impulso bajista medido desde techo operativo 126198 hasta mínimo operativo 59108 (rango 67089 pts). Retroceso alcista máximo desde mínimo 59108 hasta techo del rebote ~82792 (2026-05-06) = 23684 pts = 35.3% — PARCIAL. Sin embargo, si medimos el último impulso bajista relevante desde el máximo local 82792 (2026-04-17/05-06) hasta el mínimo 59108 (2026-06-05), rango = 23684 pts. Desde 59108 el rebote máximo alcanzado fue 67248 (2026-06-15) = 8140 pts = 34.4% del último impulso bajista. Precio actual 63434 implica retroceso de 4326 pts = 18.3% desde ese mínimo. El rebote máximo (67248) alcanzó 34.4%, por debajo del 38.2% (68163 necesario). Usando el impulso bajista completo 82792→59108: 38.2% = 68163. Máximo rebote 67248 no superó 68163. Retroceso actual: 34.4% — entre 30% y 38.2%.",
+  "señal_1_score": 0.5,
   "señal_2_estructura": "POSIBLE",
-  "señal_2_detalle": "Desde el mínimo 59108 (2026-06-05) se desarrolló un movimiento alcista hasta 67248 (2026-06-15) que podría ser onda 1 alcista. Desde ahí el precio retrocedió hasta ~62201 (2026-06-18 mínimo), un retroceso del ~61% de ese movimiento, compatible con onda 2. Sin embargo, el precio actual 63456 no ha superado aún el máximo de onda 1 (67248) para confirmar inicio de onda 3. La estructura es incipiente y ambigua: el retroceso de onda 2 es profundo y el precio sigue lateral-bajista desde 65711 el 2026-06-15. No hay confirmación contable clara.",
+  "señal_2_detalle": "Desde mínimo 59108 (2026-06-05) se observa rebote hasta 67248 (2026-06-15) como posible onda 1 alcista (10 días), seguido de retroceso hacia 63434 actual como posible onda 2. Sin embargo, la onda 1 no superó ningún nivel resolutorio relevante (73856) y el rebote carece de estructura impulsiva contable clara en diario. La onda 2 actual (63434) retrocedió ~46% del rebote 59108→67248, dentro de parámetros normales, pero la onda 1 es débil y no confirmada como impulso. Estructura 1-2 posible pero no contable con claridad.",
   "señal_2_score": 0.5,
   "señal_3_linea24": "NO",
-  "señal_3_detalle": "La línea 2-4 del impulso bajista mayor requiere identificar ondas 2 y 4 de la caída desde 126198. Las ondas correctivas internas del impulso bajista se ubican aproximadamente en: rebote de feb (60074-73856 zona) y corrección previa. La línea 2-4 bajista proyecta resistencia en zona ~67000-68000. El precio tocó 67248 el 2026-06-15 pero no perforó con cierre limpio sobre ese nivel ni con momentum sostenido. Actualmente precio en 63456, por debajo de la línea 2-4. No hay perforación confirmada.",
+  "señal_3_detalle": "La línea 2-4 del impulso bajista previo (desde 126198) requeriría identificar las ondas 2 y 4 de esa caída. En el contexto del impulso bajista 82792→59108, la línea 2-4 conectaría máximos intermedios de ese descenso. El precio actual 63434 se encuentra bien por debajo de cualquier línea 2-4 relevante que pueda trazar el impulso bajista mayor. No se ha producido perforación de línea 2-4 en el plazo temporal requerido.",
   "señal_3_score": 0.0,
-  "score_santos": 1.5,
+  "score_santos": 1.0,
   "resolutorios_cruzados": [
     {
       "nivel": 59108,
       "cruzado": true,
       "direccion": "abajo",
-      "implica": "El precio tocó mínimo 59108 el 2026-06-05 (intradiario), rozando el nivel que invalida E2 y E3. No hubo CIERRE bajo 59108 (cierre mínimo fue ~60922 ese día). Nivel técnicamente tocado pero no cerrado por debajo. E2 y E3 siguen técnicamente vigentes por un margen estrecho."
+      "implica": "Tocado como mínimo el 2026-06-05 (low 59108.92). Cierre sobre 59108 mantiene estructura; si hubiera cierre semanal bajo este nivel invalidaría E2 y E3, reabriendo corrección profunda en E1 hacia 49000-55000. Actualmente precio 63434 está sobre este nivel — soporte estructural vigente."
     },
     {
       "nivel": 73856,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No alcanzado. Ruptura sostenida sobre 73856 confirmaría E2 (Wave 4 intermedia completa, Wave 5 en curso). Precio actual 63456 está ~10400 pts por debajo."
+      "implica": "No cruzado. Superar 73856 confirmaría E2 (wave 4 intermedia completada, wave 5 en curso) y daría señal alcista mayor."
     },
     {
       "nivel": 82792,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No alcanzado. Cierre sobre 82792 confirmaría reanudación alcista mayor (E2/E3 activos plenamente). Precio actual muy alejado."
+      "implica": "No cruzado. Superar 82792 con cierre semanal confirmaría E2/E3 como escenario dominante y resolvería la divergencia macro a favor alcista."
     }
   ],
-  "escenario_favorecido": "E1",
-  "alerta": true,
+  "escenario_favorecido": "sin cambios",
+  "alerta": false,
   "nivel_alerta": "VIGILAR",
-  "resumen": "BTC rebotó desde el mínimo estructural 59108 hasta 67248 (+55% del impulso bajista reciente, señal 1 confirmada) pero el rebote se agotó y el precio retrocedió a 63456, sin perforar la línea 2-4 ni confirmar estructura 1-2 alcista contable; el score Santos de 1.5 activa vigilancia pero sin señal de giro confirmada, favoreciendo E1 mientras el precio no supere 67248-73856 con cierre sostenido.",
+  "resumen": "Precio retrocede desde rebote máximo 67248 hacia 63434, score Santos 1.0 (señales 1 y 2 parciales/posibles, señal 3 ausente); ningún resolutorio cruzado con confirmación — mapa L1 sin cambios, zona de suelo vigente pero sin señal de giro contable; no amerita L3 todavía.",
   "_meta": {
     "generado": "2026-06-20",
     "modelo": "claude-sonnet-4-6",

@@ -3,10 +3,10 @@
   "activo": "BTC/USD",
   "precio_actual": 63456.03,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C de corrección ABC bajista de grado swing (desde techo 82814 del 2026-05-06). La onda A bajó de 82814 → 72942 (2026-05-28). La onda B rebotó 72942 → 67248 no alcanzado; revisando datos: B llegó a ~77520 aprox 2026-05-20 área, luego cayó en C. Más precisamente: A: 82814→72942; B: 72942→77520 (retroceso ~46% de A); C: 77520→59108 mínimo del 2026-06-05 (intraday). Desde 59108 el precio rebotó a 67248 (2026-06-15 15:00 aprox, high 67254). Actualmente en 63456, retrocediendo desde ese rebote. La estructura post-59108 luce como un rebote correctivo (a-b-c menor) con posible retest de zona baja. Estamos en la fase posterior al mínimo potencial de C, con precio consolidando entre 62000-67250.",
-    "grado": "Swing intermedio (semanas); la ABC completa es corrección de grado intermedio dentro del ciclo alcista mayor",
-    "estado": "posible fin cercano",
-    "que_esperar": "Si 59108 fue el fin de C (onda C de corrección IV o corrección 4 intermedia), el precio debería iniciar un impulso alcista de grado swing hacia 73856+ para confirmar reanudación. El rebote hasta 67248 podría ser la W1 de ese impulso y el retroceso actual a 62500-63500 podría ser la W2. Alternativa: C aún no terminó y puede extenderse bajo 59108 hacia 55000-58000."
+    "sub_onda_actual": "Corrección ABC bajista desde el techo operativo swing en 67248 (2026-06-15 pico): onda A completada en ~62238 (2026-06-18 low), onda B completada en ~64752 (2026-06-18 high), onda C en progreso hacia zona Fibonacci 1.0×A (~60226) o 1.618×A (~57585). Precio actual 63456 está en mitad de la onda C bajista de corto plazo. Dentro del marco macro: esta corrección ABC de 4h es una sub-corrección dentro del rebote desde el suelo estructural 59109 (2026-06-05) hacia arriba — el rebote mayor desde 59109 fue W1 swing (59109→67248), ahora estamos en W2 correctiva de ese rebote.",
+    "grado": "Sub-onda de grado swing menor (4h/diario) dentro de la estructura de recuperación desde mínimos",
+    "estado": "en progreso",
+    "que_esperar": "Continuación bajista de onda C hacia 60000-62000, completando el retroceso de W2 del impulso desde 59109. Una vez que C complete cerca de 61.8% del impulso W1 (59109→67248 = 8139 pts; 61.8% retroceso desde 67248 ≈ 62218), se esperaría inicio de W3 alcista de grado swing hacia nuevos máximos por encima de 67248 y luego 73856+"
   },
   "sesgo_macro": "ALCISTA",
   "fase_impulso_macro": "media",
@@ -14,54 +14,37 @@
   "modo_entrada": "B_fin_abc",
   "modo_b_check": {
     "abc_detectada": true,
-    "c_sobre_a": 1.89,
-    "rr_o3_estimado": 3.8,
+    "c_sobre_a": 0.31,
+    "rr_o3_estimado": null,
     "invalidacion_clara": true,
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 59108.0,
-    "w1_fin": 67254.0,
-    "w2_swing": 62237.0,
-    "abc_a_inicio": 82814.0,
-    "abc_c_fin": 59108.0,
-    "stop_extremo": 59108.0
+    "w1_origen": 59108.92,
+    "w1_fin": 67248.0,
+    "w2_swing": null,
+    "abc_a_inicio": 67248.0,
+    "abc_c_fin": 63456.03,
+    "stop_extremo": 59108.92
   },
   "checklist": {
     "s1_retroceso": "SÍ",
-    "s2_estructura": "SÍ",
+    "s2_estructura": "NO",
     "s3_linea24": "NO",
-    "cumplidas": 2
+    "cumplidas": 1
   },
   "alerta_anticipada": {
-    "activa": false,
-    "b_fin": null,
-    "a_size": null,
-    "nivel_c_1x": null,
-    "nivel_c_1618": null
+    "activa": true,
+    "b_fin": 64752.0,
+    "a_size": 5009.07,
+    "nivel_c_1x": 59742.93,
+    "nivel_c_1618": 56647.25
   },
-  "calidad_señal": "MODO_B",
-  "veredicto": "SEÑAL",
-  "razon": "MODO B evaluado: ABC bajista desde 82814. Onda A = 82814→72942 = 9872 pts. Onda B = 72942→77520 = 4578 pts (retroceso 46.4% de A, válido). Onda C = 77520→59108 = 18412 pts. Ratio c/a = 18412/9872 = 1.865 — está al 186.5% de A, lo cual excede el umbral de 1.618×A (±15% = rango 137%-186%). Está en el límite superior de la tolerancia (186.5% vs techo de 186%); marginalmente fuera del rango de disparo limpio. R:R estimado a O3: entrada ~59108 (fin de C, ya pasado), stop bajo 59108 (~58500 ajustado), O3 = extensión 2.618×(magnitud corrección desde 82814→59108 = 23706 pts) proyectado desde 59108 = 59108 + 23706×1.618 ≈ 121457. Distancia entrada→O3 ≈ 62349 pts; distancia entrada→stop ≈ 600 pts (stop ajustado sobre mínimo intraday 59095). R:R teórico >50x pero la entrada ideal en el fin de C (59108) YA OCURRIÓ el 2026-06-05 y el precio está ahora en 63456, por lo que el Modo B en su punto óptimo ya pasó. MODO A evaluado sobre estructura post-mínimo: W1 alcista = 59108→67254 (8146 pts, del 05-jun al 15-jun). W2 retroceso = 67254→62237 (mínimo visto en 2026-06-18 12:00, low 62237) = retroceso de 5017 pts = 61.6% de W1 — retroceso de 61.8% de W1 cumplido, zona de entrada Modo A. S1 (retroceso >38.2%): SÍ, retroceso 61.6% confirmado. S2 (estructura 1-2 contable en dirección alcista): SÍ, se puede contar W1 (59108→67254) y W2 (67254→62237), con precio actual en 63456 por encima del low de W2. S3 (rotura línea 2-4 del impulso bajista previo en menos tiempo): NO confirmada todavía — el precio no ha perforado con claridad la línea 2-4 bajista ni ha cerrado sostenidamente sobre 65970 (nivel resolutorio). El precio tocó 67254 pero retrocedió; falta un cierre 4h convincente sobre esa zona. Con 2/3 señales Santos la calidad es FUERTE pero la señal 3 (rotura línea 2-4) no está confirmada. El veredicto es ESPERAR la rotura sostenida sobre 65969-67254 con cierre 4h para activar entrada Modo C (breakout de W1 = 67254). La W2 ya ocurrió (mínimo 62237); el siguiente movimiento que confirme sería la rotura de 67254 iniciando W3.",
-  "invalidacion": "Cierre 4h (y especialmente cierre diario) por debajo de 59108 — reabre corrección C extendida hacia 55000-49000 e invalida toda la estructura de suelo. Secundariamente, cualquier cierre bajo 62237 (mínimo de W2) debilitaría el setup de Modo A antes de la confirmación de S3.",
-  "_decision_python": "c/a=1.89 OK, R:R(O2)=55.69x ≥ 5.0x, entrada vigente",
-  "plan_trade": {
-    "entrada": 59700.01,
-    "stop": 58506.01,
-    "riesgo_por_unidad": 1194.0,
-    "O1": 92949.04,
-    "O1_accion": "cerrar 50%",
-    "O2": 126198.07,
-    "O2_accion": "cerrar 25%, subir stop a entrada",
-    "O3": 167293.87,
-    "O3_accion": "cerrar 25% restante",
-    "R:R": {
-      "O1": 27.85,
-      "O2": 55.69,
-      "O3": 90.11
-    },
-    "rr_valido_5x": true
-  },
+  "calidad_señal": "INSUFICIENTE",
+  "veredicto": "ESPERAR",
+  "razon": "ABC bajista de corto plazo desde 67248 detectada correctamente: A = 67248→62238 (5010 pts), B = 62238→64752 (rebote parcial 2514 pts), C en curso desde 64752. Precio actual 63456 implica C avanzada solo 1296 pts = 0.31×A — C aún NO alcanzó la zona Fibonacci de disparo Modo B (1.0×A = 59742 ó 1.618×A = 56647). Por tanto el ratio c/a = 0.31, muy por debajo del umbral 1.0×(±15%). El Modo B no puede disparar hoy porque C no completó su extensión. Para Modo A: s1 cumplida (precio retrocedió >38.2% desde 67248), pero s2 (estructura 1-2 contable alcista en 4h) y s3 (rotura línea 2-4 bajista) NO confirmadas — solo 1/3 señales Santos. El sesgo macro es ALCISTA (todos los escenarios L1 apuntan a rebote desde zona 59-65K hacia 73856+), fase media (W5 macro o W3 de ciclo aún no completadas, ATH en 126198 fue el techo de Wave III / inicio de corrección). La oportunidad LONG es real pero prematura: C necesita extenderse otros ~4000-6000 pts adicionales hacia 59700-57500 antes de que el Modo B pueda disparar con R:R favorable. La alerta anticipada está activa para preposicionar órdenes límite en esas zonas.",
+  "invalidacion": "Cierre semanal por debajo de 59108 (mínimo estructural 2026-06-05) invalidaría el suelo operativo y reabriría corrección profunda hacia 49000-55000 en escenario E1; cualquier vela 4h con cierre bajo 59000 cancela el setup LONG anticipado",
+  "_decision_python": "checklist 1/3; Modo B: c/a=0.31 fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
     "generado": "2026-06-20",
     "modelo": "claude-sonnet-4-6"
