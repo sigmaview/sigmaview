@@ -123,6 +123,18 @@ def evaluar_modo_b(res: dict, l1_levels: dict | None = None) -> dict:
             return {"dispara": False, "trade": trade,
                     "motivo": f"entrada rancia: precio a {dist:.0%} del fin de C (máx {MAX_DIST_ENTRADA:.0%})"}
 
+    # Modo B es anticipatorio: asume que el precio está EN o cerca del fin de C, antes de que
+    # exista estructura del nuevo impulso. Si el checklist Santos ya confirma S1 (retroceso)
+    # + S2 (estructura 1-2 contable), el mercado ya formó W1+W2 del impulso post-corrección —
+    # el punto óptimo de Modo B ya pasó, aunque el precio siga numéricamente "cerca" del fin de C.
+    ch = res.get("checklist") or {}
+    s1 = str(ch.get("s1_retroceso", "")).strip().upper() in ("SÍ", "SI")
+    s2 = str(ch.get("s2_estructura", "")).strip().upper() in ("SÍ", "SI")
+    if s1 and s2:
+        return {"dispara": False, "trade": trade,
+                "motivo": "Modo B obsoleto: S1+S2 ya confirmados (W1+W2 de impulso post-C) — "
+                          "evaluar Modo A/C en su lugar"}
+
     rr = trade["R:R"].get(TARGET_GATE)
     if not mb.get("invalidacion_clara", True):
         return {"dispara": False, "motivo": "invalidación no clara", "rr_python": rr, "trade": trade}
