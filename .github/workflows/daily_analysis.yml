@@ -2,7 +2,7 @@ name: Daily BTC Analysis
 
 on:
   schedule:
-    - cron: '5 0 * * *'    # 00:05 UTC = justo tras cierre de vela diaria (20:05 Chile invierno / 21:05 verano)
+    - cron: '13 0 * * *'   # 00:13 UTC = justo tras cierre de vela diaria, desplazado de :00/:05 (hora pico de Actions)
   workflow_dispatch:        # permite correr manualmente desde GitHub
 
 permissions:

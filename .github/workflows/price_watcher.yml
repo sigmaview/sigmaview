@@ -2,7 +2,7 @@ name: Price Watcher
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # cada 15 minutos, las 24h
+    - cron: '7,22,37,52 * * * *'  # cada 15 min, desplazado de :00/:15/:30/:45 (hora pico de Actions)
   workflow_dispatch:
 
 permissions:
