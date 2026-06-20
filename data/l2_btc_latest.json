@@ -1,15 +1,15 @@
 {
-  "fecha": "2026-06-19",
+  "fecha": "2026-06-20",
   "activo": "BTC/USD",
-  "precio_actual": 63163.76953125,
+  "precio_actual": 63456.03,
   "señal_1_retroceso": "SÍ",
-  "señal_1_detalle": "Impulso bajista medido desde techo 126198.07 hasta mínimo operativo 59108.92 (rango 67089.15). Rebote desde 59108.92 hasta máximo reciente ~67248 (2026-06-15) = 8139 puntos = ~12.1% del rango total. PERO la última onda impulsiva bajista relevante (desde ~73856 del 2026-04-19 hasta mínimo 59108.92 del 2026-06-05) mide 14747 puntos. El 38.2% de ese impulso = 5633 puntos sobre 59108.92 = nivel 64742. El precio alcanzó 67248 (2026-06-15) = retroceso de ~55.2% de esa última onda bajista. Supera el 38.2% con claridad.",
+  "señal_1_detalle": "Impulso bajista medido desde techo operativo 126198 hasta mínimo operativo 59108 (rango: 67089 puntos). Rebote máximo desde 59108 hasta 67248 (2026-06-15) = 8140 puntos = 12.1% del rango total. SIN EMBARGO, el contexto correcto es medir el último impulso bajista inmediato: desde el techo local 73856 (2026-04-19, nivel resolutorio) hasta el mínimo 59108 (2026-06-05), rango = 14748 pts. Máximo rebote = 67248 - 59108 = 8140 pts = 55.2% de ese impulso bajista. Supera el 38.2% (5614 pts sobre 59108 = 64722). El precio alcanzó 67248 el 2026-06-15, retrocediendo ~55% del último impulso bajista. CONFIRMADO.",
   "señal_1_score": 1.0,
   "señal_2_estructura": "POSIBLE",
-  "señal_2_detalle": "Desde el mínimo 59108.92 (2026-06-05) se observa un primer movimiento alcista hasta ~67248 (2026-06-15) que podría ser una onda 1 incipiente, seguido de retroceso a ~62298 (2026-06-19 mínimo) — posible onda 2. Sin embargo, el movimiento alcista carece aún de estructura impulsiva de 5 subondas claramente identificable en diario; el retroceso actual (precio 63163) no confirma el piso de onda 2. Estructura 1-2 posible pero no contable con certeza.",
+  "señal_2_detalle": "Desde el mínimo 59108 (2026-06-05) se desarrolló un movimiento alcista hasta 67248 (2026-06-15) que podría ser onda 1 alcista. Desde ahí el precio retrocedió hasta ~62201 (2026-06-18 mínimo), un retroceso del ~61% de ese movimiento, compatible con onda 2. Sin embargo, el precio actual 63456 no ha superado aún el máximo de onda 1 (67248) para confirmar inicio de onda 3. La estructura es incipiente y ambigua: el retroceso de onda 2 es profundo y el precio sigue lateral-bajista desde 65711 el 2026-06-15. No hay confirmación contable clara.",
   "señal_2_score": 0.5,
   "señal_3_linea24": "NO",
-  "señal_3_detalle": "La línea 2-4 del impulso bajista mayor requiere identificar ondas 2 y 4 dentro de la estructura bajista desde 126198 hacia 59108. Los pivotes bajistas relevantes son: onda 2 en torno a ~96929 (2026-01-14) y onda 4 aproximadamente en ~75988 (2026-03-17). La línea 2-4 trazada entre esos puntos proyecta resistencia actualmente en la zona ~78000-82000. El precio actual (63163) está muy por debajo de esa línea; no se ha producido perforación. No hay ruptura de línea 2-4 del impulso bajista previo.",
+  "señal_3_detalle": "La línea 2-4 del impulso bajista mayor requiere identificar ondas 2 y 4 de la caída desde 126198. Las ondas correctivas internas del impulso bajista se ubican aproximadamente en: rebote de feb (60074-73856 zona) y corrección previa. La línea 2-4 bajista proyecta resistencia en zona ~67000-68000. El precio tocó 67248 el 2026-06-15 pero no perforó con cierre limpio sobre ese nivel ni con momentum sostenido. Actualmente precio en 63456, por debajo de la línea 2-4. No hay perforación confirmada.",
   "señal_3_score": 0.0,
   "score_santos": 1.5,
   "resolutorios_cruzados": [
@@ -17,27 +17,27 @@
       "nivel": 59108,
       "cruzado": true,
       "direccion": "abajo",
-      "implica": "El precio tocó 59108.92 el 2026-06-05 (mínimo exacto del nivel resolutorio). Un cierre bajo este nivel invalidaría E2 y E3, reabriendo corrección IV hacia 49000-55000 en E1. El cierre no fue bajo ese nivel (cerró 60922), por lo que la invalidación no se activó formalmente, pero el testeo fue extremadamente ajustado."
+      "implica": "El precio tocó mínimo 59108 el 2026-06-05 (intradiario), rozando el nivel que invalida E2 y E3. No hubo CIERRE bajo 59108 (cierre mínimo fue ~60922 ese día). Nivel técnicamente tocado pero no cerrado por debajo. E2 y E3 siguen técnicamente vigentes por un margen estrecho."
     },
     {
       "nivel": 73856,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No cruzado. Ruptura sostenida sobre 73856 confirmaría reanudación alcista E2/E3. Precio actual 63163 está ~10693 puntos por debajo."
+      "implica": "No alcanzado. Ruptura sostenida sobre 73856 confirmaría E2 (Wave 4 intermedia completa, Wave 5 en curso). Precio actual 63456 está ~10400 pts por debajo."
     },
     {
       "nivel": 82792,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No cruzado. Cierre sobre 82792 confirmaría reanudación alcista mayor E2/E3 activos y resolvería la divergencia macro principal."
+      "implica": "No alcanzado. Cierre sobre 82792 confirmaría reanudación alcista mayor (E2/E3 activos plenamente). Precio actual muy alejado."
     }
   ],
   "escenario_favorecido": "E1",
   "alerta": true,
   "nivel_alerta": "VIGILAR",
-  "resumen": "El precio rebotó desde el mínimo estructural 59108 (tocado el 2026-06-05) hasta 67248 el 2026-06-15 (retroceso >38.2% del último impulso bajista), pero desde entonces ha retrocedido a 63163 sin confirmar estructura 1-2 sólida ni romper línea 2-4; el score Santos alcanza 1.5 (umbral de vigilancia) con señal 2 solo posible y señal 3 ausente — el testeo exacto del mínimo resolutorio 59108 sin confirmación de suelo favorece E1; no amerita L3 aún pero requiere vigilancia estricta del nivel 59108.",
+  "resumen": "BTC rebotó desde el mínimo estructural 59108 hasta 67248 (+55% del impulso bajista reciente, señal 1 confirmada) pero el rebote se agotó y el precio retrocedió a 63456, sin perforar la línea 2-4 ni confirmar estructura 1-2 alcista contable; el score Santos de 1.5 activa vigilancia pero sin señal de giro confirmada, favoreciendo E1 mientras el precio no supere 67248-73856 con cierre sostenido.",
   "_meta": {
-    "generado": "2026-06-19",
+    "generado": "2026-06-20",
     "modelo": "claude-sonnet-4-6",
     "l1_fecha": "2026-06-15"
   }
