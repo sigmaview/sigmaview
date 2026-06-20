@@ -365,6 +365,15 @@ def run(model: str | None = None) -> dict:
     result, usage = call_model(prompt, model)
     print("OK")
 
+    # Upgrade forzado: si Sonnet detecta un ABC en formación (posible Modo B), su conteo es
+    # menos confiable para esta lectura fina — re-correr con Opus el mismo prompt/contexto
+    # para una lectura de mayor calidad antes de decidir el veredicto. Costo solo cuando aplica.
+    if model != "claude-opus-4-8" and (result.get("modo_b_check", {}) or {}).get("abc_detectada"):
+        print(f"  abc_detectada=true con {model} → forzando upgrade a Opus...", end=" ", flush=True)
+        model = "claude-opus-4-8"
+        result, usage = call_model(prompt, model)
+        print("OK")
+
     # Decisión de disparo DETERMINISTA en Python (el modelo solo juzga la estructura).
     # Los extremos operativos vienen de L1 (calculados por Python) → Modo B reproducible.
     l1_levels = {
