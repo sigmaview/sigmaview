@@ -1,9 +1,10 @@
 name: Daily BTC Analysis
 
 on:
-  schedule:
-    - cron: '13 0 * * *'   # 00:13 UTC = justo tras cierre de vela diaria, desplazado de :00/:05 (hora pico de Actions)
-  workflow_dispatch:        # permite correr manualmente desde GitHub
+  # El trigger `schedule:` nativo de GitHub Actions se retrasó hasta 35h en pruebas (2026-06-21) —
+  # GitHub despriorizada los cron internos bajo carga, sin que cuente como incidente. Se reemplazó
+  # por un cron externo (cron-job.org) que llama a la API de "workflow_dispatch" a la hora exacta.
+  workflow_dispatch:        # disparado por el cron externo, y permite correr manualmente desde GitHub
 
 permissions:
   contents: write

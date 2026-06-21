@@ -1,8 +1,8 @@
 name: Price Watcher
 
 on:
-  schedule:
-    - cron: '7,22,37,52 * * * *'  # cada 15 min, desplazado de :00/:15/:30/:45 (hora pico de Actions)
+  # Igual que daily_analysis.yml: el `schedule:` nativo se degradó a ~1.5h de cadencia real
+  # (debía ser cada 15 min). Reemplazado por cron externo (cron-job.org) vía workflow_dispatch.
   workflow_dispatch:
 
 permissions:
