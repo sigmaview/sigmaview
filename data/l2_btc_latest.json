@@ -1,43 +1,43 @@
 {
-  "fecha": "2026-06-20",
+  "fecha": "2026-06-21",
   "activo": "BTC/USD",
-  "precio_actual": 63434.0,
+  "precio_actual": 64210.87890625,
   "señal_1_retroceso": "SÍ",
-  "señal_1_detalle": "Impulso bajista medido desde techo operativo 126198 hasta mínimo operativo 59108 (rango 67089 pts). Retroceso alcista máximo desde mínimo 59108 hasta techo del rebote ~82792 (2026-05-06) = 23684 pts = 35.3% — PARCIAL. Sin embargo, si medimos el último impulso bajista relevante desde el máximo local 82792 (2026-04-17/05-06) hasta el mínimo 59108 (2026-06-05), rango = 23684 pts. Desde 59108 el rebote máximo alcanzado fue 67248 (2026-06-15) = 8140 pts = 34.4% del último impulso bajista. Precio actual 63434 implica retroceso de 4326 pts = 18.3% desde ese mínimo. El rebote máximo (67248) alcanzó 34.4%, por debajo del 38.2% (68163 necesario). Usando el impulso bajista completo 82792→59108: 38.2% = 68163. Máximo rebote 67248 no superó 68163. Retroceso actual: 34.4% — entre 30% y 38.2%.",
-  "señal_1_score": 0.5,
+  "señal_1_detalle": "Impulso bajista medido desde techo operativo 126198.07 hasta mínimo operativo 59108.92 (rango: 67089.15). Rebote desde mínimo 59108.92 hasta máximo reciente ~67248.13 (2026-06-15): retroceso alcanzado ~8139.21 / 67089.15 = ~12.1% del macro. Sin embargo, evaluando contra la ÚLTIMA onda impulsiva bajista (caída desde ~73856 del 2026-04-19 hasta 59108.92 del 2026-06-05, rango: 14747.08): rebote máximo desde 59108.92 hasta 67248.13 = 8139.21 / 14747.08 = 55.2%. Supera el 38.2% del último impulso bajista.",
+  "señal_1_score": 1.0,
   "señal_2_estructura": "POSIBLE",
-  "señal_2_detalle": "Desde mínimo 59108 (2026-06-05) se observa rebote hasta 67248 (2026-06-15) como posible onda 1 alcista (10 días), seguido de retroceso hacia 63434 actual como posible onda 2. Sin embargo, la onda 1 no superó ningún nivel resolutorio relevante (73856) y el rebote carece de estructura impulsiva contable clara en diario. La onda 2 actual (63434) retrocedió ~46% del rebote 59108→67248, dentro de parámetros normales, pero la onda 1 es débil y no confirmada como impulso. Estructura 1-2 posible pero no contable con claridad.",
+  "señal_2_detalle": "Desde el mínimo de 59108.92 (2026-06-05) se observa un primer movimiento alcista hasta ~67248.13 (2026-06-15) que podría constituir una onda 1 alcista. Luego corrección hacia ~62201 (2026-06-18) y rebote hasta ~64210 actual. La estructura es incipiente: el movimiento correctivo desde 67248 hasta 62201 retrocede ~76% del avance previo (muy profundo para una onda 2 clásica), y el rebote posterior es débil (64210). No hay estructura 1-2 clara con proporciones elliottistas definidas; el precio actual en 64210 está por debajo del 50% del avance inicial, lo que debilita la lectura. Se requiere impulso sostenido sobre 65969-67248 para confirmar estructura.",
   "señal_2_score": 0.5,
   "señal_3_linea24": "NO",
-  "señal_3_detalle": "La línea 2-4 del impulso bajista previo (desde 126198) requeriría identificar las ondas 2 y 4 de esa caída. En el contexto del impulso bajista 82792→59108, la línea 2-4 conectaría máximos intermedios de ese descenso. El precio actual 63434 se encuentra bien por debajo de cualquier línea 2-4 relevante que pueda trazar el impulso bajista mayor. No se ha producido perforación de línea 2-4 en el plazo temporal requerido.",
+  "señal_3_detalle": "La línea 2-4 del impulso bajista previo (ondas 2 y 4 de la caída desde ~82792/73856 hacia 59108) se estima aproximadamente entre niveles 68000-70000. El precio actual en 64210 no ha perforado esa línea. El máximo reciente de 67248.13 (2026-06-15) tampoco alcanzó esa zona. Sin perforación confirmada de la línea 2-4 del impulso bajista.",
   "señal_3_score": 0.0,
-  "score_santos": 1.0,
+  "score_santos": 1.5,
   "resolutorios_cruzados": [
     {
       "nivel": 59108,
       "cruzado": true,
       "direccion": "abajo",
-      "implica": "Tocado como mínimo el 2026-06-05 (low 59108.92). Cierre sobre 59108 mantiene estructura; si hubiera cierre semanal bajo este nivel invalidaría E2 y E3, reabriendo corrección profunda en E1 hacia 49000-55000. Actualmente precio 63434 está sobre este nivel — soporte estructural vigente."
+      "implica": "El precio tocó 59108.92 el 2026-06-05, rozando el nivel resolutorio. Cierre bajo 59108 invalidaría E2 y E3; el mínimo intradía lo tocó pero los cierres se mantuvieron sobre él (mínimo cierre ~60867). No se confirmó cierre bajo 59108, por lo que E2 y E3 siguen vigentes, aunque el nivel fue testado extremamente."
     },
     {
       "nivel": 73856,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No cruzado. Superar 73856 confirmaría E2 (wave 4 intermedia completada, wave 5 en curso) y daría señal alcista mayor."
+      "implica": "No cruzado. Precio actual 64210 está muy por debajo de 73856. La ruptura sostenida sobre este nivel confirmaría E2 (Wave 5 final pendiente dentro de Wave III)."
     },
     {
       "nivel": 82792,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "No cruzado. Superar 82792 con cierre semanal confirmaría E2/E3 como escenario dominante y resolvería la divergencia macro a favor alcista."
+      "implica": "No cruzado. Precio actual 64210 lejos de 82792. Cierre sobre este nivel confirmaría reanudación alcista mayor (E2/E3 activos) y resolvería la divergencia macro principal."
     }
   ],
-  "escenario_favorecido": "sin cambios",
-  "alerta": false,
+  "escenario_favorecido": "E1",
+  "alerta": true,
   "nivel_alerta": "VIGILAR",
-  "resumen": "Precio retrocede desde rebote máximo 67248 hacia 63434, score Santos 1.0 (señales 1 y 2 parciales/posibles, señal 3 ausente); ningún resolutorio cruzado con confirmación — mapa L1 sin cambios, zona de suelo vigente pero sin señal de giro contable; no amerita L3 todavía.",
+  "resumen": "BTC en 64210 con score Santos 1.5: el retroceso >38.2% del último impulso bajista está activo (SÍ), estructura 1-2 alcista es posible pero débil (corrección excesiva desde 67248 a 62201), línea 2-4 no perforada; el nivel resolutorio 59108 fue tocado intradía pero no cerrado bajo él, preservando E2/E3, aunque el rebote pierde fuerza — se recomienda vigilancia estrecha pero sin acción hasta ver cierre sostenido sobre 65969.",
   "_meta": {
-    "generado": "2026-06-20",
+    "generado": "2026-06-21",
     "modelo": "claude-sonnet-4-6",
     "l1_fecha": "2026-06-15"
   }

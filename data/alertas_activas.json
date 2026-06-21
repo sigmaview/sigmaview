@@ -1,8 +1,8 @@
 {
-  "generado": "2026-06-20",
-  "precio_referencia": 63456.03,
+  "generado": "2026-06-21",
+  "precio_referencia": 64210.87,
   "direccion_setup": "LONG",
-  "veredicto": "ESPERAR",
+  "veredicto": "SEÑAL",
   "alertas": [
     {
       "id": "resolutorio_59108",
@@ -29,19 +29,43 @@
       "fired": false
     },
     {
-      "id": "anticipada_nivel_c_1x",
-      "nivel": 59742.93,
+      "id": "entrada",
+      "nivel": 59700.01,
       "direccion": "cruce_abajo",
-      "tipo": "MODO_B_ANTICIPADO",
-      "mensaje": "🔔 ZONA C PROYECTADA (1.0×A): BTC tocó $59,743. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $64,752.0 | A size: $5,009.07 pts",
+      "tipo": "ENTRADA",
+      "mensaje": "🟢 ENTRADA LONG (MODO_B): BTC tocó $59,700.\nStop $58,506 | O1 $92,949 | O2 $126,198 | O3 $167,294",
       "fired": false
     },
     {
-      "id": "anticipada_nivel_c_1618",
-      "nivel": 56647.25,
+      "id": "stop",
+      "nivel": 58506.01,
       "direccion": "cruce_abajo",
-      "tipo": "MODO_B_ANTICIPADO",
-      "mensaje": "🔔 ZONA C PROYECTADA (1.618×A): BTC tocó $56,647. ABC LONG en target — evaluar Modo B AHORA.\nB terminó en $64,752.0 | A size: $5,009.07 pts",
+      "tipo": "STOP",
+      "mensaje": "🛑 BTC tocó el STOP $58,506. Setup invalidado.",
+      "fired": false
+    },
+    {
+      "id": "o1",
+      "nivel": 92949.04,
+      "direccion": "cruce_arriba",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O1 $92,949 — cerrar 50%",
+      "fired": false
+    },
+    {
+      "id": "o2",
+      "nivel": 126198.07,
+      "direccion": "cruce_arriba",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O2 $126,198 — cerrar 25%, subir stop a entrada",
+      "fired": false
+    },
+    {
+      "id": "o3",
+      "nivel": 167293.87,
+      "direccion": "cruce_arriba",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O3 $167,294 — cerrar 25% restante",
       "fired": false
     }
   ]
