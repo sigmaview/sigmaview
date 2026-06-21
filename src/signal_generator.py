@@ -79,6 +79,9 @@ TARGET_GATE = "O2"         # objetivo conservador para el gate (recuperación de
 MAX_DIST_ENTRADA = 0.10    # el precio debe estar a <=10% de la entrada (setup no rancio)
 MIN_STOP_BUFFER = 0.02     # colchón mínimo del stop (2%) — stop sobrevivible al ruido, R:R realista
 ENTRY_BUFFER = 0.01        # colchón de entrada Modo B (1%) — entrar cerca del extremo, no en la mecha exacta (llenable)
+DEGREE_MISMATCH_TOL = 0.20 # techo L1 (cachea, refresca solo lunes) vs abc_a_inicio del modelo HOY:
+                           # si difieren más de esto, son grados distintos — no sustituir pivotes.
+                           # Validado contra los 7 disparos históricos reales (máx 11.5% de diferencia).
 
 def ca_en_tolerancia(c_sobre_a: float) -> bool:
     if c_sobre_a is None:
@@ -105,8 +108,22 @@ def evaluar_modo_b(res: dict, l1_levels: dict | None = None) -> dict:
     # calculado por Python en L1), y el inicio de la corrección es el techo operativo.
     piv = dict(res.get("pivotes") or {})
     if l1_levels and l1_levels.get("operativo") and l1_levels.get("techo"):
+        l1_techo = float(l1_levels["techo"])
+        # L1 se recalcula solo los lunes; si el techo cacheado difiere mucho del techo que el
+        # modelo está narrando HOY para esta misma corrección ABC, están leyendo grados distintos
+        # (ej. L1 ancla un techo de hace meses mientras L3 ya pasó a una corrección más reciente y
+        # menor). Sustituir los pivotes en ese caso produce objetivos sin relación con el movimiento
+        # actual — más seguro bloquear que disparar con niveles desincronizados.
+        modelo_a_inicio = piv.get("abc_a_inicio")
+        if modelo_a_inicio:
+            disc = abs(l1_techo - float(modelo_a_inicio)) / float(modelo_a_inicio)
+            if disc > DEGREE_MISMATCH_TOL:
+                return {"dispara": False,
+                        "motivo": f"L1 desincronizado: techo L1 ${l1_techo:,.0f} vs techo narrado "
+                                  f"hoy ${float(modelo_a_inicio):,.0f} ({disc:.0%} de diferencia) — "
+                                  f"grados distintos, no se sustituyen pivotes"}
         piv["abc_c_fin"] = float(l1_levels["operativo"])
-        piv["abc_a_inicio"] = float(l1_levels["techo"])
+        piv["abc_a_inicio"] = l1_techo
         piv["stop_extremo"] = float(l1_levels["operativo"])  # el colchón mínimo lo ensancha
     try:
         trade = compute_trade(res["direccion"], "B_fin_abc", piv)

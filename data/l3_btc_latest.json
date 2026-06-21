@@ -40,28 +40,11 @@
     "nivel_c_1x": null,
     "nivel_c_1618": null
   },
-  "calidad_señal": "MODO_B",
-  "veredicto": "SEÑAL",
+  "calidad_señal": "INSUFICIENTE",
+  "veredicto": "ESPERAR",
   "razon": "Hay una corrección ABC de grado IV: A desde 82814 hasta ~67169 (a_size≈15645), B rebote hacia ~74222, C desde 74222 hasta el mínimo 59095 (c_size≈15127). Ratio c/a≈0.97-1.06 → cumple el patrón c≈1.0×a (±15%). PERO el Modo B exige R:R(O3)>5x: con entrada=59095 (fin de C) y stop apenas bajo el extremo de C, el problema es que el precio YA NO está en el fin de C — hoy cotiza en 64210, lejos del pivote de entrada óptimo. Si se tomara entrada en 64210 con stop bajo 59095, distancia al stop≈5115; O3≈ entrada + 1.618×(tamaño corrección desde el rebote) da R:R≈3.1x, por debajo del umbral de 5x. Además el mínimo de C ya quedó atrás 16 días sin reentrada limpia, y el rebote pierde fuerza (cayó de 67248 a 62201). El Modo A tampoco dispara: solo 1/3 señales Santos (retroceso SÍ; estructura 1-2 alcista no contable de forma fiable; línea 2-4 no perforada). L2 confirma score 1.5 y recomienda esperar cierre sobre 65969. No se dispara señal: la ventana de entrada Modo B en el fin exacto de C ya pasó y el R:R actual no compensa.",
   "invalidacion": "Cierre de 4h bajo 59095 invalida el suelo de C y reabre extensión bajista hacia 55K-49K (E1 con C extendiéndose). Al alza, recuperación y cierre sostenido sobre 65969 reactivaría la evaluación para un LONG de continuación (Modo C) hacia 73856.",
-  "_decision_python": "c/a=1.06 OK, R:R(O2)=55.69x ≥ 5.0x, entrada vigente",
-  "plan_trade": {
-    "entrada": 59700.01,
-    "stop": 58506.01,
-    "riesgo_por_unidad": 1194.0,
-    "O1": 92949.04,
-    "O1_accion": "cerrar 50%",
-    "O2": 126198.07,
-    "O2_accion": "cerrar 25%, subir stop a entrada",
-    "O3": 167293.87,
-    "O3_accion": "cerrar 25% restante",
-    "R:R": {
-      "O1": 27.85,
-      "O2": 55.69,
-      "O3": 90.11
-    },
-    "rr_valido_5x": true
-  },
+  "_decision_python": "checklist 1/3; Modo B: L1 desincronizado: techo L1 $126,198 vs techo narrado hoy $82,814 (52% de diferencia) — grados distintos, no se sustituyen pivotes",
   "_meta": {
     "generado": "2026-06-21",
     "modelo": "claude-opus-4-8"

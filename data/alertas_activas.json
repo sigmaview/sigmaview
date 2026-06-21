@@ -2,7 +2,7 @@
   "generado": "2026-06-21",
   "precio_referencia": 64210.87,
   "direccion_setup": "LONG",
-  "veredicto": "SEÑAL",
+  "veredicto": "ESPERAR",
   "alertas": [
     {
       "id": "resolutorio_59108",
@@ -26,46 +26,6 @@
       "direccion": "cruce_arriba",
       "tipo": "RESOLUTORIO",
       "mensaje": "⚠️ BTC alcanzó $82,792 — nivel resolutorio L1. Re-evaluar escenarios.",
-      "fired": false
-    },
-    {
-      "id": "entrada",
-      "nivel": 59700.01,
-      "direccion": "cruce_abajo",
-      "tipo": "ENTRADA",
-      "mensaje": "🟢 ENTRADA LONG (MODO_B): BTC tocó $59,700.\nStop $58,506 | O1 $92,949 | O2 $126,198 | O3 $167,294",
-      "fired": false
-    },
-    {
-      "id": "stop",
-      "nivel": 58506.01,
-      "direccion": "cruce_abajo",
-      "tipo": "STOP",
-      "mensaje": "🛑 BTC tocó el STOP $58,506. Setup invalidado.",
-      "fired": false
-    },
-    {
-      "id": "o1",
-      "nivel": 92949.04,
-      "direccion": "cruce_arriba",
-      "tipo": "OBJETIVO",
-      "mensaje": "🎯 BTC alcanzó O1 $92,949 — cerrar 50%",
-      "fired": false
-    },
-    {
-      "id": "o2",
-      "nivel": 126198.07,
-      "direccion": "cruce_arriba",
-      "tipo": "OBJETIVO",
-      "mensaje": "🎯 BTC alcanzó O2 $126,198 — cerrar 25%, subir stop a entrada",
-      "fired": false
-    },
-    {
-      "id": "o3",
-      "nivel": 167293.87,
-      "direccion": "cruce_arriba",
-      "tipo": "OBJETIVO",
-      "mensaje": "🎯 BTC alcanzó O3 $167,294 — cerrar 25% restante",
       "fired": false
     }
   ]
