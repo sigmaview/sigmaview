@@ -507,11 +507,13 @@ function buildVisionChart(pricesWeekly, l1) {
     leyenda.push(`<span style="color:#8b949e">━</span> Techo operativo $${Math.round(techo).toLocaleString('es-CL')}`);
   }
 
-  (l1.escenarios || []).forEach(e => {
+  (l1.escenarios || []).forEach((e, idx) => {
     const color = SESGO_COLOR(e.sesgo_corto_plazo);
     const confirma = extractNums(e.se_confirma_si)[0];
     const invalida = extractNums(e.se_invalida_si)[0];
-    const objetivo = extractNums(e.objetivo);
+    const objetivo = extractNums(e.objetivo).slice(0, 2);
+    // Si dos escenarios comparten sesgo (mismo color), el estilo de línea los distingue.
+    const estiloCamino = idx % 2 === 0 ? LightweightCharts.LineStyle.Solid : LightweightCharts.LineStyle.Dashed;
 
     // Camino del conteo: conecta los pivotes reales (I/II/III/A/B/C...) que dio el
     // modelo para este escenario, sobre el histórico real (ohlcv_weekly, desde 2014).
@@ -521,7 +523,7 @@ function buildVisionChart(pricesWeekly, l1) {
       .sort((a, b) => a.fecha.localeCompare(b.fecha));
     if (pivotes.length >= 2) {
       const camino = chart.addLineSeries({
-        color, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Solid,
+        color, lineWidth: 2, lineStyle: estiloCamino,
         priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
       });
       camino.setData(pivotes.map(p => ({ time: p.fecha, value: p.precio })));
@@ -530,20 +532,24 @@ function buildVisionChart(pricesWeekly, l1) {
       })));
     }
 
+    // Las cajas de nivel en el eje derecho (axisLabelVisible) se apilan e ilegibles cuando
+    // hay varios escenarios — la línea de color en el precio basta; el número exacto vive
+    // en la leyenda de abajo, que sí se lee bien.
     if (confirma) {
       candles.createPriceLine({ price: confirma, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed,
-        axisLabelVisible: true, title: `${e.id} confirma` });
+        axisLabelVisible: false });
     }
     if (invalida) {
       candles.createPriceLine({ price: invalida, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.LargeDashed,
-        axisLabelVisible: true, title: `${e.id} invalida` });
+        axisLabelVisible: false });
     }
-    objetivo.slice(0, 2).forEach(nivel => {
+    objetivo.forEach(nivel => {
       candles.createPriceLine({ price: nivel, color, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Dotted,
-        axisLabelVisible: true, title: `${e.id} obj` });
+        axisLabelVisible: false });
     });
+    const estiloTxt = estiloCamino === LightweightCharts.LineStyle.Solid ? '════' : '╌╌╌╌';
     leyenda.push(`<span style="color:${color}">${e.id}</span> (${e.sesgo_corto_plazo}): `
-      + [pivotes.length >= 2 && `conteo ${pivotes.map(p => p.onda).join('→')} (línea sólida)`,
+      + [pivotes.length >= 2 && `conteo ${pivotes.map(p => p.onda).join('→')} (${estiloTxt})`,
          confirma && `confirma $${confirma.toLocaleString('es-CL')} (— —)`,
          invalida && `invalida $${invalida.toLocaleString('es-CL')} (- - -)`,
          objetivo.length && `objetivo ${objetivo.map(n=>'$'+n.toLocaleString('es-CL')).join('–')} (····)`]
@@ -552,6 +558,15 @@ function buildVisionChart(pricesWeekly, l1) {
 
   document.getElementById('vision-chart-legend').innerHTML = leyenda.map(l => `<div>${l}</div>`).join('');
   chart.timeScale().fitContent();
+  // Zoom inicial a las últimas ~110 semanas (~2 años) para que la zona accionable (precio
+  // actual) no quede comprimida por el conteo histórico completo — el usuario puede hacer
+  // scroll/zoom-out para ver el camino completo desde 2014/2017 si quiere.
+  if (pricesWeekly.length > 110) {
+    chart.timeScale().setVisibleRange({
+      from: pricesWeekly[pricesWeekly.length - 110].ts,
+      to: pricesWeekly[pricesWeekly.length - 1].ts,
+    });
+  }
 }
 
 // ── Visión Semanal ────────────────────────────────────────────────────────────
