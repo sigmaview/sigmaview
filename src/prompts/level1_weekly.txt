@@ -46,6 +46,19 @@ PASO 2 — GENERAR ESCENARIOS CANDIDATOS
 Propón AL MENOS 2 conteos posibles del superciclo. Difieren típicamente en dónde termina Wave III.
 Para cada uno localiza los pivotes principales con fecha y precio.
 
+PASO 2.1 — PIVOTES DEL CONTEO (para graficar)
+Para cada escenario, además de wave_III_fin, entrega TODOS los pivotes principales de SU
+conteo en orden cronológico (no solo donde termina Wave III) — cada punto donde
+empieza/termina una onda del grado relevante para ese escenario, con fecha y precio reales
+de las velas. Incluye desde el inicio del conteo hasta el último pivote confirmado (no
+proyectes el futuro aquí, eso ya está en objetivo/se_confirma_si). Sé preciso con fecha y
+precio — deben corresponder a velas reales de los datos dados. El precio del pivote es
+SIEMPRE el extremo de la vela (High si es techo, Low si es suelo), NUNCA el cierre (Close)
+— incluso para el pivote inicial del conteo (el primero de la lista, el de fecha más
+antigua, suele equivocarse usando Close: revísalo dos veces). Antes de responder, para CADA
+pivote busca su fila exacta en los datos y copia el valor de la columna High (si es techo)
+o Low (si es suelo) de esa fila — no la columna Close.
+
 PASO 3 — ELIMINACIÓN POR REGLAS DURAS (OBLIGATORIO)
 Somete CADA candidato a las reglas con números explícitos. Un candidato que VIOLA
 cualquiera de estas queda ELIMINADO (son reglas duras, no preferencias):
@@ -86,7 +99,10 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
       "objetivo": "<precio o rango>",
       "se_confirma_si": "<condición de precio>",
       "se_invalida_si": "<condición de precio>",
-      "extension": "<cuál onda extendida y multiplicador>"
+      "extension": "<cuál onda extendida y multiplicador>",
+      "pivotes_onda": [
+        {{"onda": "<I|II|III|IV|V|A|B|C según corresponda>", "precio": <número>, "fecha": "<YYYY-MM-DD>"}}
+      ]
     }}
   ],
   "acuerdo": {{
