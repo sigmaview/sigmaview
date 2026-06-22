@@ -96,15 +96,16 @@
     .div-box p:last-child { margin-bottom: 0; color: var(--muted); font-size: 12px; }
 
     /* L1 history table */
-    .hist-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+    .hist-table { width: 100%; min-width: 940px; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
     .hist-table th { color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
     .hist-table td { padding: 6px 8px; border-bottom: 1px solid #21262d; vertical-align: top; white-space: normal; line-height: 1.4; word-break: break-word; }
     .hist-table tr:last-child td { border-bottom: none; }
     .hist-table col.col-fecha  { width: 80px; }
     .hist-table col.col-techo  { width: 90px; }
-    .hist-table col.col-sesgo  { width: 260px; }
+    .hist-table col.col-escenarios { width: 220px; }
+    .hist-table col.col-sesgo  { width: 220px; }
     .hist-table col.col-modelo { width: 70px; }
-    .hist-table col.col-resumen{ width: 260px; }
+    .hist-table col.col-resumen{ width: 220px; }
 
     /* Tablas con columna de texto largo: ancho mínimo fijo + scroll horizontal en mobile,
        en vez de aplastar las columnas cortas (fecha/precio/badges) para que todo "calce". */
@@ -275,10 +276,10 @@
       <div style="overflow-x:auto">
       <table class="hist-table">
         <colgroup>
-          <col class="col-fecha"><col class="col-techo"><col class="col-sesgo"><col class="col-modelo"><col class="col-resumen">
+          <col class="col-fecha"><col class="col-techo"><col class="col-escenarios"><col class="col-sesgo"><col class="col-modelo"><col class="col-resumen">
         </colgroup>
         <thead>
-          <tr><th>Fecha</th><th>Techo op.</th><th>Sesgo acuerdo</th><th>Modelo</th><th>Resumen</th></tr>
+          <tr><th>Fecha</th><th>Techo op.</th><th>Escenarios (sesgo CP)</th><th>Sesgo acuerdo</th><th>Modelo</th><th>Resumen</th></tr>
         </thead>
         <tbody id="tbl-l1-hist"></tbody>
       </table>
@@ -503,13 +504,21 @@ function buildVisionSemanal(l1, l1hist) {
   });
 
   // Historial L1
+  // Nota: la etiqueta E1/E2 NO es estable entre corridas (el modelo no garantiza que
+  // signifique lo mismo semana a semana) — "escenarios_resumen" se muestra por SESGO
+  // (comparable entre filas) en vez de por id, para no inducir a comparar "E1 vs E1"
+  // entre corridas que en realidad pueden ser escenarios distintos.
+  const colorSesgo = txt => (txt||'').replace(/\b(ALCISTA|BAJISTA|NEUTRO)\b/g,
+    s => `<strong style="color:${s==='ALCISTA'?'var(--green)':s==='BAJISTA'?'var(--red)':'var(--yellow)'}">${s}</strong>`);
+
   const histEl = document.getElementById('tbl-l1-hist');
   if (!l1hist || !l1hist.length) {
-    histEl.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:12px">Sin historial aún (se acumula cada lunes)</td></tr>';
+    histEl.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:12px">Sin historial aún (se acumula cada lunes)</td></tr>';
   } else {
     histEl.innerHTML = l1hist.map(h => `<tr>
       <td>${h.fecha||'—'}</td>
       <td>${fmt(h.techo_precio)}</td>
+      <td style="font-size:11px">${colorSesgo(h.escenarios_resumen) || '—'}</td>
       <td style="font-size:11px">${h.acuerdo_sesgo||'—'}</td>
       <td style="color:var(--muted)">${(h.modelo||'').replace('claude-','')}</td>
       <td style="font-size:11px;color:var(--muted)">${h.resumen||'—'}</td>

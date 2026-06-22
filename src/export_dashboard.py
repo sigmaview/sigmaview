@@ -52,10 +52,23 @@ def export():
     # ── Historial L1 desde DB ──────────────────────────────────────────────────
     try:
         l1_hist = pd.read_sql(
-            "SELECT fecha, techo_precio, techo_fecha, acuerdo_sesgo, resumen, modelo "
+            "SELECT fecha, techo_precio, techo_fecha, acuerdo_sesgo, resumen, modelo, escenarios_json "
             "FROM analysis_weekly ORDER BY fecha DESC LIMIT 52",
             conn,
         )
+        # La etiqueta E1/E2 no es estable entre corridas (el modelo no garantiza que "E1"
+        # signifique lo mismo de una semana a otra) — se deriva un resumen por SESGO
+        # (BAJISTA/ALCISTA/NEUTRO), que sí es comparable entre filas del historial.
+        def _resumen_escenarios(raw):
+            try:
+                escenarios = json.loads(raw) if raw else []
+            except (ValueError, TypeError):
+                return ""
+            return " | ".join(
+                f"{e.get('sesgo_corto_plazo','?')} → {e.get('objetivo','?')}"
+                for e in escenarios if e.get("sesgo_corto_plazo")
+            )
+        l1_hist["escenarios_resumen"] = l1_hist.pop("escenarios_json").apply(_resumen_escenarios)
     except Exception:
         l1_hist = pd.DataFrame()
 
