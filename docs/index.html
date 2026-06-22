@@ -513,6 +513,23 @@ function buildVisionChart(pricesWeekly, l1) {
     const invalida = extractNums(e.se_invalida_si)[0];
     const objetivo = extractNums(e.objetivo);
 
+    // Camino del conteo: conecta los pivotes reales (I/II/III/A/B/C...) que dio el
+    // modelo para este escenario, sobre el histórico real (ohlcv_weekly, desde 2014).
+    const pivotes = (e.pivotes_onda || [])
+      .filter(p => p && p.fecha && typeof p.precio === 'number')
+      .slice()
+      .sort((a, b) => a.fecha.localeCompare(b.fecha));
+    if (pivotes.length >= 2) {
+      const camino = chart.addLineSeries({
+        color, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Solid,
+        priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
+      });
+      camino.setData(pivotes.map(p => ({ time: p.fecha, value: p.precio })));
+      camino.setMarkers(pivotes.map(p => ({
+        time: p.fecha, position: 'inBar', color, shape: 'circle', text: p.onda,
+      })));
+    }
+
     if (confirma) {
       candles.createPriceLine({ price: confirma, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed,
         axisLabelVisible: true, title: `${e.id} confirma` });
@@ -526,7 +543,8 @@ function buildVisionChart(pricesWeekly, l1) {
         axisLabelVisible: true, title: `${e.id} obj` });
     });
     leyenda.push(`<span style="color:${color}">${e.id}</span> (${e.sesgo_corto_plazo}): `
-      + [confirma && `confirma $${confirma.toLocaleString('es-CL')} (— —)`,
+      + [pivotes.length >= 2 && `conteo ${pivotes.map(p => p.onda).join('→')} (línea sólida)`,
+         confirma && `confirma $${confirma.toLocaleString('es-CL')} (— —)`,
          invalida && `invalida $${invalida.toLocaleString('es-CL')} (- - -)`,
          objetivo.length && `objetivo ${objetivo.map(n=>'$'+n.toLocaleString('es-CL')).join('–')} (····)`]
         .filter(Boolean).join(' · '));
