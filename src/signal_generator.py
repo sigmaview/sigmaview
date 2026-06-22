@@ -161,6 +161,113 @@ def evaluar_modo_b(res: dict, l1_levels: dict | None = None) -> dict:
     return {"dispara": True, "motivo": f"c/a={c_a} OK, R:R({TARGET_GATE})={rr}x ≥ {RR_MINIMO}x, entrada vigente",
             "rr_python": rr, "trade": trade}
 
+# ── Modo sombra: Modo B sin sustitución de L1 (en evaluación, no decide aún) ───────────
+# Idea: cada grado de onda tiene su propio objetivo, calculado con las anclas de ESE grado
+# (Enrique Santos, "El mayor grado") — nunca se debe sustituir el pivote de una corrección de
+# grado L3 con el techo/suelo de grado L1. En vez de eso, el modelo narra la FECHA en que
+# empezó la onda A y Python verifica ese pivote contra los datos reales de precio (igual
+# patrón que compute_operative_levels en L1, pero en el grado de L3). Corre en paralelo a
+# evaluar_modo_b() y solo se registra para comparar — no afecta el veredicto, el trade ni
+# las alertas hasta que se valide en producción real durante un período de observación.
+
+PIVOTE_TOL = 0.05  # el precio narrado debe corresponder a un extremo real dentro de este margen
+
+def fetch_precio_amplio(ticker: str = TICKER, asof: str | None = None) -> pd.DataFrame:
+    """Ventana de verificación AMPLIA (histórico diario completo) — independiente de las
+    velas que ve el modelo en el prompt de L3. Evita que un pivote real pero antiguo (más
+    allá de la ventana corta del prompt) quede como 'no verificable' por falta de datos."""
+    df = yf.Ticker(ticker).history(period="max", interval="1d")
+    df.index = df.index.tz_localize(None) if df.index.tz else df.index
+    if asof:
+        df = df[df.index < pd.Timestamp(asof) + pd.Timedelta(days=1)]
+    return df
+
+def compute_abc_pivots_grado_propio(df_amplio: pd.DataFrame, direccion: str,
+                                     fecha_narrada: str | None, precio_narrado: float | None,
+                                     precio_c_narrado: float | None = None,
+                                     tol: float = PIVOTE_TOL) -> dict | None:
+    """El modelo dice CUÁNDO empezó la onda A (su propio grado); Python ubica el precio real
+    en los datos (±3 días, por si la fecha exacta cae en una vela distinta) y calcula el fin
+    de C como el extremo opuesto posterior — mismo patrón que compute_operative_levels en L1,
+    aplicado al grado de L3. Si el precio narrado no corresponde a ningún extremo real cercano
+    a esa fecha, el pivote no es verificable: no estamos perfectamente situados, no se opera.
+    Si abc_a_inicio es techo o suelo se infiere comparándolo con abc_c_fin narrado (no se
+    confía en su valor exacto, solo en si es mayor o menor) — más robusto que inferirlo de
+    'direccion', que describe el trade DESPUÉS de la corrección, no la forma de la corrección
+    misma (una corrección puede ser una caída o un rebote independientemente del trade que siga)."""
+    if not fecha_narrada or not precio_narrado:
+        return None
+    m = re.search(r"\d{4}-\d{2}-\d{2}", fecha_narrada)
+    if not m:
+        return None
+    fecha = pd.Timestamp(m.group(0))
+    es_techo = precio_c_narrado is None or float(precio_c_narrado) < float(precio_narrado)
+    ventana = df_amplio[(df_amplio.index >= fecha - pd.Timedelta(days=3)) &
+                         (df_amplio.index <= fecha + pd.Timedelta(days=3))]
+    if ventana.empty:
+        return None
+    real = float(ventana["High"].max()) if es_techo else float(ventana["Low"].min())
+    if abs(real - float(precio_narrado)) / float(precio_narrado) > tol:
+        return None
+    despues = df_amplio[df_amplio.index > fecha]
+    if despues.empty:
+        return None
+    c_fin = float(despues["Low"].min()) if es_techo else float(despues["High"].max())
+    return {"abc_a_inicio": round(real, 2), "abc_c_fin": round(c_fin, 2)}
+
+def evaluar_modo_b_grado_propio(res: dict, df_amplio: pd.DataFrame) -> dict:
+    """Misma lógica de gates que evaluar_modo_b(), pero el pivote ABC se deriva enteramente
+    de los datos de precio (el propio grado de L3) — nunca de L1."""
+    mb = res.get("modo_b_check", {})
+    if not mb.get("abc_detectada"):
+        return {"dispara": False, "motivo": "no hay ABC detectada"}
+
+    c_a = mb.get("c_sobre_a")
+    if not ca_en_tolerancia(c_a):
+        return {"dispara": False, "motivo": f"c/a={c_a} fuera de tolerancia (≈1.0 o 1.618 ±20%)"}
+
+    piv = dict(res.get("pivotes") or {})
+    pivotes_reales = compute_abc_pivots_grado_propio(
+        df_amplio, res.get("direccion", ""), piv.get("abc_a_inicio_fecha"), piv.get("abc_a_inicio"),
+        piv.get("abc_c_fin"))
+    if pivotes_reales is None:
+        return {"dispara": False,
+                "motivo": "pivote ABC no verificable en los datos de precio — "
+                          "no estamos perfectamente situados, no se opera"}
+    piv["abc_a_inicio"] = pivotes_reales["abc_a_inicio"]
+    piv["abc_c_fin"] = pivotes_reales["abc_c_fin"]
+    piv["stop_extremo"] = pivotes_reales["abc_c_fin"]
+
+    try:
+        trade = compute_trade(res["direccion"], "B_fin_abc", piv)
+    except (KeyError, ValueError, TypeError) as e:
+        return {"dispara": False, "motivo": f"pivotes incompletos ({e})"}
+
+    precio = res.get("precio_actual")
+    if precio:
+        dist = abs(float(precio) - trade["entrada"]) / trade["entrada"]
+        if dist > MAX_DIST_ENTRADA:
+            return {"dispara": False, "trade": trade,
+                    "motivo": f"entrada rancia: precio a {dist:.0%} del fin de C (máx {MAX_DIST_ENTRADA:.0%})"}
+
+    ch = res.get("checklist") or {}
+    s1 = str(ch.get("s1_retroceso", "")).strip().upper() in ("SÍ", "SI")
+    s2 = str(ch.get("s2_estructura", "")).strip().upper() in ("SÍ", "SI")
+    if s1 and s2:
+        return {"dispara": False, "trade": trade,
+                "motivo": "Modo B obsoleto: S1+S2 ya confirmados (W1+W2 de impulso post-C) — "
+                          "evaluar Modo A/C en su lugar"}
+
+    rr = trade["R:R"].get(TARGET_GATE)
+    if not mb.get("invalidacion_clara", True):
+        return {"dispara": False, "motivo": "invalidación no clara", "rr_python": rr, "trade": trade}
+    if rr is None or rr < RR_MINIMO:
+        return {"dispara": False, "motivo": f"R:R({TARGET_GATE})={rr} < {RR_MINIMO}x", "rr_python": rr, "trade": trade}
+
+    return {"dispara": True, "motivo": f"c/a={c_a} OK, R:R({TARGET_GATE})={rr}x ≥ {RR_MINIMO}x, "
+                      f"pivote verificado en ${pivotes_reales['abc_a_inicio']:,.0f}",
+            "rr_python": rr, "trade": trade}
+
 def contra_macro(direccion: str, sesgo_macro: str) -> bool:
     """Un trade direccional va CONTRA el sesgo macro (no operar): short en macro alcista o
     long en macro bajista. NEUTRO no bloquea."""
@@ -408,6 +515,26 @@ def run(model: str | None = None) -> dict:
         result["plan_trade"] = trade
     if decision["veredicto"] == "SEÑAL":
         print(f"  ⚡ SEÑAL ({decision['calidad']}, {decision['modo']}): {decision['motivo']}")
+
+    # Modo sombra: registra qué habría decidido el rediseño de Modo B (sin sustituir L1,
+    # pivote verificado por fecha) en paralelo a la decisión real — solo para comparar.
+    # No afecta veredicto/trade/alertas. Ver evaluar_modo_b_grado_propio().
+    if (result.get("modo_b_check") or {}).get("abc_detectada"):
+        try:
+            prod_mb = evaluar_modo_b(result, l1_levels)
+            df_amplio = fetch_precio_amplio(TICKER, asof=date)
+            sombra = evaluar_modo_b_grado_propio(result, df_amplio)
+            log_path = DATA_DIR / "shadow_modo_b.jsonl"
+            with log_path.open("a") as f:
+                f.write(json.dumps({
+                    "fecha": date, "ticker": TICKER,
+                    "dispara_prod": prod_mb["dispara"], "motivo_prod": prod_mb["motivo"],
+                    "dispara_sombra": sombra["dispara"], "motivo_sombra": sombra["motivo"],
+                }, ensure_ascii=False) + "\n")
+            print(f"  🔬 modo sombra registrado: prod={prod_mb['dispara']} sombra={sombra['dispara']} "
+                  f"({sombra['motivo'][:70]})")
+        except Exception as e:
+            print(f"  ⚠ modo sombra no se pudo evaluar: {e}")
 
     # Alerta anticipatoria: ABC en formación, C aún no llegó al target Fibonacci
     aa = result.get("alerta_anticipada") or {}

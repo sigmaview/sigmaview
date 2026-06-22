@@ -96,6 +96,9 @@ la quinta onda es zona de salida/reversión, no de entrada. Espera la reversión
 PASO 2 — EVALUACIÓN MODO B (OBLIGATORIO si hay una corrección ABC en curso o completándose)
 a) Identifica los pivotes de la ABC: inicio de a, fin de a, fin de c.
 b) Calcula el ratio c/a con los precios (muéstralo).
+b.1) Indica la FECHA exacta (YYYY-MM-DD) de la vela donde se originó la onda A (el techo/suelo
+     desde el que arranca la corrección ABC). Python verificará este pivote contra los datos
+     reales — sé preciso, no aproximes.
 c) Estima el R:R a O3: entrada = fin de c; stop = extremo de c; objetivo O3 ≈ entrada + 1.618×(tamaño de la corrección).
    R:R(O3) ≈ distancia(entrada→O3) / distancia(entrada→stop).
 d) Decide: ¿c≈1.618×a o ≈1.0×a (±15%)? ¿R:R(O3)>5x? ¿invalidación clara?
@@ -147,7 +150,8 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
     "w1_origen": <precio inicio de W1>,
     "w1_fin": <precio extremo de W1 = nivel de rotura>,
     "w2_swing": <precio del extremo del retroceso W2 = stop en Modo C, o null>,
-    "abc_a_inicio": <precio o null>, "abc_c_fin": <precio o null>,
+    "abc_a_inicio": <precio o null>, "abc_a_inicio_fecha": "<YYYY-MM-DD o null>",
+    "abc_c_fin": <precio o null>,
     "stop_extremo": <precio del extremo a proteger>
   }},
   "checklist": {{"s1_retroceso": "<SÍ|NO>", "s2_estructura": "<SÍ|NO>", "s3_linea24": "<SÍ|NO>", "cumplidas": <0-3>}},
