@@ -473,7 +473,8 @@ function buildPriceChart(prices, signals) {
 function extractNums(txt) {
   return ((txt||'').match(/\b\d{4,7}\b/g) || []).map(Number);
 }
-const SESGO_COLOR = s => s === 'ALCISTA' ? '#2ea043' : s === 'BAJISTA' ? '#da3633' : '#d29922';
+// Colores por escenario (no por sesgo) — evita rojo/verde, que se confunden con las velas.
+const ESCENARIO_COLORS = ['#58a6ff', '#d29922', '#bc8cff', '#39c5cf', '#f78166'];
 
 function buildVisionChart(pricesWeekly, l1) {
   const container = document.getElementById('chartVision');
@@ -508,11 +509,10 @@ function buildVisionChart(pricesWeekly, l1) {
   }
 
   (l1.escenarios || []).forEach((e, idx) => {
-    const color = SESGO_COLOR(e.sesgo_corto_plazo);
+    const color = ESCENARIO_COLORS[idx % ESCENARIO_COLORS.length];
     const confirma = extractNums(e.se_confirma_si)[0];
     const invalida = extractNums(e.se_invalida_si)[0];
     const objetivo = extractNums(e.objetivo).slice(0, 2);
-    // Si dos escenarios comparten sesgo (mismo color), el estilo de línea los distingue.
     const estiloCamino = idx % 2 === 0 ? LightweightCharts.LineStyle.Solid : LightweightCharts.LineStyle.Dashed;
 
     // Camino del conteo: conecta los pivotes reales (I/II/III/A/B/C...) que dio el
