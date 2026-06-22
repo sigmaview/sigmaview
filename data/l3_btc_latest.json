@@ -1,12 +1,12 @@
 {
-  "fecha": "2026-06-21",
+  "fecha": "2026-06-22",
   "activo": "BTC/USD",
-  "precio_actual": 64210.87,
+  "precio_actual": 63393.98,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C de un zigzag correctivo de grado IV (caída desde 82792-zona hacia suelo ~59108), con rebote técnico débil en curso tras tocar 59095 el 2026-06-05",
-    "grado": "Intermedio dentro de Wave IV (Superciclo)",
-    "estado": "posible fin cercano",
-    "que_esperar": "Confirmación de suelo: el mínimo 2026-06-05 (~59095) tocó la zona resolutoria 59108; el rebote a 67248 fracasó y el precio recayó a 62-64K. Vigilar cierre sostenido sobre 65969 para validar fin de C, o nuevo mínimo bajo 59095 que extendería C hacia 55K."
+    "sub_onda_actual": "Posible onda B/rebote dentro de la onda C bajista de Wave IV; el precio rebotó desde 59095 (05-jun) hacia 67242 (15-jun) y ahora retrocede de nuevo hacia 63k",
+    "grado": "Swing (semanas)",
+    "estado": "en progreso",
+    "que_esperar": "Una pata bajista final hacia 59000-55000 (extensión de C) o defensa de 63242 con giro alcista. Sin confirmación de giro todavía."
   },
   "sesgo_macro": "ALCISTA",
   "fase_impulso_macro": "media",
@@ -14,16 +14,16 @@
   "modo_entrada": "B_fin_abc",
   "modo_b_check": {
     "abc_detectada": true,
-    "c_sobre_a": 1.06,
-    "rr_o3_estimado": 3.1,
-    "invalidacion_clara": true,
+    "c_sobre_a": null,
+    "rr_o3_estimado": null,
+    "invalidacion_clara": false,
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 82814.21,
-    "w1_fin": 73128.0,
+    "w1_origen": 126198.07,
+    "w1_fin": null,
     "w2_swing": null,
-    "abc_a_inicio": 82814.21,
+    "abc_a_inicio": 81770.45,
     "abc_c_fin": 59095.64,
     "stop_extremo": 59095.64
   },
@@ -34,19 +34,19 @@
     "cumplidas": 1
   },
   "alerta_anticipada": {
-    "activa": false,
-    "b_fin": null,
-    "a_size": null,
-    "nivel_c_1x": null,
-    "nivel_c_1618": null
+    "activa": true,
+    "b_fin": 67242.0,
+    "a_size": 22674.81,
+    "nivel_c_1x": 44567.19,
+    "nivel_c_1618": 30557.74
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "Hay una corrección ABC de grado IV: A desde 82814 hasta ~67169 (a_size≈15645), B rebote hacia ~74222, C desde 74222 hasta el mínimo 59095 (c_size≈15127). Ratio c/a≈0.97-1.06 → cumple el patrón c≈1.0×a (±15%). PERO el Modo B exige R:R(O3)>5x: con entrada=59095 (fin de C) y stop apenas bajo el extremo de C, el problema es que el precio YA NO está en el fin de C — hoy cotiza en 64210, lejos del pivote de entrada óptimo. Si se tomara entrada en 64210 con stop bajo 59095, distancia al stop≈5115; O3≈ entrada + 1.618×(tamaño corrección desde el rebote) da R:R≈3.1x, por debajo del umbral de 5x. Además el mínimo de C ya quedó atrás 16 días sin reentrada limpia, y el rebote pierde fuerza (cayó de 67248 a 62201). El Modo A tampoco dispara: solo 1/3 señales Santos (retroceso SÍ; estructura 1-2 alcista no contable de forma fiable; línea 2-4 no perforada). L2 confirma score 1.5 y recomienda esperar cierre sobre 65969. No se dispara señal: la ventana de entrada Modo B en el fin exacto de C ya pasó y el R:R actual no compensa.",
-  "invalidacion": "Cierre de 4h bajo 59095 invalida el suelo de C y reabre extensión bajista hacia 55K-49K (E1 con C extendiéndose). Al alza, recuperación y cierre sostenido sobre 65969 reactivaría la evaluación para un LONG de continuación (Modo C) hacia 73856.",
-  "_decision_python": "checklist 1/3; Modo B: L1 desincronizado: techo L1 $126,198 vs techo narrado hoy $82,814 (52% de diferencia) — grados distintos, no se sustituyen pivotes",
+  "razon": "Estamos dentro de la Wave IV correctiva del superciclo (sesgo macro ALCISTA, fase media: la Wave V hacia nuevos máximos aún no ocurrió). L1/L2 favorecen E2 (extensión bajista a 50-55k) y el precio opera sobre el pivote crítico 63242 SIN cierre semanal de rotura. La estructura ABC fina desde el techo operativo no ha completado una onda C con relación Fibonacci limpia: el rebote 59095→67242 parece una onda B/X, y falta la pata C bajista final. No puedo medir c/a porque la C aún no ha terminado (el mínimo de 59095 es parcial, no el target Fibonacci). Modo B NO dispara: no hay ratio c≈1.0/1.618×a confirmado ni R:R calculable con invalidación clara hoy. Checklist Santos 1/3 (solo retroceso; sin estructura 1-2 alcista contable ni rotura de línea 2-4). Tomar un LONG aquí sería atrapar un cuchillo cayendo sin estructura de giro. La alerta anticipada queda armada: una onda C completa proyectaría zona 44k-30k (extensión severa), pero más realista vigilar 59000-55000 y exigir cierre semanal >76981 para confirmar suelo de Wave IV (E1) antes de buscar el LONG de Wave V.",
+  "invalidacion": "Cierre semanal por debajo de 56555 (mínimo abr-2024) invalida el escenario constructivo y abre extensión bajista profunda. Para activar LONG: cierre semanal sobre 76981 confirmando fin de corrección Wave IV.",
+  "_decision_python": "checklist 1/3; Modo B: c/a=None fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-21",
+    "generado": "2026-06-22",
     "modelo": "claude-opus-4-8"
   }
 }
