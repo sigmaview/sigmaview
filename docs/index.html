@@ -248,6 +248,13 @@
     <!-- Resumen -->
     <div class="resumen-box" id="l1-resumen">—</div>
 
+    <!-- Gráfico de escenarios: techo + niveles objetivo/confirma/invalida por escenario -->
+    <div class="section">
+      <h2>Niveles de los escenarios — precio semanal</h2>
+      <div class="chart-wrap" id="chartVision" style="height:340px"></div>
+      <div id="vision-chart-legend" style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.6"></div>
+    </div>
+
     <!-- Escenarios -->
     <div class="section">
       <h2>Escenarios Elliott Wave vigentes</h2>
@@ -457,6 +464,78 @@ function buildPriceChart(prices, signals) {
   chart.timeScale().fitContent();
 }
 
+// ── Gráfico de niveles de escenarios (Visión Semanal) ──────────────────────────
+// Los niveles de "objetivo"/"confirma"/"invalida" viven hoy como texto libre del modelo
+// (no hay un campo numérico estructurado en L1) — se extraen con una regex simple. Es un
+// complemento visual de las tarjetas de escenario (que muestran el texto completo), no
+// reemplaza el texto: si el modelo redacta una frase atípica, la línea puede no calzar
+// exactamente, pero las tarjetas de abajo siguen siendo la fuente de verdad.
+function extractNums(txt) {
+  return ((txt||'').match(/\b\d{4,7}\b/g) || []).map(Number);
+}
+const SESGO_COLOR = s => s === 'ALCISTA' ? '#2ea043' : s === 'BAJISTA' ? '#da3633' : '#d29922';
+
+function buildVisionChart(pricesWeekly, l1) {
+  const container = document.getElementById('chartVision');
+  if (!pricesWeekly || !pricesWeekly.length || !l1) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:16px">Sin datos suficientes para el gráfico.</div>';
+    return;
+  }
+  const chart = LightweightCharts.createChart(container, {
+    layout: { background: { color: '#161b22' }, textColor: '#8b949e' },
+    grid:   { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
+    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    rightPriceScale: { borderColor: '#30363d' },
+    timeScale: { borderColor: '#30363d', timeVisible: false },
+    handleScroll: true, handleScale: true,
+    width: container.clientWidth, height: 340,
+  });
+  new ResizeObserver(() => chart.applyOptions({ width: container.clientWidth })).observe(container);
+
+  const candles = chart.addCandlestickSeries({
+    upColor: '#2ea043', downColor: '#da3633',
+    borderUpColor: '#2ea043', borderDownColor: '#da3633',
+    wickUpColor: '#2ea043', wickDownColor: '#da3633',
+  });
+  candles.setData(pricesWeekly.map(p => ({ time: p.ts, open: p.open, high: p.high, low: p.low, close: p.close })));
+
+  const leyenda = [];
+  const techo = l1.techo_operativo?.precio;
+  if (techo) {
+    candles.createPriceLine({ price: techo, color: '#8b949e', lineWidth: 1,
+      lineStyle: LightweightCharts.LineStyle.Solid, axisLabelVisible: true, title: 'Techo' });
+    leyenda.push(`<span style="color:#8b949e">━</span> Techo operativo $${Math.round(techo).toLocaleString('es-CL')}`);
+  }
+
+  (l1.escenarios || []).forEach(e => {
+    const color = SESGO_COLOR(e.sesgo_corto_plazo);
+    const confirma = extractNums(e.se_confirma_si)[0];
+    const invalida = extractNums(e.se_invalida_si)[0];
+    const objetivo = extractNums(e.objetivo);
+
+    if (confirma) {
+      candles.createPriceLine({ price: confirma, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed,
+        axisLabelVisible: true, title: `${e.id} confirma` });
+    }
+    if (invalida) {
+      candles.createPriceLine({ price: invalida, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.LargeDashed,
+        axisLabelVisible: true, title: `${e.id} invalida` });
+    }
+    objetivo.slice(0, 2).forEach(nivel => {
+      candles.createPriceLine({ price: nivel, color, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Dotted,
+        axisLabelVisible: true, title: `${e.id} obj` });
+    });
+    leyenda.push(`<span style="color:${color}">${e.id}</span> (${e.sesgo_corto_plazo}): `
+      + [confirma && `confirma $${confirma.toLocaleString('es-CL')} (— —)`,
+         invalida && `invalida $${invalida.toLocaleString('es-CL')} (- - -)`,
+         objetivo.length && `objetivo ${objetivo.map(n=>'$'+n.toLocaleString('es-CL')).join('–')} (····)`]
+        .filter(Boolean).join(' · '));
+  });
+
+  document.getElementById('vision-chart-legend').innerHTML = leyenda.map(l => `<div>${l}</div>`).join('');
+  chart.timeScale().fitContent();
+}
+
 // ── Visión Semanal ────────────────────────────────────────────────────────────
 function buildVisionSemanal(l1, l1hist) {
   if (!l1) {
@@ -528,7 +607,7 @@ function buildVisionSemanal(l1, l1hist) {
 
 // ── Main load ─────────────────────────────────────────────────────────────────
 async function load() {
-  const [summary, analysis, signals, alerts, prices, l1, l1hist] = await Promise.all([
+  const [summary, analysis, signals, alerts, prices, l1, l1hist, pricesWeekly] = await Promise.all([
     fetch(BASE+'summary.json').then(r=>r.json()),
     fetch(BASE+'analysis.json').then(r=>r.json()),
     fetch(BASE+'signals.json').then(r=>r.json()),
@@ -536,6 +615,7 @@ async function load() {
     fetch(BASE+'prices.json').then(r=>r.json()),
     fetch(BASE+'l1_vision.json').then(r=>r.json()).catch(()=>null),
     fetch(BASE+'l1_history.json').then(r=>r.json()).catch(()=>null),
+    fetch(BASE+'prices_weekly.json').then(r=>r.json()).catch(()=>null),
   ]);
 
   _allSignals  = signals;
@@ -661,6 +741,7 @@ async function load() {
 
   // Visión Semanal
   buildVisionSemanal(l1, l1hist);
+  buildVisionChart(pricesWeekly, l1);
 }
 
 load().catch(e => console.error(e));

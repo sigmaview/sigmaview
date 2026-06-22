@@ -49,6 +49,21 @@ def export():
     ).dropna().reset_index()
     prices_daily["ts"] = prices_daily["ts"].dt.strftime("%Y-%m-%d")
 
+    # ── Precios semanales (todo el histórico en DB) — para el gráfico de Visión
+    # Semanal (largo plazo), donde los niveles de L1 (techo/objetivos/confirma/invalida)
+    # tienen sentido visual. La tabla ohlcv acumula desde que arrancó el bot, no los
+    # ~12 años que usa L1 para su lectura, pero alcanza para dar contexto del ciclo actual.
+    prices_1h_full = pd.read_sql(
+        "SELECT ts, open, high, low, close FROM ohlcv WHERE ticker='BTC-USD' ORDER BY ts", conn,
+        parse_dates=["ts"],
+    )
+    prices_weekly = pd.DataFrame()
+    if not prices_1h_full.empty:
+        prices_weekly = prices_1h_full.set_index("ts").resample("W-MON", label="left", closed="left").agg(
+            {"open": "first", "high": "max", "low": "min", "close": "last"}
+        ).dropna().reset_index()
+        prices_weekly["ts"] = prices_weekly["ts"].dt.strftime("%Y-%m-%d")
+
     # ── Historial L1 desde DB ──────────────────────────────────────────────────
     try:
         l1_hist = pd.read_sql(
@@ -113,6 +128,10 @@ def export():
     (OUT_DIR / "prices.json").write_text(
         prices_daily.to_json(orient="records", force_ascii=False)
     )
+    if not prices_weekly.empty:
+        (OUT_DIR / "prices_weekly.json").write_text(
+            prices_weekly.to_json(orient="records", force_ascii=False)
+        )
 
     # ── L1 semanal (visión mediano plazo) ─────────────────────────────────────
     l1_path = Path(__file__).parent.parent / "data" / "l1_btc_latest.json"
