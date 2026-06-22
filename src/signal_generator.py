@@ -268,6 +268,65 @@ def evaluar_modo_b_grado_propio(res: dict, df_amplio: pd.DataFrame) -> dict:
                       f"pivote verificado en ${pivotes_reales['abc_a_inicio']:,.0f}",
             "rr_python": rr, "trade": trade}
 
+# ── Alerta anticipada: mismo bug de mezcla de grados que tenía Modo B, código separado ──
+# El bug real (2026-06-22): el modelo calculaba nivel_c_1x/1618 = b_fin ± a_size mezclando
+# un b_fin de rebote reciente (grado menor) con un a_size de la caída grande original (grado
+# mayor) — proyección sin relación con la estructura narrada ese mismo día. Mismo principio
+# que evaluar_modo_b_grado_propio(): el modelo da las FECHAS de los 3 pivotes (inicio de A,
+# fin de A, fin de B), Python verifica cada uno contra los datos reales y calcula la
+# proyección — nunca confía en la aritmética libre del modelo.
+
+def compute_alerta_anticipada_grado_propio(df_amplio: pd.DataFrame,
+                                            a_inicio_fecha: str | None, a_inicio_precio: float | None,
+                                            a_fin_fecha: str | None, a_fin_precio: float | None,
+                                            b_fin_fecha: str | None, b_fin_precio: float | None,
+                                            tol: float = PIVOTE_TOL) -> dict | None:
+    """Verifica los 3 pivotes de la onda A-B en curso (inicio de A, fin de A/inicio de B,
+    fin de B/inicio de C) contra los datos reales, todos del MISMO movimiento, y calcula la
+    proyección de C determinísticamente. Si algún pivote no es verificable, no hay proyección
+    confiable — más seguro no alertar que alertar con niveles mezclados de otro grado."""
+    if not (a_inicio_fecha and a_inicio_precio and a_fin_fecha and a_fin_precio
+            and b_fin_fecha and b_fin_precio):
+        return None
+    fechas = [re.search(r"\d{4}-\d{2}-\d{2}", f) for f in (a_inicio_fecha, a_fin_fecha, b_fin_fecha)]
+    if not all(fechas):
+        return None
+    f_a_inicio, f_a_fin, f_b_fin = (pd.Timestamp(m.group(0)) for m in fechas)
+    if not (f_a_inicio < f_a_fin < f_b_fin):
+        return None  # los 3 pivotes deben estar en orden cronológico del mismo movimiento
+
+    def _extremo(fecha, es_techo, piso=None):
+        # 'piso': la ventana de tolerancia (±3 días) nunca puede retroceder antes del pivote
+        # cronológicamente anterior — si no, podría "encontrar" un extremo de ANTES de que
+        # ese tramo existiera (ej. el máximo de B emparejado con un día previo al mínimo de A).
+        desde = fecha - pd.Timedelta(days=3)
+        if piso is not None:
+            desde = max(desde, piso)
+        ventana = df_amplio[(df_amplio.index >= desde) & (df_amplio.index <= fecha + pd.Timedelta(days=3))]
+        if ventana.empty:
+            return None
+        return float(ventana["High"].max()) if es_techo else float(ventana["Low"].min())
+
+    # a_inicio y a_fin son extremos opuestos (A es un tramo direccional); b_fin es del
+    # mismo tipo que a_inicio (B retrocede de vuelta hacia el lado de donde partió A).
+    es_techo_a_inicio = float(a_fin_precio) < float(a_inicio_precio)
+    a_inicio_real = _extremo(f_a_inicio, es_techo_a_inicio)
+    a_fin_real    = _extremo(f_a_fin, not es_techo_a_inicio, piso=f_a_inicio)
+    b_fin_real    = _extremo(f_b_fin, es_techo_a_inicio, piso=f_a_fin)
+    if a_inicio_real is None or a_fin_real is None or b_fin_real is None:
+        return None
+    for real, narrado in ((a_inicio_real, a_inicio_precio), (a_fin_real, a_fin_precio), (b_fin_real, b_fin_precio)):
+        if abs(real - float(narrado)) / float(narrado) > tol:
+            return None
+
+    a_size = abs(a_inicio_real - a_fin_real)
+    signo = -1 if es_techo_a_inicio else 1  # A bajista → C sigue bajando; A alcista → C sigue subiendo
+    return {
+        "b_fin": round(b_fin_real, 2), "a_size": round(a_size, 2),
+        "nivel_c_1x":   round(b_fin_real + signo * 1.0 * a_size, 2),
+        "nivel_c_1618": round(b_fin_real + signo * 1.618 * a_size, 2),
+    }
+
 def contra_macro(direccion: str, sesgo_macro: str) -> bool:
     """Un trade direccional va CONTRA el sesgo macro (no operar): short en macro alcista o
     long en macro bajista. NEUTRO no bloquea."""
@@ -516,13 +575,16 @@ def run(model: str | None = None) -> dict:
     if decision["veredicto"] == "SEÑAL":
         print(f"  ⚡ SEÑAL ({decision['calidad']}, {decision['modo']}): {decision['motivo']}")
 
+    df_amplio = None
+    if (result.get("modo_b_check") or {}).get("abc_detectada"):
+        df_amplio = fetch_precio_amplio(TICKER, asof=date)
+
     # Modo sombra: registra qué habría decidido el rediseño de Modo B (sin sustituir L1,
     # pivote verificado por fecha) en paralelo a la decisión real — solo para comparar.
     # No afecta veredicto/trade/alertas. Ver evaluar_modo_b_grado_propio().
-    if (result.get("modo_b_check") or {}).get("abc_detectada"):
+    if df_amplio is not None:
         try:
             prod_mb = evaluar_modo_b(result, l1_levels)
-            df_amplio = fetch_precio_amplio(TICKER, asof=date)
             sombra = evaluar_modo_b_grado_propio(result, df_amplio)
             log_path = DATA_DIR / "shadow_modo_b.jsonl"
             with log_path.open("a") as f:
@@ -535,6 +597,23 @@ def run(model: str | None = None) -> dict:
                   f"({sombra['motivo'][:70]})")
         except Exception as e:
             print(f"  ⚠ modo sombra no se pudo evaluar: {e}")
+
+    # Alerta anticipada: proyección de C verificada contra datos reales (no la aritmética
+    # libre del modelo) — ver compute_alerta_anticipada_grado_propio().
+    aa_raw = result.get("alerta_anticipada") or {}
+    if aa_raw.get("activa") and df_amplio is not None:
+        piv = result.get("pivotes") or {}
+        aa_verificada = compute_alerta_anticipada_grado_propio(
+            df_amplio, piv.get("abc_a_inicio_fecha"), piv.get("abc_a_inicio"),
+            aa_raw.get("a_fin_fecha"), aa_raw.get("a_fin"),
+            aa_raw.get("b_fin_fecha"), aa_raw.get("b_fin"))
+        if aa_verificada:
+            result["alerta_anticipada"] = {"activa": True, **aa_verificada}
+            print(f"  🔬 alerta_anticipada verificada: b_fin=${aa_verificada['b_fin']:,.0f} "
+                  f"a_size=${aa_verificada['a_size']:,.0f}")
+        else:
+            result["alerta_anticipada"] = {"activa": False}
+            print(f"  ⚠ alerta_anticipada: pivotes no verificables en datos reales — no se alerta")
 
     # Alerta anticipatoria: ABC en formación, C aún no llegó al target Fibonacci
     aa = result.get("alerta_anticipada") or {}

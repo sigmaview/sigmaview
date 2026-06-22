@@ -111,8 +111,11 @@ oportunidad SE ACERCA. En ese caso puebla "alerta_anticipada" con los niveles pr
 Esto permite pre-armar una orden límite ANTES de que C llegue al target, en vez de analizar
 después de que el mínimo ya ocurrió.
 Condición: abc_detectada=true Y (c_sobre_a < 0.8 O abc_c_fin es el extremo parcial actual,
-no el target final). Calcula b_fin = precio donde terminó B; a_size = magnitud de A en puntos;
-nivel_c_1x = b_fin ± 1.0×a_size; nivel_c_1618 = b_fin ± 1.618×a_size (signo según dirección).
+no el target final). Identifica las FECHAS de los 3 pivotes de la onda A-B (Python verificará
+cada una contra los datos reales y calculará la proyección — no calcules tú nivel_c_1x/1618):
+inicio de A (mismo pivote que abc_a_inicio), fin de A / inicio de B (a_fin_fecha), y fin de B /
+inicio de C (b_fin_fecha). Sé preciso con las fechas — la magnitud de A y la proyección de C
+dependen de que correspondan al MISMO movimiento, no a mezclar un tramo con otro.
 
 PASO 3 — EVALUACIÓN MODO A (si no aplica Modo B)
 Evalúa el checklist de 3 señales Santos sobre TU lectura de los datos 4h (no la de L2).
@@ -157,10 +160,8 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
   "checklist": {{"s1_retroceso": "<SÍ|NO>", "s2_estructura": "<SÍ|NO>", "s3_linea24": "<SÍ|NO>", "cumplidas": <0-3>}},
   "alerta_anticipada": {{
     "activa": <true si hay ABC formándose con C aún sin llegar al target Fibonacci, si no false>,
-    "b_fin": <precio donde terminó la onda B (inicio de C), o null>,
-    "a_size": <magnitud de la onda A en puntos (positivo), o null>,
-    "nivel_c_1x": <proyección conservadora de fin de C = b_fin ± 1.0×a_size, o null>,
-    "nivel_c_1618": <proyección extendida de fin de C = b_fin ± 1.618×a_size, o null>
+    "a_fin_fecha": "<YYYY-MM-DD o null — fin de la onda A / inicio de B>", "a_fin": <precio o null>,
+    "b_fin_fecha": "<YYYY-MM-DD o null — fin de la onda B / inicio de C>", "b_fin": <precio o null>
   }},
   "calidad_señal": "<DEFINITIVA|FUERTE|INSUFICIENTE>",
   "veredicto": "<SEÑAL|ESPERAR>",
