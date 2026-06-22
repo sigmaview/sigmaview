@@ -189,6 +189,8 @@ def run() -> dict:
         import database
         database.log_l1(date, "BTC-USD", result)
         print("  L1 guardado en DB.")
+        n = database.upsert_ohlcv_weekly("BTC-USD", df)
+        print(f"  ohlcv_weekly actualizado ({n} velas nuevas).")
     except Exception as e:
         print(f"  (db log_l1 error: {e})")
 

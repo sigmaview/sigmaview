@@ -23,6 +23,12 @@ def init_db() -> None:
             open   REAL, high REAL, low REAL, close REAL, volume REAL,
             PRIMARY KEY (ticker, ts)
         );
+        CREATE TABLE IF NOT EXISTS ohlcv_weekly (
+            ticker TEXT NOT NULL,
+            ts     TEXT NOT NULL,
+            open   REAL, high REAL, low REAL, close REAL, volume REAL,
+            PRIMARY KEY (ticker, ts)
+        );
         CREATE TABLE IF NOT EXISTS analysis (
             id              INTEGER PRIMARY KEY AUTOINCREMENT,
             fecha           TEXT NOT NULL,
@@ -113,6 +119,33 @@ def upsert_ohlcv(ticker: str, df: pd.DataFrame) -> int:
         for r in rows:
             cur.execute(
                 "INSERT OR IGNORE INTO ohlcv (ticker,ts,open,high,low,close,volume) VALUES (?,?,?,?,?,?,?)",
+                r,
+            )
+            inserted += cur.rowcount
+    return inserted
+
+
+def upsert_ohlcv_weekly(ticker: str, df: pd.DataFrame) -> int:
+    """Inserta candles semanales en la DB (INSERT OR IGNORE). Retorna n filas nuevas.
+    df: índice datetime, columnas Open/High/Low/Close/Volume (mismo shape que fetch_weekly_df)."""
+    init_db()
+    rows = []
+    for ts, row in df.iterrows():
+        ts_str = ts.strftime("%Y-%m-%d") if hasattr(ts, "strftime") else str(ts)
+        rows.append((
+            ticker, ts_str,
+            float(row.get("Open") or 0),
+            float(row.get("High") or 0),
+            float(row.get("Low") or 0),
+            float(row.get("Close") or 0),
+            float(row.get("Volume") or 0),
+        ))
+    inserted = 0
+    with _conn() as conn:
+        cur = conn.cursor()
+        for r in rows:
+            cur.execute(
+                "INSERT OR IGNORE INTO ohlcv_weekly (ticker,ts,open,high,low,close,volume) VALUES (?,?,?,?,?,?,?)",
                 r,
             )
             inserted += cur.rowcount
