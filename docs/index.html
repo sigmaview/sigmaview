@@ -96,10 +96,22 @@
     .div-box p:last-child { margin-bottom: 0; color: var(--muted); font-size: 12px; }
 
     /* L1 history table */
-    .hist-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .hist-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
     .hist-table th { color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
-    .hist-table td { padding: 6px 8px; border-bottom: 1px solid #21262d; vertical-align: top; }
+    .hist-table td { padding: 6px 8px; border-bottom: 1px solid #21262d; vertical-align: top; white-space: normal; line-height: 1.4; word-break: break-word; }
     .hist-table tr:last-child td { border-bottom: none; }
+    .hist-table col.col-fecha  { width: 80px; }
+    .hist-table col.col-techo  { width: 90px; }
+    .hist-table col.col-sesgo  { width: 260px; }
+    .hist-table col.col-modelo { width: 70px; }
+    .hist-table col.col-resumen{ width: 260px; }
+
+    /* Tablas con columna de texto largo: ancho mínimo fijo + scroll horizontal en mobile,
+       en vez de aplastar las columnas cortas (fecha/precio/badges) para que todo "calce". */
+    .wrap-table { min-width: 680px; table-layout: fixed; }
+    .wrap-table col.col-narrow { width: 64px; }
+    .wrap-table col.col-wide   { width: 280px; }
+    .wrap-table td, .wrap-table th { white-space: normal; word-break: break-word; }
   </style>
 </head>
 <body>
@@ -190,7 +202,11 @@
     <div class="section">
       <h2>Historial de análisis diarios</h2>
       <div style="overflow-x:auto">
-      <table>
+      <table class="wrap-table">
+        <colgroup>
+          <col class="col-narrow"><col class="col-narrow"><col class="col-narrow"><col class="col-narrow">
+          <col class="col-wide"><col class="col-narrow"><col class="col-narrow"><col class="col-narrow">
+        </colgroup>
         <thead>
           <tr>
             <th>Fecha</th><th>Precio</th><th>Veredicto</th><th>Modo</th>
@@ -258,6 +274,9 @@
       <h2>Historial de visión semanal</h2>
       <div style="overflow-x:auto">
       <table class="hist-table">
+        <colgroup>
+          <col class="col-fecha"><col class="col-techo"><col class="col-sesgo"><col class="col-modelo"><col class="col-resumen">
+        </colgroup>
         <thead>
           <tr><th>Fecha</th><th>Techo op.</th><th>Sesgo acuerdo</th><th>Modelo</th><th>Resumen</th></tr>
         </thead>
@@ -491,9 +510,9 @@ function buildVisionSemanal(l1, l1hist) {
     histEl.innerHTML = l1hist.map(h => `<tr>
       <td>${h.fecha||'—'}</td>
       <td>${fmt(h.techo_precio)}</td>
-      <td style="font-size:11px;max-width:200px;white-space:normal;line-height:1.4">${(h.acuerdo_sesgo||'—').slice(0,120)}${(h.acuerdo_sesgo||'').length>120?'…':''}</td>
+      <td style="font-size:11px">${h.acuerdo_sesgo||'—'}</td>
       <td style="color:var(--muted)">${(h.modelo||'').replace('claude-','')}</td>
-      <td style="font-size:11px;color:var(--muted);max-width:250px;white-space:normal;line-height:1.4">${(h.resumen||'—').slice(0,150)}${(h.resumen||'').length>150?'…':''}</td>
+      <td style="font-size:11px;color:var(--muted)">${h.resumen||'—'}</td>
     </tr>`).join('');
   }
 }
