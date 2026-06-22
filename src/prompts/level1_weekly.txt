@@ -58,6 +58,10 @@ SIEMPRE el extremo de la vela (High si es techo, Low si es suelo), NUNCA el cier
 antigua, suele equivocarse usando Close: revísalo dos veces). Antes de responder, para CADA
 pivote busca su fila exacta en los datos y copia el valor de la columna High (si es techo)
 o Low (si es suelo) de esa fila — no la columna Close.
+IMPORTANTE: el PRIMER elemento del array siempre debe ser el ORIGEN del conteo — el punto
+desde el cual PARTE la onda I (no donde la onda I termina). Este origen NO es ambiguo: es
+un punto fijo (el extremo previo desde el cual arranca el impulso), inclúyelo siempre con
+"onda": "0". Luego sigue con "I" (fin de onda I), "II", etc.
 
 PASO 3 — ELIMINACIÓN POR REGLAS DURAS (OBLIGATORIO)
 Somete CADA candidato a las reglas con números explícitos. Un candidato que VIOLA
@@ -101,7 +105,7 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
       "se_invalida_si": "<condición de precio>",
       "extension": "<cuál onda extendida y multiplicador>",
       "pivotes_onda": [
-        {{"onda": "<I|II|III|IV|V|A|B|C según corresponda>", "precio": <número>, "fecha": "<YYYY-MM-DD>"}}
+        {{"onda": "<0|I|II|III|IV|V|A|B|C según corresponda>", "precio": <número>, "fecha": "<YYYY-MM-DD>"}}
       ]
     }}
   ],
