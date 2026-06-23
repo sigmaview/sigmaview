@@ -1,17 +1,17 @@
 {
-  "fecha": "2026-06-22",
+  "fecha": "2026-06-23",
   "activo": "BTC/USD",
-  "precio_actual": 63393.98,
+  "precio_actual": 63876.30078125,
   "lectura_estructural": {
-    "sub_onda_actual": "Posible onda B/rebote dentro de la onda C bajista de Wave IV; el precio rebotó desde 59095 (05-jun) hacia 67242 (15-jun) y ahora retrocede de nuevo hacia 63k",
-    "grado": "Swing (semanas)",
+    "sub_onda_actual": "Onda C bajista de Wave IV correctiva (zigzag de gran grado desde 126198); tras mínimo 59108 (05-jun) en rebote correctivo lateral b/4 menor",
+    "grado": "Wave IV de grado mayor (ciclo) — corrección en curso desde oct-2025",
     "estado": "en progreso",
-    "que_esperar": "Una pata bajista final hacia 59000-55000 (extensión de C) o defensa de 63242 con giro alcista. Sin confirmación de giro todavía."
+    "que_esperar": "El rebote desde 59108 es correctivo (no impulsivo); se espera nuevo tramo bajista hacia 55000-60000 (objetivo de L1) para completar la corrección antes de buscar largos de reversión"
   },
-  "sesgo_macro": "ALCISTA",
+  "sesgo_macro": "BAJISTA",
   "fase_impulso_macro": "media",
-  "direccion": "LONG",
-  "modo_entrada": "B_fin_abc",
+  "direccion": "SHORT",
+  "modo_entrada": "A_enfoque_b",
   "modo_b_check": {
     "abc_detectada": true,
     "c_sobre_a": null,
@@ -20,12 +20,13 @@
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 126198.07,
-    "w1_fin": null,
-    "w2_swing": null,
-    "abc_a_inicio": 81770.45,
-    "abc_c_fin": 59095.64,
-    "stop_extremo": 59095.64
+    "w1_origen": 67254.7265625,
+    "w1_fin": 59095.640625,
+    "w2_swing": 67242.0078125,
+    "abc_a_inicio": 67254.7265625,
+    "abc_a_inicio_fecha": "2026-06-15",
+    "abc_c_fin": 59095.640625,
+    "stop_extremo": 67254.7265625
   },
   "checklist": {
     "s1_retroceso": "SÍ",
@@ -34,19 +35,19 @@
     "cumplidas": 1
   },
   "alerta_anticipada": {
-    "activa": true,
-    "b_fin": 67242.0,
-    "a_size": 22674.81,
-    "nivel_c_1x": 44567.19,
-    "nivel_c_1618": 30557.74
+    "activa": false,
+    "a_fin_fecha": null,
+    "a_fin": null,
+    "b_fin_fecha": null,
+    "b_fin": null
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "Estamos dentro de la Wave IV correctiva del superciclo (sesgo macro ALCISTA, fase media: la Wave V hacia nuevos máximos aún no ocurrió). L1/L2 favorecen E2 (extensión bajista a 50-55k) y el precio opera sobre el pivote crítico 63242 SIN cierre semanal de rotura. La estructura ABC fina desde el techo operativo no ha completado una onda C con relación Fibonacci limpia: el rebote 59095→67242 parece una onda B/X, y falta la pata C bajista final. No puedo medir c/a porque la C aún no ha terminado (el mínimo de 59095 es parcial, no el target Fibonacci). Modo B NO dispara: no hay ratio c≈1.0/1.618×a confirmado ni R:R calculable con invalidación clara hoy. Checklist Santos 1/3 (solo retroceso; sin estructura 1-2 alcista contable ni rotura de línea 2-4). Tomar un LONG aquí sería atrapar un cuchillo cayendo sin estructura de giro. La alerta anticipada queda armada: una onda C completa proyectaría zona 44k-30k (extensión severa), pero más realista vigilar 59000-55000 y exigir cierre semanal >76981 para confirmar suelo de Wave IV (E1) antes de buscar el LONG de Wave V.",
-  "invalidacion": "Cierre semanal por debajo de 56555 (mínimo abr-2024) invalida el escenario constructivo y abre extensión bajista profunda. Para activar LONG: cierre semanal sobre 76981 confirmando fin de corrección Wave IV.",
+  "razon": "Sesgo macro BAJISTA confirmado por L1/L2 (corrección Wave IV hacia 55000-64000). El precio rebotó desde el mínimo operativo 59108 (05-jun) y desde entonces se mueve LATERALMENTE entre ~62000 y ~67250 sin estructura impulsiva clara ni rotura de la línea 2-4 bajista. No hay una corrección ABC completa que valide Modo B: el rebote actual (59108→67250→63876) es un sub-movimiento correctivo lateral, no una onda C cuantificable con ratio c/a fiable hacia un target Fibonacci. Para Modo A solo se cumple 1/3 (retroceso >38.2%), faltan la estructura 1-2 contable en la nueva dirección bajista y la rotura de línea 2-4 confirmatoria. Score Santos L2=0.5 coincide: estructura embrionaria sin confirmación. No amerita disparar; monitorear pérdida de 59108 (gatillo bajista de continuación) o cruce de 67250 (invalida sesgo bajista de corto plazo).",
+  "invalidacion": "Cierre 4h sostenido por encima de 67254 invalida el setup bajista de corto plazo; estructuralmente, cierre semanal por encima de 90000 invalidaría la tesis correctiva de L1",
   "_decision_python": "checklist 1/3; Modo B: c/a=None fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-22",
+    "generado": "2026-06-23",
     "modelo": "claude-opus-4-8"
   }
 }
