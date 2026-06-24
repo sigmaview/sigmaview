@@ -1,53 +1,49 @@
 {
-  "fecha": "2026-06-23",
+  "fecha": "2026-06-24",
   "activo": "BTC/USD",
-  "precio_actual": 63876.30078125,
+  "precio_actual": 62742.1484375,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C bajista de Wave IV correctiva (zigzag de gran grado desde 126198); tras mínimo 59108 (05-jun) en rebote correctivo lateral b/4 menor",
-    "grado": "Wave IV de grado mayor (ciclo) — corrección en curso desde oct-2025",
+    "sub_onda_actual": "Onda C bajista de la corrección Wave IV macro, tras rebote correctivo desde el suelo 59108 (5-jun) hacia 67248 y reanudación bajista",
+    "grado": "Sub-onda de 4h dentro de Wave IV semanal",
     "estado": "en progreso",
-    "que_esperar": "El rebote desde 59108 es correctivo (no impulsivo); se espera nuevo tramo bajista hacia 55000-60000 (objetivo de L1) para completar la corrección antes de buscar largos de reversión"
+    "que_esperar": "Continuación bajista hacia la zona objetivo 55000-60000 antes de buscar agotamiento; el rebote a 67248 fue correctivo (B) y el precio cede de nuevo"
   },
   "sesgo_macro": "BAJISTA",
   "fase_impulso_macro": "media",
   "direccion": "SHORT",
-  "modo_entrada": "A_enfoque_b",
+  "modo_entrada": "B_fin_abc",
   "modo_b_check": {
     "abc_detectada": true,
-    "c_sobre_a": null,
+    "c_sobre_a": 0.62,
     "rr_o3_estimado": null,
     "invalidacion_clara": false,
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 67254.7265625,
-    "w1_fin": 59095.640625,
-    "w2_swing": 67242.0078125,
-    "abc_a_inicio": 67254.7265625,
+    "w1_origen": 126198.0703125,
+    "w1_fin": 59108.92,
+    "w2_swing": 67248.0,
+    "abc_a_inicio": 67248.0,
     "abc_a_inicio_fecha": "2026-06-15",
-    "abc_c_fin": 59095.640625,
+    "abc_c_fin": 62742.1484375,
     "stop_extremo": 67254.7265625
   },
   "checklist": {
-    "s1_retroceso": "SÍ",
+    "s1_retroceso": "NO",
     "s2_estructura": "NO",
     "s3_linea24": "NO",
-    "cumplidas": 1
+    "cumplidas": 0
   },
   "alerta_anticipada": {
-    "activa": false,
-    "a_fin_fecha": null,
-    "a_fin": null,
-    "b_fin_fecha": null,
-    "b_fin": null
+    "activa": false
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "Sesgo macro BAJISTA confirmado por L1/L2 (corrección Wave IV hacia 55000-64000). El precio rebotó desde el mínimo operativo 59108 (05-jun) y desde entonces se mueve LATERALMENTE entre ~62000 y ~67250 sin estructura impulsiva clara ni rotura de la línea 2-4 bajista. No hay una corrección ABC completa que valide Modo B: el rebote actual (59108→67250→63876) es un sub-movimiento correctivo lateral, no una onda C cuantificable con ratio c/a fiable hacia un target Fibonacci. Para Modo A solo se cumple 1/3 (retroceso >38.2%), faltan la estructura 1-2 contable en la nueva dirección bajista y la rotura de línea 2-4 confirmatoria. Score Santos L2=0.5 coincide: estructura embrionaria sin confirmación. No amerita disparar; monitorear pérdida de 59108 (gatillo bajista de continuación) o cruce de 67250 (invalida sesgo bajista de corto plazo).",
-  "invalidacion": "Cierre 4h sostenido por encima de 67254 invalida el setup bajista de corto plazo; estructuralmente, cierre semanal por encima de 90000 invalidaría la tesis correctiva de L1",
-  "_decision_python": "checklist 1/3; Modo B: c/a=None fuera de tolerancia (≈1.0 o 1.618 ±20%)",
+  "razon": "El sesgo macro es BAJISTA dentro de Wave IV semanal, con objetivo en 55000-60000. La corrección bajista en curso aún no completa: tomando A=desde 67254(15-jun) hacia 61338(4-jun previa) — el tramo bajista mayor desde el rebote tiene A=67254→61338 (~5916 pts), B=rebote a 67254, y C en curso desde 67254 hacia abajo, hoy en 62742 con c/a≈0.62 (aún no alcanza 1.0×A ni 1.618×A). Modo B NO dispara porque C no ha llegado a su zona Fibonacci, no hay invalidación ajustada clara hoy y el R:R no es calculable como setup terminal. Modo A: checklist 0/3 — no hay retroceso alcista contable, no hay estructura 1-2 al alza, ni rotura de línea 2-4. Score Santos L2=0.0 confirma. NO se opera contra-tendencia ni se anticipa largo. Se activa ALERTA ANTICIPADA: la onda C bajista proyecta extensión hacia 1.0×A (~55400) o 1.618×A (~51700) desde B=67254 — pre-armar vigilancia de agotamiento bajista en zona 55000-60000 para futuro LONG si aparece reversión de 5 ondas.",
+  "invalidacion": "Cierre de 4h sostenido por encima de 67254 (extremo del rebote B 15-jun) invalida la continuación bajista inmediata; cierre semanal por encima de 90000 invalida el sesgo bajista CP del mapa L1",
+  "_decision_python": "checklist 0/3; Modo B: c/a=0.62 fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-23",
+    "generado": "2026-06-24",
     "modelo": "claude-opus-4-8"
   }
 }
