@@ -1,5 +1,5 @@
 {
-  "fecha_analisis": "2026-06-22",
+  "fecha_analisis": "2026-06-24",
   "activo": "BTC/USD",
   "techo_operativo": {
     "precio": 126198.0703125,
@@ -8,80 +8,42 @@
   },
   "escenarios_eliminados": [
     {
-      "descripcion": "Conteo con Wave III terminando en el techo de 2021 (68789) y todo el ciclo 2022-2025 como Wave IV-V completas",
+      "descripcion": "Conteo donde Wave III termina en el techo de 2021 (68789) y Wave IV baja a 15682, con Wave V actual desde 2022",
       "regla_violada": "W4 se solapa con territorio de W1",
-      "evidencia": "Si W1 termina ~2017 en 19140 y W4 (2022) cae a 15682, hay solapamiento profundo con el techo de W1 (19140). Solo válido como diagonal, no como impulso tendencial estándar."
+      "evidencia": "Si W1 termina ~2017 en 19891 (techo dic-2017) y W4 cae a 15682 (nov-2022), W4 invade territorio de W1 (19891), solapamiento de ~4200 pts. Invalida impulso tendencial."
     }
   ],
   "escenarios": [
     {
       "id": "E1",
-      "etiqueta_macro": "Wave III mayor terminó en oct-2025 (126198); Wave IV correctiva en curso",
-      "wave_III_fin": "126198.07 (2025-10-06)",
-      "posicion_hoy": "Dentro de Wave IV bajista, posiblemente en onda C de un zigzag/plana hacia la zona 0.382-0.5 del impulso III",
+      "etiqueta_macro": "Wave V alcista completada en oct-2025; corrección mayor (Wave IV de grado superior o Wave A bajista) en curso",
+      "wave_III_fin": "69000.0 (2021-04-14)",
+      "posicion_hoy": "Tras completar Wave V en 126198 (oct-2025), el mercado desarrolla una corrección impulsiva bajista. Hoy en 59735, cerca de zona de soporte clave 0.618 del tramo V.",
       "sesgo_corto_plazo": "BAJISTA",
-      "objetivo": "59000-64000 (zona 0.382-0.5 del tramo III desde 15682)",
-      "se_confirma_si": "Pérdida sostenida de 63000 con ruptura de línea 2-4",
-      "se_invalida_si": "Cierre semanal por encima de 126198 (nuevo máximo invalida que III ya terminó)",
+      "objetivo": "55000-50000 (zona de retroceso profundo del impulso desde 2018)",
+      "se_confirma_si": "Cierre semanal por debajo de 58000 acelerando hacia 50000",
+      "se_invalida_si": "Recuperación por encima de 90000 (retoma estructura alcista)",
       "extension": "Wave III extendida (>161.8% de Wave I)",
       "pivotes_onda": [
         {
           "onda": "0",
+          "precio": 257.61199951171875,
+          "fecha": "2014-12-29"
+        },
+        {
+          "onda": "I",
+          "precio": 20089.0,
+          "fecha": "2017-12-11"
+        },
+        {
+          "onda": "II",
           "precio": 3191.303466796875,
           "fecha": "2018-12-10"
         },
         {
-          "onda": "I",
-          "precio": 13796.4892578125,
-          "fecha": "2019-06-24"
-        },
-        {
-          "onda": "II",
-          "precio": 4106.98095703125,
-          "fecha": "2020-03-09"
-        },
-        {
           "onda": "III",
-          "precio": 126198.0703125,
-          "fecha": "2025-10-06"
-        },
-        {
-          "onda": "IV",
-          "precio": 60074.203125,
-          "fecha": "2026-02-02"
-        }
-      ]
-    },
-    {
-      "id": "E2",
-      "etiqueta_macro": "Wave III terminó en el techo de 2021; ciclo correctivo mayor Wave IV se extendió 2022; Wave V alcista terminó en oct-2025; ahora corrección de mayor grado",
-      "wave_III_fin": "68789.625 (2021-11-08)",
-      "posicion_hoy": "Tras techo de Wave V (126198 oct-2025), en corrección ABC de superciclo; hoy en onda C bajista profunda",
-      "sesgo_corto_plazo": "BAJISTA",
-      "objetivo": "55000-60000 (retroceso 0.382-0.5 de toda la estructura V)",
-      "se_confirma_si": "Pérdida de 60000 confirma corrección de gran grado",
-      "se_invalida_si": "Cierre semanal por encima de 126198",
-      "extension": "Wave III (2019-2021) o Wave V extendida según subgrado",
-      "pivotes_onda": [
-        {
-          "onda": "0",
-          "precio": 3191.303466796875,
-          "fecha": "2018-12-10"
-        },
-        {
-          "onda": "I",
-          "precio": 13796.4892578125,
-          "fecha": "2019-06-24"
-        },
-        {
-          "onda": "II",
-          "precio": 4106.98095703125,
-          "fecha": "2020-03-09"
-        },
-        {
-          "onda": "III",
-          "precio": 68789.625,
-          "fecha": "2021-11-08"
+          "precio": 69000.0,
+          "fecha": "2021-04-14"
         },
         {
           "onda": "IV",
@@ -94,21 +56,59 @@
           "fecha": "2025-10-06"
         }
       ]
+    },
+    {
+      "id": "E2",
+      "etiqueta_macro": "Wave IV en curso (corrección del impulso mayor); Wave V alcista pendiente",
+      "wave_III_fin": "126198.07 (2025-10-06)",
+      "posicion_hoy": "Wave III culminó en 126198 (oct-2025). Estamos dentro de Wave IV correctiva, probablemente onda C de un zigzag/plana hacia la zona 0.382 de toda Wave III.",
+      "sesgo_corto_plazo": "BAJISTA",
+      "objetivo": "55000-48000 (retroceso 0.382-0.5 de Wave III desde 3191)",
+      "se_confirma_si": "Rebote desde zona 55000-50000 con estructura ABC completa, luego ruptura sobre 78000",
+      "se_invalida_si": "Cierre semanal por debajo de 48000 (entraría en territorio de Wave I y rompería conteo de IV)",
+      "extension": "Wave III extendida (3191→126198 = ~38x, >161.8% de Wave I)",
+      "pivotes_onda": [
+        {
+          "onda": "0",
+          "precio": 257.61199951171875,
+          "fecha": "2014-12-29"
+        },
+        {
+          "onda": "I",
+          "precio": 20089.0,
+          "fecha": "2017-12-11"
+        },
+        {
+          "onda": "II",
+          "precio": 3191.303466796875,
+          "fecha": "2018-12-10"
+        },
+        {
+          "onda": "III",
+          "precio": 126198.0703125,
+          "fecha": "2025-10-06"
+        },
+        {
+          "onda": "IV",
+          "precio": 59735.87890625,
+          "fecha": "2026-06-22"
+        }
+      ]
     }
   ],
   "acuerdo": {
-    "sesgo_cercano": "Ambos escenarios coinciden en sesgo BAJISTA tras el techo de 126198 (oct-2025); estamos en una corrección de grado mayor con objetivo en la zona 55000-64000",
+    "sesgo_cercano": "BAJISTA a corto plazo. Ambos escenarios coinciden en que el mercado está corrigiendo desde el techo de 126198 (oct-2025) y aún no ha tocado fondo. El precio busca soporte en la zona 55000-50000.",
     "niveles_compartidos": [
-      126198,
-      63000,
-      60000,
-      55000
+      58000,
+      55000,
+      50000,
+      48000
     ],
-    "como_operar_hoy": "No comprar contra la corrección; esperar señal de agotamiento bajista en zona 55000-64000 antes de buscar largos"
+    "como_operar_hoy": "Esperar señal de agotamiento bajista en zona 55000-50000 antes de buscar largos; no perseguir cortos a estos niveles ya extendidos."
   },
   "divergencia": {
-    "pregunta_abierta": "¿126198 fue el fin de Wave III (queda Wave V alcista superior pendiente tras esta IV) o fue el fin de Wave V (inicia corrección de superciclo más profunda)?",
-    "se_resuelve_si": "Si tras tocar 55000-64000 el precio recupera 90000+ con impulso de 5 ondas, confirma E1 (queda V alcista); si pierde 55000 y acelera, confirma E2 (corrección mayor)"
+    "pregunta_abierta": "¿El techo de 126198 fue el fin de Wave V (fin del superciclo alcista, E1) o solo el fin de Wave III con Wave V mayor aún pendiente (E2)?",
+    "se_resuelve_si": "Por debajo de 48000 con cierre semanal se invalida E2 y se confirma E1 (corrección de mayor grado). Por encima de 90000 tras tocar soporte se invalida la profundidad bajista de E1 y favorece E2 (Wave IV terminando, Wave V alcista pendiente hacia nuevos máximos sobre 126000)."
   },
   "niveles_para_l2": {
     "extremo_impulso": {
@@ -117,20 +117,21 @@
     },
     "retroceso_382": 84736.97,
     "retroceso_618": 100570.01,
-    "w2_fin_precio": 4106.98095703125,
-    "w4_fin_precio": 60074.203125,
+    "w2_fin_precio": 3191.303466796875,
+    "w4_fin_precio": 59735.87890625,
     "w5_duracion_dias": null,
     "niveles_resolutorios": [
       90000,
-      55000
+      78000,
+      48000
     ],
     "low_operativo": 59108.92,
     "retroceso_50": 92653.49,
     "_fib_calculado_por": "python"
   },
-  "resumen": "El techo operativo es 126198 (oct-2025), desde donde se mide la corrección actual. Ambos escenarios supervivientes coinciden en sesgo bajista hacia 55000-64000 a corto plazo. La duda macro es si 126198 fue Wave III (E1, queda Wave V alcista pendiente) o Wave V (E2, corrección de superciclo); se resuelve si el precio recupera 90000+ tras el suelo (E1) o pierde 55000 acelerando (E2).",
+  "resumen": "Techo operativo en 126198 (oct-2025), desde donde el mercado corrige bajista a 59735 hoy. Ambos escenarios supervivientes coinciden en sesgo BAJISTA buscando soporte 55000-50000. La duda macro: si fue fin de Wave V (E1, corrección mayor pendiente más profunda) o fin de Wave III (E2, Wave IV terminando con Wave V alcista por venir). Se resuelve: bajo 48000 confirma E1; sobre 90000 confirma E2.",
   "_meta": {
-    "generado": "2026-06-22",
+    "generado": "2026-06-24",
     "modelo": "claude-opus-4-8"
   }
 }
