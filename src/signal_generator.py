@@ -422,9 +422,16 @@ def compute_trade(direccion: str, modo: str, piv: dict) -> dict:
         w1 = abs(extremo - o)
         entrada = extremo                        # entrar en la rotura, ya en W3
         stop = w2                                # sobre el swing de W2 (no en el origen de W1)
-        o1 = entrada + sign * 1.0 * w1           # objetivos de continuación W3
-        o2 = entrada + sign * 1.618 * w1
-        o3 = entrada + sign * 2.618 * w1
+        # Santos: una onda impulsiva es la EXTENDIDA (>161.8%); las dos NO extendidas tienden
+        # a igualdad o 61.8% entre sí. Si la onda que se inicia es terminal (W5/C, ya hubo una
+        # onda extendida antes en este impulso), NO se proyecta como si fuera a extenderse.
+        if piv.get("onda_iniciada") == "W5_o_C_terminal":
+            m1, m2, m3 = 0.382, 0.618, 1.0
+        else:
+            m1, m2, m3 = 1.0, 1.618, 2.618
+        o1 = entrada + sign * m1 * w1
+        o2 = entrada + sign * m2 * w1
+        o3 = entrada + sign * m3 * w1
     else:  # B_fin_abc
         c_fin = float(piv["abc_c_fin"])
         # Entrar un colchón ADENTRO del extremo de C (no en la mecha exacta) → orden llenable

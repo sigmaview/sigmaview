@@ -22,12 +22,21 @@ MODO A — Enfoque B / entrada en RETROCESO (cuando el retroceso de W2 aún no o
 - Stop en el origen de W1; O1=80.9%, O2=161.8%, O3=261.8% de W1 desde la entrada
 - Úsalo cuando el precio está cerca del inicio de la tendencia y falta el retroceso de W2.
 
-MODO C — Entrada en ROTURA/continuación (cuando el precio YA rompió y está en W3):
-- El retroceso de W2 ya ocurrió; el precio perfora el extremo de W1 iniciando W3.
+MODO C — Entrada en ROTURA/continuación (cuando el precio YA rompió y está en W3 o W5):
+- El retroceso de W2 ya ocurrió; el precio perfora el extremo de W1 iniciando la siguiente onda impulsiva.
 - Entrada en la rotura del extremo de W1 (no esperes un retroceso que ya pasó).
 - Stop AJUSTADO sobre el swing de W2 (no en el origen de W1) → mejor R:R.
-- O1=1.0×W1, O2=1.618×W1, O3=2.618×W1 de continuación desde la entrada.
-- Úsalo cuando la lectura estructural dice que estamos entrando/dentro de W3.
+- CRÍTICO — clasifica qué onda inicia esta rotura (regla Santos: "una onda impulsiva es la
+  EXTENDIDA >161.8% de las otras; las dos NO extendidas tienden a igualdad o 61.8% entre sí"):
+  - "W3": ninguna onda previa de este impulso fue claramente la extendida — es razonable
+    esperar que ESTA onda (la que inicia ahora) sea la extendida. O1=1.0×W1, O2=1.618×W1,
+    O3=2.618×W1 (fórmula sin cambios).
+  - "W5_o_C_terminal": la onda 3 (o la onda A, si esto es una corrección) YA fue la extendida
+    de este impulso — esta onda terminal normalmente NO se extiende, tiende a igualdad o
+    61.8% de W1, NUNCA a 2.618x. O1=0.382×W1, O2=0.618×W1, O3=1.0×W1.
+  - Declara tu clasificación en pivotes.onda_iniciada. Si tienes dudas, usa "W5_o_C_terminal"
+    (más conservador — evita proyectar objetivos que ya no tienen espacio estructural).
+- Úsalo cuando la lectura estructural dice que estamos entrando/dentro de una onda impulsiva.
 
 Ambos (A y C) usan el checklist de 3 señales Santos (ver abajo).
 
@@ -153,6 +162,7 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
     "w1_origen": <precio inicio de W1>,
     "w1_fin": <precio extremo de W1 = nivel de rotura>,
     "w2_swing": <precio del extremo del retroceso W2 = stop en Modo C, o null>,
+    "onda_iniciada": "<W3|W5_o_C_terminal — solo si modo_entrada=C_breakout, si no null>",
     "abc_a_inicio": <precio o null>, "abc_a_inicio_fecha": "<YYYY-MM-DD o null>",
     "abc_c_fin": <precio o null>,
     "stop_extremo": <precio del extremo a proteger>
