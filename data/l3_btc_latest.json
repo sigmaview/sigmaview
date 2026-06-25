@@ -50,18 +50,18 @@
     "entrada": 59022.79,
     "stop": 67242.01,
     "riesgo_por_unidad": 8219.22,
-    "O1": 39126.92,
+    "O1": 51422.57,
     "O1_accion": "cerrar 50%",
-    "O2": 26831.28,
+    "O2": 46727.14,
     "O2_accion": "cerrar 25%, subir stop a entrada",
-    "O3": 6935.41,
+    "O3": 39126.92,
     "O3_accion": "cerrar 25% restante",
     "R:R": {
-      "O1": 2.42,
-      "O2": 3.92,
-      "O3": 6.34
+      "O1": 0.92,
+      "O2": 1.5,
+      "O3": 2.42
     },
-    "rr_valido_5x": true
+    "rr_valido_5x": false
   },
   "_meta": {
     "generado": "2026-06-25",
