@@ -1,8 +1,8 @@
 {
-  "generado": "2026-06-24",
-  "precio_referencia": 62742.1484375,
+  "generado": "2026-06-25",
+  "precio_referencia": 61024.55078125,
   "direccion_setup": "SHORT",
-  "veredicto": "ESPERAR",
+  "veredicto": "SEÑAL",
   "alertas": [
     {
       "id": "resolutorio_90000",
@@ -13,11 +13,59 @@
       "fired": false
     },
     {
-      "id": "resolutorio_55000",
-      "nivel": 55000.0,
+      "id": "resolutorio_78000",
+      "nivel": 78000.0,
+      "direccion": "cruce_arriba",
+      "tipo": "RESOLUTORIO",
+      "mensaje": "⚠️ BTC alcanzó $78,000 — nivel resolutorio L1. Re-evaluar escenarios.",
+      "fired": false
+    },
+    {
+      "id": "resolutorio_48000",
+      "nivel": 48000.0,
       "direccion": "cruce_abajo",
       "tipo": "RESOLUTORIO",
-      "mensaje": "⚠️ BTC alcanzó $55,000 — nivel resolutorio L1. Re-evaluar escenarios.",
+      "mensaje": "⚠️ BTC alcanzó $48,000 — nivel resolutorio L1. Re-evaluar escenarios.",
+      "fired": false
+    },
+    {
+      "id": "entrada",
+      "nivel": 59022.79,
+      "direccion": "cruce_abajo",
+      "tipo": "ENTRADA",
+      "mensaje": "🟢 ENTRADA SHORT (FUERTE): BTC tocó $59,023.\nStop $67,242 | O1 $39,127 | O2 $26,831 | O3 $6,935",
+      "fired": false
+    },
+    {
+      "id": "stop",
+      "nivel": 67242.01,
+      "direccion": "cruce_arriba",
+      "tipo": "STOP",
+      "mensaje": "🛑 BTC tocó el STOP $67,242. Setup invalidado.",
+      "fired": false
+    },
+    {
+      "id": "o1",
+      "nivel": 39126.92,
+      "direccion": "cruce_abajo",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O1 $39,127 — cerrar 50%",
+      "fired": false
+    },
+    {
+      "id": "o2",
+      "nivel": 26831.28,
+      "direccion": "cruce_abajo",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O2 $26,831 — cerrar 25%, subir stop a entrada",
+      "fired": false
+    },
+    {
+      "id": "o3",
+      "nivel": 6935.41,
+      "direccion": "cruce_abajo",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O3 $6,935 — cerrar 25% restante",
       "fired": false
     }
   ]

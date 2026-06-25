@@ -1,38 +1,44 @@
 {
-  "fecha": "2026-06-24",
+  "fecha": "2026-06-25",
   "activo": "BTC/USD",
-  "precio_actual": 62742.15,
-  "señal_1_retroceso": "SÍ",
-  "señal_1_detalle": "Impulso bajista desde techo 126198 hasta mínimo operativo 59108.92 (rango 67089 pts). Retroceso al alza desde 59108.92: máximo recuperado ~67248 (2026-06-15), retroceso = 8139 pts = 12.1% del rango total. Sin embargo, la ÚLTIMA onda impulsiva bajista relevante es la caída desde ~90000 (nivel resolutorio) hasta el mínimo 59108.92 (rango ~30891 pts). Retroceso desde 59108.92 hasta máximo 67248 = 8139 pts = 26.3% de ese impulso. Caída reciente desde 67248 hasta 62742 sugiere que el rebote se está agotando por debajo del 38.2% (38.2% de 30891 = 11800 pts → nivel 70909). Precio actual 62742 está muy lejos de 70909. Retroceso alcanzado: ~26.3%, por debajo del 30%.",
+  "precio_actual": 61024.55,
+  "señal_1_retroceso": "NO",
+  "señal_1_detalle": "El último impulso bajista va desde el techo operativo 126198 hasta el mínimo operativo 59108.92 (rango: 67089 puntos). Un retroceso >38.2% al alza requeriría superar ~84768. El máximo reciente fue ~67248 (2026-06-15), lo que representa un retroceso de ~(67248-59108)/67089 = 12.1% desde el mínimo. Muy por debajo del 38.2%.",
   "señal_1_score": 0.0,
-  "señal_2_estructura": "NO",
-  "señal_2_detalle": "Desde el mínimo del 5-jun (59108.92) el precio rebotó hasta 67248 (15-jun) en estructura poco impulsiva, con velas solapadas y sin aceleración clara. Desde 67248 inició nueva caída hasta 62742 actual. No se identifica una onda 1 impulsiva alcista contable seguida de onda 2 correctiva — el movimiento desde mínimos luce como rebote correctivo dentro de la tendencia bajista mayor, sin estructura de 5 ondas al alza. La estructura 1-2 alcista no es contable.",
-  "señal_2_score": 0.0,
+  "señal_2_estructura": "POSIBLE",
+  "señal_2_detalle": "Desde el mínimo del 5-jun (~59108) se aprecia un rebote hasta ~67248 (15-jun) que podría ser una onda 1 alcista tentativa, seguida de retroceso hacia ~61024 (25-jun). Sin embargo la estructura es débil y sin confirmación impulsiva clara: el rebote carece de subdivisiones 5 ondas definidas y el retroceso actual amenaza con hacer nuevos mínimos. Estructura contable no confirmada.",
+  "señal_2_score": 0.5,
   "señal_3_linea24": "NO",
-  "señal_3_detalle": "La línea 2-4 del impulso bajista mayor conecta los techos intermedios de la corrección bajista (máximos de onda 2 y onda 4 del descenso desde 126198). Referencia aproximada: onda 2 ~90000 (ene-2026), onda 4 ~75000-78000 (abr-2026). La línea 2-4 bajista se sitúa actualmente en torno a 72000-75000. Precio actual 62742 está por debajo de esa línea, sin haber perforado al alza. No hay rotura de línea 2-4 en dirección alcista.",
+  "señal_3_detalle": "La línea 2-4 del impulso bajista mayor (desde 126198) no ha sido perforada al alza. El precio actual en 61024 está muy lejos de cualquier proyección de esa línea. No hay perforación ni aproximación relevante.",
   "señal_3_score": 0.0,
-  "score_santos": 0.0,
+  "score_santos": 0.5,
   "resolutorios_cruzados": [
     {
       "nivel": 90000,
       "cruzado": false,
       "direccion": "arriba",
-      "implica": "Cruce sostenido arriba de 90000 invalidaría sesgo bajista CP y favorecería recuperación hacia zona 100000+"
+      "implica": "Invalidaría profundidad bajista de E1 y favorecería E2 (Wave IV terminando, Wave V alcista pendiente)"
     },
     {
-      "nivel": 55000,
+      "nivel": 78000,
+      "cruzado": false,
+      "direccion": "arriba",
+      "implica": "Confirmación parcial de recuperación estructural, acercamiento a zona de validación E2"
+    },
+    {
+      "nivel": 48000,
       "cruzado": false,
       "direccion": "abajo",
-      "implica": "Pérdida de 55000 confirmaría E2 (corrección de superciclo más profunda) e invalidaría E1 como corrección Wave IV ordinaria"
+      "implica": "Invalidaría E2 y confirmaría E1 (corrección de mayor grado, Wave IV de superciclo o Wave A profunda)"
     }
   ],
-  "escenario_favorecido": "sin cambios",
+  "escenario_favorecido": "E1",
   "alerta": false,
-  "nivel_alerta": "NINGUNA",
-  "resumen": "BTC cotiza en 62742 tras rebotar desde el mínimo operativo 59108 (5-jun) hasta 67248 y luego volver a ceder; ninguna de las 3 señales Santos se activa (score 0.0), no se cruzó ningún nivel resolutorio, y el sesgo bajista del mapa semanal L1 permanece intacto — no amerita escalar a L3.",
+  "nivel_alerta": "VIGILAR",
+  "resumen": "BTC cierra en 61024 rozando el mínimo operativo (59108); el rebote desde mínimos solo retrocedió ~12% del impulso bajista, sin estructura 1-2 confirmada ni perforación de línea 2-4; score Santos 0.5 — ningún resolutorio cruzado, sesgo bajista E1 se mantiene dominante, no amerita escalar a L3 pero se vigila el soporte 59000-60000.",
   "_meta": {
-    "generado": "2026-06-24",
+    "generado": "2026-06-25",
     "modelo": "claude-sonnet-4-6",
-    "l1_fecha": "2026-06-22"
+    "l1_fecha": "2026-06-24"
   }
 }
