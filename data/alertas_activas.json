@@ -34,7 +34,7 @@
       "direccion": "cruce_abajo",
       "tipo": "ENTRADA",
       "mensaje": "🟢 ENTRADA SHORT (FUERTE): BTC tocó $59,023.\nStop $67,242 | O1 $39,127 | O2 $26,831 | O3 $6,935",
-      "fired": false
+      "fired": true
     },
     {
       "id": "stop",
