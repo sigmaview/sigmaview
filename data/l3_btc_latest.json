@@ -1,38 +1,39 @@
 {
-  "fecha": "2026-06-25",
+  "fecha": "2026-06-26",
   "activo": "BTC/USD",
-  "precio_actual": 61024.55078125,
+  "precio_actual": 59754.640625,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C/W5 bajista de la corrección mayor desde 126198; tramo impulsivo bajista en curso tras rebote fallido en ~67000",
-    "grado": "Swing (semanas-meses) dentro de la corrección de grado superior",
+    "sub_onda_actual": "Onda C bajista (impulso final de la corrección desde 126198, tramo terminal acercándose a la zona de soporte 55000-50000)",
+    "grado": "Intermedio (4h) dentro de la corrección mayor de L1",
     "estado": "en progreso",
-    "que_esperar": "Continuación bajista hacia zona 55000-50000 (objetivo compartido L1); el rebote desde 59022 es correctivo, no reversión confirmada"
+    "que_esperar": "Aceleración final hacia 55000-50000 con cierre bajo 59108; vigilar agotamiento bajista (divergencia/estructura ABC completándose) para buscar reversión alcista, NO continuar cortos a niveles ya extendidos."
   },
   "sesgo_macro": "BAJISTA",
   "fase_impulso_macro": "media",
   "direccion": "SHORT",
   "modo_entrada": "C_breakout",
   "modo_b_check": {
-    "abc_detectada": false,
+    "abc_detectada": true,
     "c_sobre_a": null,
     "rr_o3_estimado": null,
     "invalidacion_clara": false,
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 78918.65625,
-    "w1_fin": 59022.7890625,
-    "w2_swing": 67242.0078125,
+    "w1_origen": 84736.97,
+    "w1_fin": 73128.0,
+    "w2_swing": 67231.578125,
+    "onda_iniciada": "W5_o_C_terminal",
     "abc_a_inicio": null,
     "abc_a_inicio_fecha": null,
     "abc_c_fin": null,
-    "stop_extremo": 67242.0078125
+    "stop_extremo": 67231.578125
   },
   "checklist": {
-    "s1_retroceso": "SÍ",
-    "s2_estructura": "SÍ",
+    "s1_retroceso": "NO",
+    "s2_estructura": "NO",
     "s3_linea24": "NO",
-    "cumplidas": 2
+    "cumplidas": 0
   },
   "alerta_anticipada": {
     "activa": false,
@@ -41,30 +42,13 @@
     "b_fin_fecha": null,
     "b_fin": null
   },
-  "calidad_señal": "FUERTE",
-  "veredicto": "SEÑAL",
-  "razon": "El sesgo macro es BAJISTA (corrección mayor desde el ATH de 126198 aún sin tocar fondo; L1/L2 coinciden en objetivo 55000-50000). El impulso bajista swing desde el techo operativo ~78900 (mediados de mayo) desplegó W1 hasta 59022 (24-jun), con W2 correctiva que rebotó hasta ~67242 (rebote del 15-jun). El precio ya rompió a la baja perforando el mínimo previo (cae a 59022 el 24-jun, ahora 61024 tras un rebote técnico menor de pocas horas). Estamos entrando/dentro de W3 bajista → Modo C. Checklist: S1 retroceso >38.2% cumplido; S2 estructura 1-2 bajista contable y rotura del mínimo de W1 confirma la nueva dirección; S3 rotura limpia de línea 2-4 aún no consolidada en cierre 4h → 2/3 FUERTE. La fase macro es 'media' (corrección dentro del ciclo, no se opera contra el sesgo bajista), por lo que un SHORT de continuación es coherente. No aplica Modo B (no hay ABC alcista completándose). Entrada en rotura del extremo W1 (59022), stop ajustado sobre swing W2 (67242).",
-  "invalidacion": "Cierre 4h por encima de 67242 (swing W2) anula la estructura de W3 bajista; recuperación sobre 78000-90000 invalidaría el sesgo bajista completo (favorece E2).",
-  "_decision_python": "checklist 2/3 (Santos: 2/3 ya es FUERTE)",
-  "plan_trade": {
-    "entrada": 59022.79,
-    "stop": 67242.01,
-    "riesgo_por_unidad": 8219.22,
-    "O1": 51422.57,
-    "O1_accion": "cerrar 50%",
-    "O2": 46727.14,
-    "O2_accion": "cerrar 25%, subir stop a entrada",
-    "O3": 39126.92,
-    "O3_accion": "cerrar 25% restante",
-    "R:R": {
-      "O1": 0.92,
-      "O2": 1.5,
-      "O3": 2.42
-    },
-    "rr_valido_5x": false
-  },
+  "calidad_señal": "INSUFICIENTE",
+  "veredicto": "ESPERAR",
+  "razon": "El precio (59754) está prácticamente en los mínimos operativos (59108) y dentro de la zona objetivo bajista 55000-50000 de L1, en plena onda C terminal de la corrección. Score Santos L2 = 0.0 y mi lectura 4h confirma 0/3 señales para un nuevo SHORT. Vender aquí es perseguir un cuchillo cayendo a niveles ya extendidos donde estructuralmente queda poco espacio (el tramo terminal NO se extiende: O3 de un SHORT aquí no compensa). El Modo B para un LONG aún no aplica: la onda C no ha completado una estructura ABC contable con c≈1.0/1.618×a en la zona 55000-50000, y no hay señal de agotamiento. La operativa correcta hoy es ESPERAR el fin de la corrección en 55000-50000 para luego buscar LARGOS con confirmación, no abrir cortos tardíos ni largos anticipados sin estructura.",
+  "invalidacion": "Para el sesgo bajista: cierre por encima de 67231 (swing W2) y especialmente sobre 78000-90000 invalidaría la continuación bajista y favorecería E2 (Wave V alcista pendiente).",
+  "_decision_python": "checklist 0/3; Modo B: c/a=None fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-25",
+    "generado": "2026-06-26",
     "modelo": "claude-opus-4-8"
   }
 }
