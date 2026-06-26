@@ -21,6 +21,33 @@ def _direccion(nivel: float, precio: float) -> str:
     """Hacia dónde debe moverse el precio para gatillar la alerta."""
     return "cruce_abajo" if nivel <= precio else "cruce_arriba"
 
+def _posicion_abierta_real(ticker: str):
+    """Devuelve la fila de la señal ABIERTA en DB cuya entrada YA fue confirmada por
+    price_watcher (alert 'entrada' disparada después de su fecha) — una posición real en
+    curso, no una señal pendiente que todavía espera tocar la entrada (esa sigue su propio
+    camino vía el plan_trade de hoy, o queda invalidada por invalidar_señales_pendientes).
+    None si no hay ninguna."""
+    import sqlite3
+    db_path = Path(__file__).parent.parent / "data" / "sigmaview.db"
+    if not db_path.exists():
+        return None
+    con = sqlite3.connect(db_path)
+    con.row_factory = sqlite3.Row
+    row = con.execute(
+        "SELECT fecha, stop, o1, o2, o3, o1_hit, o2_hit, o3_hit FROM signals "
+        "WHERE ticker=? AND estado='ABIERTO' ORDER BY fecha DESC LIMIT 1",
+        (ticker,),
+    ).fetchone()
+    if not row:
+        con.close()
+        return None
+    entrada_fired = con.execute(
+        "SELECT 1 FROM alerts_fired WHERE ticker=? AND alert_id='entrada' AND fired_at >= ? LIMIT 1",
+        (ticker, row["fecha"]),
+    ).fetchone()
+    con.close()
+    return row if entrada_fired else None
+
 def generar_plan(precio_actual: float | None = None) -> dict:
     l1 = json.loads(L1_FILE.read_text()) if L1_FILE.exists() else {}
     l3 = json.loads(L3_FILE.read_text()) if L3_FILE.exists() else {}
@@ -62,9 +89,34 @@ def generar_plan(precio_actual: float | None = None) -> dict:
                     "fired": False,
                 })
 
-    # Plan de trade de L3 (si hay setup): entrada, stop, objetivos
+    # Posición YA ABIERTA en DB (entrada ya confirmada) — se vigila SIEMPRE, sin importar
+    # el veredicto de hoy. Un día que dice "ESPERAR" no cierra una posición real que sigue
+    # corriendo desde un día anterior; antes de este fix, generar_plan() solo construía
+    # stop/objetivos a partir del plan_trade DEL DÍA, y una posición abierta se quedaba sin
+    # vigilancia en cuanto la corrida siguiente no fuera otra vez "SEÑAL".
+    abierta = _posicion_abierta_real(TICKER)
+    if abierta:
+        _ACCION = {"o1": "cerrar 50%", "o2": "cerrar 25%, subir stop a entrada",
+                   "o3": "cerrar 25% restante"}
+        for k in ("stop", "o1", "o2", "o3"):
+            if k != "stop" and abierta[f"{k}_hit"]:
+                continue  # objetivo ya tocado en una corrida anterior, no re-vigilar
+            nivel = abierta["stop"] if k == "stop" else abierta[k]
+            if nivel is None:
+                continue
+            if k == "stop":
+                tipo, mensaje = "STOP", f"🛑 BTC tocó el STOP ${nivel:,.0f}. Setup invalidado."
+            else:
+                tipo = "OBJETIVO"
+                mensaje = f"🎯 BTC alcanzó {k.upper()} ${nivel:,.0f} — {_ACCION[k]}"
+            alertas.append({
+                "id": k, "nivel": nivel, "direccion": _direccion(nivel, precio),
+                "tipo": tipo, "mensaje": mensaje, "fired": False,
+            })
+
+    # Plan de trade NUEVO de L3 (si hoy hay setup y no hay ya una posición real abierta)
     pt = l3.get("plan_trade")
-    if pt and l3.get("veredicto") == "SEÑAL":
+    if not abierta and pt and l3.get("veredicto") == "SEÑAL":
         d = l3.get("direccion", "")
         cal = l3.get("calidad_señal", "")
         alertas.append({

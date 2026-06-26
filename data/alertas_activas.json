@@ -1,6 +1,6 @@
 {
   "generado": "2026-06-26",
-  "precio_referencia": 59754.640625,
+  "precio_referencia": 59077.0,
   "direccion_setup": "SHORT",
   "veredicto": "ESPERAR",
   "alertas": [
@@ -26,6 +26,38 @@
       "direccion": "cruce_abajo",
       "tipo": "RESOLUTORIO",
       "mensaje": "⚠️ BTC alcanzó $48,000 — nivel resolutorio L1. Re-evaluar escenarios.",
+      "fired": false
+    },
+    {
+      "id": "stop",
+      "nivel": 67242.01,
+      "direccion": "cruce_arriba",
+      "tipo": "STOP",
+      "mensaje": "🛑 BTC tocó el STOP $67,242. Setup invalidado.",
+      "fired": false
+    },
+    {
+      "id": "o1",
+      "nivel": 51422.57,
+      "direccion": "cruce_abajo",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O1 $51,423 — cerrar 50%",
+      "fired": false
+    },
+    {
+      "id": "o2",
+      "nivel": 46727.14,
+      "direccion": "cruce_abajo",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O2 $46,727 — cerrar 25%, subir stop a entrada",
+      "fired": false
+    },
+    {
+      "id": "o3",
+      "nivel": 39126.92,
+      "direccion": "cruce_abajo",
+      "tipo": "OBJETIVO",
+      "mensaje": "🎯 BTC alcanzó O3 $39,127 — cerrar 25% restante",
       "fired": false
     }
   ]
