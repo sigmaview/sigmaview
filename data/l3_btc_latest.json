@@ -1,12 +1,12 @@
 {
-  "fecha": "2026-06-27",
+  "fecha": "2026-06-28",
   "activo": "BTC/USD",
-  "precio_actual": 60065.421875,
+  "precio_actual": 60028.51953125,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C (o W5) bajista del impulso correctivo desde 126198, sub-onda final acercándose a soporte 59000-58000",
-    "grado": "Intermedio (corrección mayor de grado superior según L1)",
+    "sub_onda_actual": "Onda C bajista (probable W5 del impulso C) del descenso desde 81770 (mayo) dentro de Wave IV/A macro",
+    "grado": "Swing (semanas)",
     "estado": "en progreso",
-    "que_esperar": "El precio rompió el mínimo operativo de 59108 con mínimo intradía de 58029 (2026-06-25) y rebotó débilmente a 60065. La estructura bajista sigue dominante sin señal de agotamiento ni reversión confirmada. Se espera test de zona 55000-50000 (objetivo L1) antes de buscar suelo."
+    "que_esperar": "El impulso bajista desde el techo de mayo (~81770) sigue desarrollándose; el precio rebotó débilmente (2.9%) desde 58029 pero no muestra estructura 1-2 alcista confirmada. Posible nuevo tramo bajista hacia 55000-50000 antes de agotamiento."
   },
   "sesgo_macro": "BAJISTA",
   "fase_impulso_macro": "media",
@@ -20,14 +20,14 @@
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 80404.1484375,
-    "w1_fin": 70989.7265625,
+    "w1_origen": 81770.453125,
+    "w1_fin": 72236.0,
     "w2_swing": 77285.6484375,
     "onda_iniciada": "W5_o_C_terminal",
     "abc_a_inicio": null,
     "abc_a_inicio_fecha": null,
     "abc_c_fin": null,
-    "stop_extremo": 67248.0
+    "stop_extremo": 65953.546875
   },
   "checklist": {
     "s1_retroceso": "NO",
@@ -44,11 +44,11 @@
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "El sesgo macro es BAJISTA y ambos escenarios L1 coinciden en que la corrección desde 126198 aún no ha tocado fondo (objetivo 55000-50000). El precio ya está en plena zona de soporte crítica 59000-60000, con mínimo intradía de 58029 alcanzado el 2026-06-25 y un rebote que se desvaneció hasta 60065. Esto significa que un SHORT de continuación aquí entraría en la fase terminal del tramo bajista (la onda C/W5 ya muy desarrollada, NO la extendida), persiguiendo un movimiento que ya está extendido y cerca de su objetivo — riesgo/recompensa pobre y exactamente lo que L1 advierte ('no perseguir cortos a estos niveles ya extendidos'). No se cumple ninguna de las 3 señales Santos para un LONG de reversión (score 0.0): no hay retroceso >38.2% sostenido, no hay estructura 1-2 alcista contable, ni rotura de línea 2-4 bajista. Modo B no aplica: no hay corrección ABC alcista completándose con c≈1.618×a ni R:R>5x. La acción correcta es ESPERAR señal de agotamiento bajista en 55000-50000 antes de buscar largos, o esperar reacción confirmada para reevaluar.",
-  "invalidacion": "Para un eventual LONG de reversión: cierre diario por debajo de 58000 invalida el suelo y acelera hacia 50000. Para descartar continuación bajista: recuperación con cierre sobre 67248 (último swing relevante) abriría reevaluación de fin de corrección.",
+  "razon": "El sesgo macro es BAJISTA (ambos escenarios L1 coinciden: corrección desde techo 126198 aún sin tocar fondo, buscando 55000-50000). El precio está comprimido en zona de soporte crítica 58000-60000 con apenas 2.9% de rebote desde 58029 — no hay agotamiento bajista confirmado ni estructura de giro alcista, por lo que NO hay setup LONG válido. Para un SHORT de continuación: el impulso bajista ya recorrió un tramo largo (81770→58029) y el precio está cerca del soporte clave; entrar corto aquí significaría perseguir un movimiento ya extendido sobre la zona de soporte 58000-59000 que L1/L2 marcan como crítica — mal R:R y riesgo de rebote. La onda en curso se clasifica como W5_o_C_terminal (terminal, no extensible). Score Santos L2=0.5/3.0 y mi checklist 4h=0/3. Ningún resolutorio cruzado. No hay Modo B (no hay ABC alcista completándose). Lo prudente es ESPERAR: o bien un cierre <58000 que confirme aceleración bajista (entonces buscar continuación SHORT con retroceso), o bien una estructura ABC de agotamiento en 55000-50000 que habilite un LONG de reversión.",
+  "invalidacion": "Para el sesgo bajista vigente: recuperación con cierre semanal por encima de 78000-90000 invalidaría la profundidad correctiva. Para cualquier intento de SHORT precipitado: rebote sostenido sobre 66000 (extremo del último swing relevante) anularía la continuación inmediata.",
   "_decision_python": "checklist 0/3; Modo B: no hay ABC detectada",
   "_meta": {
-    "generado": "2026-06-27",
+    "generado": "2026-06-28",
     "modelo": "claude-opus-4-8"
   }
 }
