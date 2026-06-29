@@ -1,33 +1,33 @@
 {
-  "fecha": "2026-06-28",
+  "fecha": "2026-06-29",
   "activo": "BTC/USD",
-  "precio_actual": 60028.51953125,
+  "precio_actual": 59517.0,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C bajista (probable W5 del impulso C) del descenso desde 81770 (mayo) dentro de Wave IV/A macro",
-    "grado": "Swing (semanas)",
+    "sub_onda_actual": "Onda C bajista de la corrección IV (zigzag) desde 126198; tramo final impulsivo cerca de 58000-59000",
+    "grado": "Primario/Intermedio dentro de Wave IV correctiva",
     "estado": "en progreso",
-    "que_esperar": "El impulso bajista desde el techo de mayo (~81770) sigue desarrollándose; el precio rebotó débilmente (2.9%) desde 58029 pero no muestra estructura 1-2 alcista confirmada. Posible nuevo tramo bajista hacia 55000-50000 antes de agotamiento."
+    "que_esperar": "Posible capitulación final hacia 55000-58000 antes de agotamiento; aún no hay estructura 1-2 alcista ni rotura de línea 2-4"
   },
   "sesgo_macro": "BAJISTA",
   "fase_impulso_macro": "media",
   "direccion": "SHORT",
   "modo_entrada": "C_breakout",
   "modo_b_check": {
-    "abc_detectada": false,
+    "abc_detectada": true,
     "c_sobre_a": null,
     "rr_o3_estimado": null,
     "invalidacion_clara": false,
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 81770.453125,
-    "w1_fin": 72236.0,
-    "w2_swing": 77285.6484375,
+    "w1_origen": 84098.58,
+    "w1_fin": 70989.7265625,
+    "w2_swing": 77091.84375,
     "onda_iniciada": "W5_o_C_terminal",
     "abc_a_inicio": null,
     "abc_a_inicio_fecha": null,
     "abc_c_fin": null,
-    "stop_extremo": 65953.546875
+    "stop_extremo": 67231.578125
   },
   "checklist": {
     "s1_retroceso": "NO",
@@ -44,11 +44,11 @@
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "El sesgo macro es BAJISTA (ambos escenarios L1 coinciden: corrección desde techo 126198 aún sin tocar fondo, buscando 55000-50000). El precio está comprimido en zona de soporte crítica 58000-60000 con apenas 2.9% de rebote desde 58029 — no hay agotamiento bajista confirmado ni estructura de giro alcista, por lo que NO hay setup LONG válido. Para un SHORT de continuación: el impulso bajista ya recorrió un tramo largo (81770→58029) y el precio está cerca del soporte clave; entrar corto aquí significaría perseguir un movimiento ya extendido sobre la zona de soporte 58000-59000 que L1/L2 marcan como crítica — mal R:R y riesgo de rebote. La onda en curso se clasifica como W5_o_C_terminal (terminal, no extensible). Score Santos L2=0.5/3.0 y mi checklist 4h=0/3. Ningún resolutorio cruzado. No hay Modo B (no hay ABC alcista completándose). Lo prudente es ESPERAR: o bien un cierre <58000 que confirme aceleración bajista (entonces buscar continuación SHORT con retroceso), o bien una estructura ABC de agotamiento en 55000-50000 que habilite un LONG de reversión.",
-  "invalidacion": "Para el sesgo bajista vigente: recuperación con cierre semanal por encima de 78000-90000 invalidaría la profundidad correctiva. Para cualquier intento de SHORT precipitado: rebote sostenido sobre 66000 (extremo del último swing relevante) anularía la continuación inmediata.",
-  "_decision_python": "checklist 0/3; Modo B: no hay ABC detectada",
+  "razon": "El movimiento desde 126198 es correctivo bajista (Wave IV) y el precio está cerca del final de la onda C, en zona de capitulación 58000-59000, muy próximo al soporte resolutorio de 55000. Un SHORT aquí (continuación bajista) es entrar tarde en una onda C terminal con poco espacio estructural restante (objetivo macro 55000-58000 ya casi alcanzado), R:R desfavorable. No hay setup LONG válido: el checklist Santos marca 0/3 (sin retroceso >38.2%, sin estructura 1-2 alcista, sin rotura de línea 2-4); el suelo de la corrección NO está confirmado (se requiere reclamo de 75000 para E1 o capitulación bajo 55000 para E2). Modo B no dispara: la onda C aún no ha completado un patrón medible c≈1.0/1.618×a con invalidación clara cerca del nivel actual, y proyectar más abajo iría a NUEVO mínimo justo en el nivel resolutorio crítico. No operar contra el inminente suelo ni perseguir la caída agotada.",
+  "invalidacion": "Cierre semanal por encima de 75000 (valida fin de IV, favorece reversión alcista E1) o cierre diario por debajo de 55000 (confirma extensión bajista E2 y reactiva continuación SHORT con nueva estructura)",
+  "_decision_python": "checklist 0/3; Modo B: c/a=None fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-28",
+    "generado": "2026-06-29",
     "modelo": "claude-opus-4-8"
   }
 }

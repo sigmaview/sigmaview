@@ -1,31 +1,23 @@
 {
-  "generado": "2026-06-28",
-  "precio_referencia": 60028.51953125,
+  "generado": "2026-06-29",
+  "precio_referencia": 59517.0,
   "direccion_setup": "SHORT",
   "veredicto": "ESPERAR",
   "alertas": [
     {
-      "id": "resolutorio_90000",
-      "nivel": 90000.0,
+      "id": "resolutorio_95000",
+      "nivel": 95000.0,
       "direccion": "cruce_arriba",
       "tipo": "RESOLUTORIO",
-      "mensaje": "⚠️ BTC alcanzó $90,000 — nivel resolutorio L1. Re-evaluar escenarios.",
+      "mensaje": "⚠️ BTC alcanzó $95,000 — nivel resolutorio L1. Re-evaluar escenarios.",
       "fired": false
     },
     {
-      "id": "resolutorio_78000",
-      "nivel": 78000.0,
-      "direccion": "cruce_arriba",
-      "tipo": "RESOLUTORIO",
-      "mensaje": "⚠️ BTC alcanzó $78,000 — nivel resolutorio L1. Re-evaluar escenarios.",
-      "fired": false
-    },
-    {
-      "id": "resolutorio_48000",
-      "nivel": 48000.0,
+      "id": "resolutorio_55000",
+      "nivel": 55000.0,
       "direccion": "cruce_abajo",
       "tipo": "RESOLUTORIO",
-      "mensaje": "⚠️ BTC alcanzó $48,000 — nivel resolutorio L1. Re-evaluar escenarios.",
+      "mensaje": "⚠️ BTC alcanzó $55,000 — nivel resolutorio L1. Re-evaluar escenarios.",
       "fired": false
     },
     {
