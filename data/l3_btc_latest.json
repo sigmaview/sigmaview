@@ -1,33 +1,33 @@
 {
-  "fecha": "2026-06-29",
+  "fecha": "2026-06-30",
   "activo": "BTC/USD",
-  "precio_actual": 59517.0,
+  "precio_actual": 60094.98,
   "lectura_estructural": {
-    "sub_onda_actual": "Onda C bajista de la corrección IV (zigzag) desde 126198; tramo final impulsivo cerca de 58000-59000",
-    "grado": "Primario/Intermedio dentro de Wave IV correctiva",
+    "sub_onda_actual": "Onda C bajista de la corrección IV (E1) acercándose a zona de capitulación; rebote débil desde 58075 sin estructura impulsiva alcista",
+    "grado": "Sub-onda de grado intermedio dentro de la Wave IV correctiva del superciclo",
     "estado": "en progreso",
-    "que_esperar": "Posible capitulación final hacia 55000-58000 antes de agotamiento; aún no hay estructura 1-2 alcista ni rotura de línea 2-4"
+    "que_esperar": "El precio orbita 58000-60000, justo encima del resolutorio bajista 55000. Falta confirmación de suelo (reclamo de 75000) o capitulación final hacia 55000-58000. No hay aún reversión confirmada."
   },
-  "sesgo_macro": "BAJISTA",
+  "sesgo_macro": "ALCISTA",
   "fase_impulso_macro": "media",
-  "direccion": "SHORT",
-  "modo_entrada": "C_breakout",
+  "direccion": "LONG",
+  "modo_entrada": "B_fin_abc",
   "modo_b_check": {
     "abc_detectada": true,
-    "c_sobre_a": null,
+    "c_sobre_a": 0.62,
     "rr_o3_estimado": null,
     "invalidacion_clara": false,
     "dispara": false
   },
   "pivotes": {
-    "w1_origen": 84098.58,
-    "w1_fin": 70989.7265625,
-    "w2_swing": 77091.84375,
-    "onda_iniciada": "W5_o_C_terminal",
-    "abc_a_inicio": null,
-    "abc_a_inicio_fecha": null,
-    "abc_c_fin": null,
-    "stop_extremo": 67231.578125
+    "w1_origen": null,
+    "w1_fin": null,
+    "w2_swing": null,
+    "onda_iniciada": null,
+    "abc_a_inicio": 126198.07,
+    "abc_a_inicio_fecha": "2025-10-06",
+    "abc_c_fin": 58075.92,
+    "stop_extremo": 58075.92
   },
   "checklist": {
     "s1_retroceso": "NO",
@@ -36,19 +36,19 @@
     "cumplidas": 0
   },
   "alerta_anticipada": {
-    "activa": false,
-    "a_fin_fecha": null,
-    "a_fin": null,
-    "b_fin_fecha": null,
-    "b_fin": null
+    "activa": true,
+    "b_fin": 65544.0,
+    "a_size": 67089.15,
+    "nivel_c_1x": -1545.15,
+    "nivel_c_1618": -43006.25
   },
   "calidad_señal": "INSUFICIENTE",
   "veredicto": "ESPERAR",
-  "razon": "El movimiento desde 126198 es correctivo bajista (Wave IV) y el precio está cerca del final de la onda C, en zona de capitulación 58000-59000, muy próximo al soporte resolutorio de 55000. Un SHORT aquí (continuación bajista) es entrar tarde en una onda C terminal con poco espacio estructural restante (objetivo macro 55000-58000 ya casi alcanzado), R:R desfavorable. No hay setup LONG válido: el checklist Santos marca 0/3 (sin retroceso >38.2%, sin estructura 1-2 alcista, sin rotura de línea 2-4); el suelo de la corrección NO está confirmado (se requiere reclamo de 75000 para E1 o capitulación bajo 55000 para E2). Modo B no dispara: la onda C aún no ha completado un patrón medible c≈1.0/1.618×a con invalidación clara cerca del nivel actual, y proyectar más abajo iría a NUEVO mínimo justo en el nivel resolutorio crítico. No operar contra el inminente suelo ni perseguir la caída agotada.",
-  "invalidacion": "Cierre semanal por encima de 75000 (valida fin de IV, favorece reversión alcista E1) o cierre diario por debajo de 55000 (confirma extensión bajista E2 y reactiva continuación SHORT con nueva estructura)",
-  "_decision_python": "checklist 0/3; Modo B: c/a=None fuera de tolerancia (≈1.0 o 1.618 ±20%)",
+  "razon": "Sesgo macro ALCISTA (E1: Wave IV correctiva del superciclo, Wave V alcista pendiente), por lo que un LONG sería estructuralmente coherente al final de la corrección. PERO el Modo B no dispara: la corrección macro desde 126198 no muestra una ABC limpia con c≈1.618×a o c≈1.0×a en grado swing operable. Sub-estructura reciente en 4h: tramo bajista A=126198→58075 amplio, pero la lectura de la pierna final (A interno 64765→59095 ≈5670 pts, rebote B a 65549, C bajista a 58075 ≈7474 pts) da c/a≈0.62, lejos de los ratios 1.0 o 1.618 (±15%). Score Santos L2=0.0, ningún nivel resolutorio cruzado, rebote desde 58075 es débil y sin estructura 1-2 alcista contable (checklist 0/3). El precio orbita peligrosamente 55000 (resolutorio bajista E2) — si se pierde, el sesgo vira a corrección de grado superior. NO hay R:R>5x con invalidación clara hoy. Se arma ALERTA ANTICIPADA: con A=64765→59095 (5670) proyectando C desde B=65549, la zona 1.0×A≈59879 ya fue tocada/superada y 1.618×A≈56375 sería el objetivo de capitulación — vigilar entrada límite en zona 56000-58000 si C extiende, siempre que 55000 aguante en cierre.",
+  "invalidacion": "Cierre de 4h/diario por debajo de 55000 (confirma E2, corrección de grado superior — anula el setup LONG). Al alza, recuperación y cierre sostenido por encima de 75000 validaría fin de IV y exigiría re-evaluar entrada de continuación.",
+  "_decision_python": "checklist 0/3; Modo B: c/a=0.62 fuera de tolerancia (≈1.0 o 1.618 ±20%)",
   "_meta": {
-    "generado": "2026-06-29",
+    "generado": "2026-06-30",
     "modelo": "claude-opus-4-8"
   }
 }
