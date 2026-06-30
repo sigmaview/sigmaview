@@ -1,0 +1,70 @@
+name: Confirmar entrada manual
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  registrar:
+    # Solo procesa issues con la label del formulario, y solo si quien lo abrió tiene
+    # relación real con el repo (dueño/colaborador/miembro) — este repo es público, así que
+    # cualquier desconocido puede abrir un issue, pero no debe poder escribir en la DB.
+    if: >
+      contains(github.event.issue.labels.*.name, 'confirmar-entrada') &&
+      contains(fromJson('["OWNER","COLLABORATOR","MEMBER"]'), github.event.issue.author_association)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Registrar entrada en la base de datos
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_DATE_RAW: ${{ github.event.issue.created_at }}
+        run: PYTHONPATH=src python3 src/parse_confirmacion_issue.py
+
+      - name: Regenerar plan de alertas y dashboard
+        run: |
+          PYTHONPATH=src python3 src/alertas.py
+          PYTHONPATH=src python3 src/export_dashboard.py
+
+      - name: Commit y push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/sigmaview.db data/alertas_activas.json docs/data/
+          git diff --staged --quiet || git commit -m "manual: entrada confirmada (issue #${{ github.event.issue.number }})"
+          git push
+
+      - name: Comentar y cerrar el issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "✅ Entrada registrada — price_watcher ya está vigilando stop/objetivos."
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: "closed"
+            });

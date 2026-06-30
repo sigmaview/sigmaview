@@ -22,10 +22,12 @@ def _direccion(nivel: float, precio: float) -> str:
     return "cruce_abajo" if nivel <= precio else "cruce_arriba"
 
 def _posicion_abierta_real(ticker: str):
-    """Devuelve la fila de la señal ABIERTA en DB cuya entrada YA fue confirmada por
-    price_watcher (alert 'entrada' disparada después de su fecha) — una posición real en
-    curso, no una señal pendiente que todavía espera tocar la entrada (esa sigue su propio
-    camino vía el plan_trade de hoy, o queda invalidada por invalidar_señales_pendientes).
+    """Devuelve la fila de la señal ABIERTA en DB — una posición real confirmada manualmente
+    por Felipe vía GitHub Issue Form (ver database.registrar_entrada_manual y
+    .github/workflows/confirmar_entrada.yml). Antes esto se infería de si la alerta de
+    'entrada' se había disparado, asumiendo que ver la alerta implicaba haberla ejecutado —
+    eso causó una posición fantasma real (señal id=5, 2026-06-25) que Felipe nunca abrió.
+    Ahora la confirmación es explícita: si hay una fila ABIERTO, es porque él la confirmó.
     None si no hay ninguna."""
     import sqlite3
     db_path = Path(__file__).parent.parent / "data" / "sigmaview.db"
@@ -38,15 +40,8 @@ def _posicion_abierta_real(ticker: str):
         "WHERE ticker=? AND estado='ABIERTO' ORDER BY fecha DESC LIMIT 1",
         (ticker,),
     ).fetchone()
-    if not row:
-        con.close()
-        return None
-    entrada_fired = con.execute(
-        "SELECT 1 FROM alerts_fired WHERE ticker=? AND alert_id='entrada' AND fired_at >= ? LIMIT 1",
-        (ticker, row["fecha"]),
-    ).fetchone()
     con.close()
-    return row if entrada_fired else None
+    return row
 
 def generar_plan(precio_actual: float | None = None) -> dict:
     l1 = json.loads(L1_FILE.read_text()) if L1_FILE.exists() else {}

@@ -1,0 +1,74 @@
+name: Confirmar entrada manual
+description: Confirma que ya ejecutaste una entrada real en el exchange — activa el monitoreo de stop/objetivos en price_watcher.
+title: "Entrada confirmada"
+labels: ["confirmar-entrada"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Completa esto **después** de haber ejecutado la orden de verdad, no antes. Reemplaza
+        cualquier posición ABIERTO previa del mismo activo.
+  - type: dropdown
+    id: ticker
+    attributes:
+      label: Activo
+      options:
+        - BTC-USD
+        - "^GSPC"
+    validations:
+      required: true
+  - type: dropdown
+    id: direccion
+    attributes:
+      label: Dirección
+      options:
+        - LONG
+        - SHORT
+    validations:
+      required: true
+  - type: input
+    id: entrada
+    attributes:
+      label: Precio de entrada ejecutado
+      placeholder: "59500"
+    validations:
+      required: true
+  - type: input
+    id: cantidad
+    attributes:
+      label: Cantidad
+      placeholder: "0.5"
+    validations:
+      required: true
+  - type: input
+    id: stop
+    attributes:
+      label: Stop loss
+      placeholder: "55000"
+    validations:
+      required: false
+  - type: input
+    id: o1
+    attributes:
+      label: Objetivo 1 (O1)
+    validations:
+      required: false
+  - type: input
+    id: o2
+    attributes:
+      label: Objetivo 2 (O2)
+    validations:
+      required: false
+  - type: input
+    id: o3
+    attributes:
+      label: Objetivo 3 (O3)
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmacion
+    attributes:
+      label: Confirmación
+      options:
+        - label: Confirmo que ya ejecuté esta entrada en el exchange (no es un plan, ya está abierta)
+          required: true

@@ -88,7 +88,8 @@ def init_db() -> None:
     # Migración: agrega columnas nuevas a signals si no existen (DB ya creada)
     with _conn() as c:
         for col in ["o1_hit INTEGER DEFAULT 0", "o2_hit INTEGER DEFAULT 0",
-                    "o3_hit INTEGER DEFAULT 0", "fecha_cierre TEXT", "mfe_48h REAL"]:
+                    "o3_hit INTEGER DEFAULT 0", "fecha_cierre TEXT", "mfe_48h REAL",
+                    "cantidad REAL", "origen TEXT DEFAULT 'auto'"]:
             try:
                 c.execute(f"ALTER TABLE signals ADD COLUMN {col}")
             except sqlite3.OperationalError:
@@ -229,6 +230,41 @@ def log_signal(fecha: str, ticker: str, result: dict) -> None:
             pt.get("O1"), pt.get("O2"), pt.get("O3"),
             rr(pt.get("O1")), rr(pt.get("O2")), rr(pt.get("O3")),
         ))
+
+
+def registrar_entrada_manual(fecha: str, ticker: str, direccion: str, entrada: float,
+                              cantidad: float, stop: float | None = None,
+                              o1: float | None = None, o2: float | None = None,
+                              o3: float | None = None) -> int:
+    """Registra una entrada que Felipe confirma haber ejecutado de verdad (vía GitHub Issue
+    Form, ver .github/workflows/confirmar_entrada.yml) — reemplaza la inferencia automática
+    "se disparó la alerta de entrada → asumo que se ejecutó" que causaba posiciones fantasma.
+    Cierra cualquier ABIERTO previo del mismo ticker (solo puede haber una posición real a la
+    vez) y crea la nueva fila ya marcada como ABIERTO. Retorna el id de la señal creada."""
+    init_db()
+
+    def rr(target):
+        if stop and entrada and target:
+            risk = abs(entrada - stop)
+            return round(abs(target - entrada) / risk, 2) if risk > 0 else None
+        return None
+
+    with _conn() as c:
+        c.execute(
+            "UPDATE signals SET estado='INVALIDADA', fecha_cierre=? "
+            "WHERE ticker=? AND estado='ABIERTO'",
+            (fecha, ticker),
+        )
+        cur = c.execute("""
+            INSERT OR REPLACE INTO signals
+            (fecha, ticker, direccion, entrada, stop, o1, o2, o3,
+             rr_o1, rr_o2, rr_o3, cantidad, estado, origen)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?, 'ABIERTO', 'manual')
+        """, (
+            fecha, ticker, direccion, entrada, stop, o1, o2, o3,
+            rr(o1), rr(o2), rr(o3), cantidad,
+        ))
+        return cur.lastrowid
 
 
 def invalidar_señales_pendientes(ticker: str, fecha_hoy: str) -> int:
