@@ -1,0 +1,74 @@
+name: Registro Prospectivo
+
+# Resuelve las predicciones vencidas contra precio real, reconstruye la base y publica el
+# dashboard. Es el ÚNICO proceso automático del registro: registrar una predicción es siempre
+# manual y deliberado (el valor del experimento depende de que sea un acto consciente), pero
+# resolverla es mecánico y no debe depender de que alguien se acuerde — ya lapsó una vez.
+on:
+  schedule:
+    - cron: '20 11 * * *'   # 11:20 UTC ≈ 07:20 Chile, tras el cierre diario de la vela previa
+  workflow_dispatch:         # y a mano cuando haga falta
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prospectivo
+  cancel-in-progress: false   # nunca cancelar a mitad: podría dejar la resolución a medias
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Guardar hash del log (control anti-manipulación)
+        id: pre
+        run: echo "sha=$(sha256sum data/predicciones_prospectivas.jsonl | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: Resolver vencidas, reconstruir DB y exportar web
+        run: PYTHONPATH=src python3 src/prospectivo.py sync
+
+      - name: Verificar que solo cambiaron campos de resolución
+        run: |
+          # El log es append-only: este job SOLO puede rellenar resultado/ts_resolucion/
+          # precio_resolucion/benchmark_resultado/trade_*. Si cambió el número de líneas o
+          # cualquier campo de la predicción original, algo está mal y hay que mirarlo a mano.
+          python3 - <<'PY'
+          import json, subprocess, sys
+          viejo = subprocess.run(['git','show','HEAD:data/predicciones_prospectivas.jsonl'],
+                                 capture_output=True, text=True).stdout
+          nuevo = open('data/predicciones_prospectivas.jsonl').read()
+          a = [json.loads(l) for l in viejo.splitlines() if l.strip()]
+          b = [json.loads(l) for l in nuevo.splitlines() if l.strip()]
+          if len(a) != len(b):
+              sys.exit(f"FALLA: el log pasó de {len(a)} a {len(b)} líneas. Este job no registra, solo resuelve.")
+          mutables = {'resultado','ts_resolucion','precio_resolucion','benchmark_resultado',
+                      'trade_estado','trade_r','trade_detalle'}
+          for x, y in zip(a, b):
+              for k in set(x) | set(y):
+                  if k not in mutables and x.get(k) != y.get(k):
+                      sys.exit(f"FALLA: {x.get('id')} cambió el campo inmutable '{k}'.")
+          print(f"OK — {len(b)} predicciones, solo campos de resolución modificados.")
+          PY
+
+      - name: Commit y push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/predicciones_prospectivas.jsonl data/sigmaview.db docs/data/prospectivo.json
+          git diff --staged --quiet && echo "Sin cambios." && exit 0
+          git commit -m "prospectivo: sync $(date -u +%Y-%m-%dT%H:%M)Z"
+          git push

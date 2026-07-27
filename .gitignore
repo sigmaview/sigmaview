@@ -5,8 +5,14 @@ __pycache__/
 data/backtest_cache/
 data/walkforward_results.json
 data/walkforward_l3/
+data/walkforward_results_spx.json
+data/walkforward_l3_spx/
 data/microstructure_breakout_test.json
 data/pilot_microstructure_result.json
 data/compare_l3_opus_result.json
 20260616 Contexto/
 .DS_Store
+
+# artefactos de respaldo y salidas de tests
+*.jsonl.bak
+data/test_*_result.json

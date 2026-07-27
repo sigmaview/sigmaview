@@ -1,783 +1,213 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SigmaView — BTC Elliott Wave</title>
-  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-  <style>
-    :root {
-      --bg: #0d1117; --card: #161b22; --border: #30363d;
-      --text: #e6edf3; --muted: #8b949e;
-      --green: #2ea043; --red: #da3633; --yellow: #d29922; --blue: #388bfd;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
-    header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-    header h1 { font-size: 18px; font-weight: 600; }
-    header .meta { color: var(--muted); font-size: 12px; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
-
-    /* Cards */
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
-    .card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-    .card .value { font-size: 22px; font-weight: 700; }
-    .card .sub   { color: var(--muted); font-size: 11px; margin-top: 4px; }
-    .green { color: var(--green); } .red { color: var(--red); } .yellow { color: var(--yellow); } .blue { color: var(--blue); }
-
-    /* Section */
-    .section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
-    .section h2 { font-size: 13px; font-weight: 600; margin-bottom: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-
-    /* Chart */
-    .chart-wrap { position: relative; height: 280px; }
-
-    /* Table */
-    table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    th { color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); font-weight: 500; white-space: nowrap; }
-    td { padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-    tr:last-child td { border-bottom: none; }
-    .clickable-row { cursor: pointer; transition: background .1s; }
-    .clickable-row:hover { background: #1c2128; }
-
-    /* Badge */
-    .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-    .badge-senal   { background: #1a3a1a; color: var(--green); }
-    .badge-esperar { background: #2a2a0a; color: var(--yellow); }
-    .badge-long    { background: #0d2a3a; color: var(--blue); }
-    .badge-short   { background: #3a0d0d; color: var(--red); }
-    .badge-abierto { background: #1a2a3a; color: var(--blue); }
-    .badge-ganador { background: #1a3a1a; color: var(--green); }
-    .badge-perdedor{ background: #3a1a1a; color: var(--red); }
-    .badge-invalidada{ background: #2a2a2a; color: var(--muted); }
-
-    /* Price header */
-    .price-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-    .price-header .price { font-size: 32px; font-weight: 700; }
-    @media(max-width: 600px) { .price-header .price { font-size: 24px; } }
-
-    /* Tabs */
-    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 4px; }
-    .tab-btn { padding: 10px 18px; cursor: pointer; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-weight: 500; transition: color .15s, border-color .15s; }
-    .tab-btn.active { color: var(--text); border-bottom-color: var(--blue); }
-    .tab-btn:hover:not(.active) { color: var(--text); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    /* Modal */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; line-height: 1; }
-    .modal-close:hover { color: var(--text); }
-    .modal h3 { font-size: 15px; font-weight: 700; margin-bottom: 18px; padding-right: 24px; }
-    .modal-section { margin-bottom: 20px; }
-    .modal-section h4 { font-size: 11px; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; font-weight: 600; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-    .modal-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #21262d; font-size: 13px; gap: 12px; }
-    .modal-row:last-child { border-bottom: none; }
-    .modal-row .mkey { color: var(--muted); flex-shrink: 0; }
-    .modal-row .mval { text-align: right; font-weight: 500; }
-
-    /* Vision semanal */
-    .resumen-box { background: #0d1117; border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 20px; }
-    .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .sc-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
-    .sc-card .sc-id { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
-    .sc-card .sc-title { font-size: 12px; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
-    .sc-card .sc-row { font-size: 11px; color: var(--muted); padding: 3px 0; line-height: 1.4; }
-    .sc-card .sc-row strong { color: var(--text); }
-    .acuerdo-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-    .acuerdo-box h4 { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
-    .nivel-chip { display: inline-block; background: #21262d; border: 1px solid var(--border); border-radius: 4px; padding: 3px 9px; font-size: 12px; font-weight: 600; margin: 2px; }
-    .div-box { background: #1a1500; border: 1px solid #3a3000; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
-    .div-box .div-label { font-size: 11px; color: var(--yellow); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; font-weight: 600; }
-    .div-box p { font-size: 13px; line-height: 1.5; margin-bottom: 8px; }
-    .div-box p:last-child { margin-bottom: 0; color: var(--muted); font-size: 12px; }
-
-    /* L1 history table */
-    .hist-table { width: 100%; min-width: 940px; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
-    .hist-table th { color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
-    .hist-table td { padding: 6px 8px; border-bottom: 1px solid #21262d; vertical-align: top; white-space: normal; line-height: 1.4; word-break: break-word; }
-    .hist-table tr:last-child td { border-bottom: none; }
-    .hist-table col.col-fecha  { width: 80px; }
-    .hist-table col.col-techo  { width: 90px; }
-    .hist-table col.col-escenarios { width: 220px; }
-    .hist-table col.col-sesgo  { width: 220px; }
-    .hist-table col.col-modelo { width: 70px; }
-    .hist-table col.col-resumen{ width: 220px; }
-
-    /* Tablas con columna de texto largo: ancho mínimo fijo + scroll horizontal en mobile,
-       en vez de aplastar las columnas cortas (fecha/precio/badges) para que todo "calce". */
-    .wrap-table { min-width: 680px; table-layout: fixed; }
-    .wrap-table col.col-narrow { width: 64px; }
-    .wrap-table col.col-wide   { width: 280px; }
-    .wrap-table td, .wrap-table th { white-space: normal; word-break: break-word; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SigmaView — Registro Prospectivo</title>
+<style>
+:root{
+  color-scheme: light;
+  --plane:#f9f9f7; --surface:#fcfcfb;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --rule:#c3c2b7; --border:rgba(11,11,11,.10);
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --accent:#2a78d6;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --plane:#0d0d0d; --surface:#1a1a19;
+    --ink:#fff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --rule:#383835; --border:rgba(255,255,255,.10);
+    --accent:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0d0d0d; --surface:#1a1a19;
+  --ink:#fff; --ink-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --rule:#383835; --border:rgba(255,255,255,.10);
+  --accent:#3987e5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;
+  padding-bottom:16px;border-bottom:1px solid var(--rule);margin-bottom:24px}
+h1{font-size:21px;margin:0;letter-spacing:-.01em}
+h2{font-size:15px;margin:34px 0 12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2)}
+.meta{color:var(--muted);font-size:13px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.tile .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.tile .v{font-size:30px;font-weight:600;margin-top:4px;letter-spacing:-.02em}
+.tile .s{font-size:12px;color:var(--ink-2);margin-top:2px}
+.banner{margin-top:16px;padding:13px 16px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface);border-left:3px solid var(--warning);font-size:14px;color:var(--ink-2)}
+.banner b{color:var(--ink)}
+.scroll{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.05em;padding:10px 12px;border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--grid);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.dim{color:var(--muted)}
+.tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:11px;font-weight:600;
+  border:1px solid var(--border);color:var(--ink-2)}
+.tag.limpio{border-color:var(--accent);color:var(--accent)}
+.long{color:var(--good);font-weight:600}
+.short{color:var(--critical);font-weight:600}
+.ok{color:var(--good);font-weight:600}
+.bad{color:var(--critical);font-weight:600}
+.warn{color:var(--serious);font-weight:600}
+.note{font-size:12.5px;color:var(--muted);margin-top:9px}
+footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--rule);
+  font-size:12.5px;color:var(--muted)}
+code{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:12px}
+</style>
 </head>
 <body>
-
-<header>
-  <h1>⚡ SigmaView — BTC/USD</h1>
-  <span class="meta" id="last-update">Cargando...</span>
-</header>
-
-<div class="container">
-
-  <!-- Precio actual + veredicto (siempre visible) -->
-  <div class="section" style="margin-bottom:20px">
-    <div class="price-header">
-      <span class="price" id="precio">—</span>
-      <span id="veredicto-badge">—</span>
-      <span id="sesgo-badge">—</span>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Registro Prospectivo — SigmaView</h1>
+      <div class="meta" id="sub">cargando…</div>
     </div>
-    <span class="meta" id="fase-texto" style="color:var(--muted)"></span>
-  </div>
-
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">📊 Dashboard</button>
-    <button class="tab-btn" data-tab="vision" onclick="switchTab('vision')">🌊 Visión Semanal</button>
-  </div>
-
-  <!-- ═══ TAB: Dashboard ═══ -->
-  <div id="tab-dashboard" class="tab-content active">
-
-    <!-- Cards de stats -->
-    <div class="cards">
-      <div class="card">
-        <div class="label">Análisis corridos</div>
-        <div class="value" id="stat-analisis">—</div>
-      </div>
-      <div class="card">
-        <div class="label">Señales totales</div>
-        <div class="value" id="stat-señales">—</div>
-        <div class="sub" id="stat-tasa">— tasa de señal</div>
-      </div>
-      <div class="card">
-        <div class="label">Win rate</div>
-        <div class="value" id="stat-winrate">—</div>
-        <div class="sub">trades cerrados</div>
-      </div>
-      <div class="card">
-        <div class="label">R total</div>
-        <div class="value" id="stat-r">—</div>
-        <div class="sub" id="stat-r-trade">— R/trade</div>
-      </div>
-      <div class="card">
-        <div class="label">Capital 1% riesgo</div>
-        <div class="value" id="cap-1p">—</div>
-        <div class="sub">desde $100 base</div>
-      </div>
-      <div class="card">
-        <div class="label">Capital 2% riesgo</div>
-        <div class="value" id="cap-2p">—</div>
-        <div class="sub">desde $100 base</div>
-      </div>
-    </div>
-
-    <!-- Gráfico precio BTC (candlesticks) -->
-    <div class="section">
-      <h2>Precio BTC — últimos 180 días</h2>
-      <div class="chart-wrap" id="chartPrecio"></div>
-    </div>
-
-    <!-- Señales (click para detalle) -->
-    <div class="section">
-      <h2>Señales de trade <span style="font-weight:400;font-size:11px">(click para detalle)</span></h2>
-      <div style="overflow-x:auto">
-      <table>
-        <thead>
-          <tr>
-            <th>Fecha</th><th>Dir</th><th>Modo</th><th>Calidad</th>
-            <th>Entrada</th><th>Stop</th><th>O1</th><th>O2</th><th>O3</th>
-            <th>R:R O3</th><th>Resultado</th><th>G/P 1%</th><th>G/P 2%</th><th>Estado</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-signals"></tbody>
-      </table>
-      </div>
-    </div>
-
-    <!-- Historial de análisis -->
-    <div class="section">
-      <h2>Historial de análisis diarios</h2>
-      <div style="overflow-x:auto">
-      <table class="wrap-table">
-        <colgroup>
-          <col class="col-narrow"><col class="col-narrow"><col class="col-narrow"><col class="col-narrow">
-          <col class="col-wide"><col class="col-narrow"><col class="col-narrow"><col class="col-narrow">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Fecha</th><th>Precio</th><th>Veredicto</th><th>Modo</th>
-            <th>Sub-onda</th><th>Sesgo</th><th>Fase</th><th>Modelo</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-analysis"></tbody>
-      </table>
-      </div>
-    </div>
-
-    <!-- Alertas disparadas -->
-    <div class="section">
-      <h2>Alertas disparadas (price watcher)</h2>
-      <div style="overflow-x:auto">
-      <table>
-        <thead>
-          <tr><th>Fecha/hora</th><th>Tipo</th><th>Nivel</th><th>Precio</th><th>Mensaje</th></tr>
-        </thead>
-        <tbody id="tbl-alerts"></tbody>
-      </table>
-      </div>
-    </div>
-
-  </div><!-- /tab-dashboard -->
-
-  <!-- ═══ TAB: Visión Semanal ═══ -->
-  <div id="tab-vision" class="tab-content">
-
-    <div class="section" style="margin-bottom:20px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <h2 style="margin-bottom:0">Análisis semanal (L1 — Opus)</h2>
-        <span style="color:var(--muted);font-size:12px" id="l1-fecha">—</span>
-      </div>
-      <span style="color:var(--muted);font-size:12px">Techo operativo: <span id="l1-techo" style="color:var(--text)">—</span></span>
-    </div>
-
-    <!-- Resumen -->
-    <div class="resumen-box" id="l1-resumen">—</div>
-
-    <!-- Gráfico de escenarios: techo + niveles objetivo/confirma/invalida por escenario -->
-    <div class="section">
-      <h2>Niveles de los escenarios — precio semanal</h2>
-      <div class="chart-wrap" id="chartVision" style="height:340px"></div>
-      <div id="vision-chart-legend" style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.6"></div>
-    </div>
-
-    <!-- Escenarios -->
-    <div class="section">
-      <h2>Escenarios Elliott Wave vigentes</h2>
-      <div class="scenarios-grid" id="l1-escenarios"></div>
-    </div>
-
-    <!-- Acuerdo -->
-    <div class="acuerdo-box">
-      <h4>Acuerdo entre escenarios — qué hacer hoy</h4>
-      <div style="margin-bottom:10px;font-size:13px;line-height:1.5" id="l1-sesgo">—</div>
-      <div style="margin-bottom:8px;font-size:11px;color:var(--muted)">Niveles clave compartidos:</div>
-      <div id="l1-niveles" style="margin-bottom:12px"></div>
-      <div style="font-size:13px;line-height:1.5;color:var(--text)" id="l1-operar">—</div>
-    </div>
-
-    <!-- Divergencia -->
-    <div class="div-box">
-      <div class="div-label">⚠ Divergencia — pregunta abierta</div>
-      <p id="l1-divergencia">—</p>
-      <p id="l1-resuelve">—</p>
-    </div>
-
-    <!-- Historial L1 -->
-    <div class="section">
-      <h2>Historial de visión semanal</h2>
-      <div style="overflow-x:auto">
-      <table class="hist-table">
-        <colgroup>
-          <col class="col-fecha"><col class="col-techo"><col class="col-escenarios"><col class="col-sesgo"><col class="col-modelo"><col class="col-resumen">
-        </colgroup>
-        <thead>
-          <tr><th>Fecha</th><th>Techo op.</th><th>Escenarios (sesgo CP)</th><th>Sesgo acuerdo</th><th>Modelo</th><th>Resumen</th></tr>
-        </thead>
-        <tbody id="tbl-l1-hist"></tbody>
-      </table>
-      </div>
-    </div>
-
-  </div><!-- /tab-vision -->
-
-</div><!-- /container -->
-
-<!-- ═══ Modal de señal ═══ -->
-<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div id="modal-content"></div>
-  </div>
+    <div class="meta" id="stamp"></div>
+  </header>
+  <main id="app"><p class="dim">Cargando datos…</p></main>
+  <footer>
+    Fuente de verdad: <code>data/predicciones_prospectivas.jsonl</code> (append-only, versionado en git).
+    Esta página lee <code>data/prospectivo.json</code>, derivado del log.
+    Una predicción registrada nunca se edita — solo se resuelve.
+  </footer>
 </div>
 
 <script>
-const BASE = './data/';
-const fmt    = n => n != null ? '$' + Number(n).toLocaleString('es-CL', {maximumFractionDigits:0}) : '—';
-const fmtR   = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + 'R' : '—';
-const fmtPct = n => n != null ? (n > 0 ? '+' : '') + Number(n).toFixed(2) + '%' : '—';
+const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content; };
+const pct = (v) => v==null ? '—' : v.toFixed(0)+'%';
+const money = (v) => v==null ? '—' : (Math.abs(v)>=100 ? v.toLocaleString('es',{maximumFractionDigits:0})
+                                                       : v.toLocaleString('es',{maximumFractionDigits:2}));
 
-function badge(text, cls) {
-  return `<span class="badge ${cls}">${text}</span>`;
-}
+fetch('data/prospectivo.json?_=' + Date.now())
+  .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  .then(render)
+  .catch(e => document.getElementById('app').innerHTML =
+    `<p class="bad">No se pudo cargar data/prospectivo.json (${e}). Corre <code>python3 src/prospectivo.py sync</code>.</p>`);
 
-function fmtTimestamp(iso, fallbackFecha) {
-  if (!iso) return fallbackFecha || '—';
-  const d = new Date(iso);
-  const opts = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-  const cl  = d.toLocaleString('es-CL', { ...opts, timeZone: 'America/Santiago' });
-  const utc = d.toLocaleString('es-CL', { ...opts, timeZone: 'UTC' });
-  return `${cl} CL  /  ${utc} UTC`;
-}
+function render(d){
+  const R = d.resumen, TL = R.tests_limpios;
+  document.getElementById('sub').textContent =
+    `${R.total} predicciones · ${R.vivas} vivas · método ${d.metodo_version_actual}`;
+  document.getElementById('stamp').textContent = `datos al ${d.fecha}`;
 
-// ── Tabs ──────────────────────────────────────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
-  document.getElementById(`tab-${tab}`).classList.add('active');
-}
+  const app = document.getElementById('app');
+  app.innerHTML = '';
 
-// ── Modal ─────────────────────────────────────────────────────────────────────
-let _allSignals = [], _allAnalysis = [];
+  // ── KPIs ──────────────────────────────────────────────────────────────────
+  const brier = R.calibracion.brier;
+  app.append($(`<section class="tiles">
+    <div class="tile"><div class="k">Vivas</div><div class="v">${R.vivas}</div>
+      <div class="s">de ${R.total} registradas</div></div>
+    <div class="tile"><div class="k">Resueltas</div><div class="v">${R.resueltas}</div>
+      <div class="s">meta: 20–30 en una misma versión</div></div>
+    <div class="tile"><div class="k">Tests limpios</div>
+      <div class="v">${TL.resueltos}<span class="dim" style="font-size:17px">/${TL.registrados}</span></div>
+      <div class="s">resueltos / registrados</div></div>
+    <div class="tile"><div class="k">Brier score</div>
+      <div class="v">${brier==null?'—':brier.toFixed(3)}</div>
+      <div class="s">${brier==null?'sin datos':(brier<0.25?'mejor que azar':'peor que declarar 0.5')}</div></div>
+  </section>`));
 
-function openSignalModal(i) {
-  const s = _allSignals[i];
-  const a = _allAnalysis.find(x => x.fecha === s.fecha) || {};
-  const entry = s.entrada, stop = s.stop;
-  const risk  = entry && stop ? Math.abs(entry - stop) : 0;
-  const rr    = t => risk > 0 && t ? (Math.abs(t - entry) / risk).toFixed(1) + 'x' : '—';
-  const estado = (s.estado || 'ABIERTO').toUpperCase();
-  const estadoBadge = estado === 'GANADOR'   ? badge(estado,'badge-ganador') :
-                      estado === 'PERDEDOR'  ? badge(estado,'badge-perdedor') :
-                      estado === 'INVALIDADA' ? badge(estado,'badge-invalidada') :
-                      badge(estado,'badge-abierto');
+  if (TL.resueltos === 0) app.append($(`<div class="banner">
+    <b>⚠ Aún no hay evidencia sobre el edge de Elliott.</b> Solo las predicciones que
+    <b>contradicen</b> al baseline naive (seguir-tendencia) miden si el método aporta algo;
+    hay ${TL.registrados} registradas y ninguna ha vencido. Las que coinciden con el naive miden
+    el sistema completo, no Elliott.</div>`));
 
-  document.getElementById('modal-content').innerHTML = `
-    <h3>⚡ SEÑAL ${s.direccion==='LONG'?badge('LONG','badge-long'):badge('SHORT','badge-short')} — ${s.fecha}</h3>
+  // ── Señales vivas ─────────────────────────────────────────────────────────
+  const hoy = new Date(d.fecha);
+  const vivas = d.predicciones.filter(p => p.resultado == null).map(p => {
+    const px = d.precios[p.activo];
+    const dObj = px ? Math.abs(px - p.objetivo)/px*100 : null;
+    const dInv = px ? Math.abs(px - p.invalidacion)/px*100 : null;
+    const dias = Math.round((new Date(p.horizonte_fecha) - hoy)/864e5);
+    return {p, px, dObj, dInv, dias, prox: Math.min(dObj ?? 999, dInv ?? 999)};
+  }).sort((a,b) => a.prox - b.prox);
 
-    <div class="modal-section">
-      <h4>Plan de trade (Enfoque B — Parciales)</h4>
-      <div class="modal-row"><span class="mkey">Entrada</span><span class="mval">${fmt(entry)}</span></div>
-      <div class="modal-row"><span class="mkey" style="color:var(--red)">Stop Loss</span><span class="mval" style="color:var(--red)">${fmt(stop)}</span></div>
-      <div class="modal-row">
-        <span class="mkey">O1 — cerrar 50%</span>
-        <span class="mval">${fmt(s.o1)} <span style="color:var(--muted);font-weight:400">${rr(s.o1)}</span>
-        ${s.o1_hit ? '<span style="color:var(--green);margin-left:4px">✓</span>' : ''}</span>
-      </div>
-      <div class="modal-row">
-        <span class="mkey">O2 — cerrar 25%, SL→BE</span>
-        <span class="mval">${fmt(s.o2)} <span style="color:var(--muted);font-weight:400">${rr(s.o2)}</span>
-        ${s.o2_hit ? '<span style="color:var(--green);margin-left:4px">✓</span>' : ''}</span>
-      </div>
-      <div class="modal-row">
-        <span class="mkey">O3 — cerrar 25%</span>
-        <span class="mval">${fmt(s.o3)} <span style="color:var(--muted);font-weight:400">${rr(s.o3)}</span>
-        ${s.o3_hit ? '<span style="color:var(--green);margin-left:4px">✓</span>' : ''}</span>
-      </div>
-      <div class="modal-row"><span class="mkey">Calidad señal</span><span class="mval">${s.calidad||'—'}</span></div>
-      <div class="modal-row">
-        <span class="mkey">Resultado</span>
-        <span class="mval ${s.resultado_r > 0 ? 'green' : s.resultado_r < 0 ? 'red' : ''}">${fmtR(s.resultado_r)}</span>
-      </div>
-      <div class="modal-row"><span class="mkey">Estado</span><span class="mval">${estadoBadge}</span></div>
-      ${s.fecha_cierre ? `<div class="modal-row"><span class="mkey">Fecha cierre</span><span class="mval" style="color:var(--muted)">${(s.fecha_cierre||'').slice(0,10)}</span></div>` : ''}
-    </div>
+  app.append($(`<h2>Señales vivas (${vivas.length})</h2>`));
+  const rows = vivas.map(({p,px,dObj,dInv,dias}) => {
+    const limpio = p.direccion !== p.benchmark_naive_dir;
+    const cerca = Math.min(dObj ?? 999, dInv ?? 999) < 5;
+    return `<tr>
+      <td><b>${p.activo}</b>${limpio?' <span class="tag limpio">test limpio</span>':''}</td>
+      <td><span class="tag">${p.metodo_version}</span></td>
+      <td class="${p.direccion==='LONG'?'long':'short'}">${p.direccion}</td>
+      <td class="num">${money(px)}</td>
+      <td class="num">${money(p.objetivo)} <span class="dim">${pct(dObj)}</span></td>
+      <td class="num">${money(p.invalidacion)} <span class="dim">${pct(dInv)}</span></td>
+      <td class="num">${p.confianza.toFixed(2)}</td>
+      <td class="num ${dias<14?'warn':''}">${dias}d</td>
+      <td>${cerca?'<span class="warn">◆ cerca</span>':'<span class="dim">—</span>'}</td>
+    </tr>`;}).join('');
+  app.append($(`<div class="scroll"><table>
+    <thead><tr><th>Activo</th><th>Ver</th><th>Dir</th><th class="num">Precio</th>
+      <th class="num">Objetivo</th><th class="num">Invalidación</th><th class="num">Conf</th>
+      <th class="num">Horiz</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table></div>`));
+  app.append($(`<p class="note">Ordenadas por proximidad al gatillo. <b>◆ cerca</b> = a menos de 5% de
+    resolverse. <b>test limpio</b> = la lectura contradice al momentum, único caso que mide Elliott.</p>`));
 
-    <div class="modal-section">
-      <h4>Contexto Elliott Wave — L3 (${s.fecha})</h4>
-      <div class="modal-row">
-        <span class="mkey">Onda actual</span>
-        <span class="mval" style="font-size:11px;font-weight:400;max-width:300px;text-align:right;white-space:normal;line-height:1.4">${a.sub_onda||'—'}</span>
-      </div>
-      <div class="modal-row"><span class="mkey">Fase impulso macro</span><span class="mval">${a.fase_impulso||'—'}</span></div>
-      <div class="modal-row">
-        <span class="mkey">Sesgo</span>
-        <span class="mval">${a.sesgo_macro==='ALCISTA' ? badge('▲ ALCISTA','badge-long') : a.sesgo_macro==='BAJISTA' ? badge('▼ BAJISTA','badge-short') : (a.sesgo_macro||'—')}</span>
-      </div>
-      <div class="modal-row"><span class="mkey">Modelo</span><span class="mval" style="color:var(--muted)">${(a.modelo||'').replace('claude-','')}</span></div>
-    </div>
-  `;
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+  // ── Edge y calibración ────────────────────────────────────────────────────
+  const CN = R.coinciden_naive, cal = R.calibracion;
+  app.append($(`<h2>¿Aporta algo el método?</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Cubeta</th><th class="num">Registradas</th><th class="num">Resueltas</th>
+      <th class="num">Acierto</th><th>Qué mide</th></tr></thead>
+    <tbody>
+      <tr><td><b>Contradicen al naive</b></td><td class="num">${TL.registrados}</td>
+        <td class="num">${TL.resueltas}</td><td class="num">${pct(TL.pct)}</td>
+        <td>Si <b>Elliott</b> aporta sobre el momentum</td></tr>
+      <tr><td>Coinciden con el naive</td><td class="num">${R.total-TL.registrados}</td>
+        <td class="num">${CN.resueltas}</td><td class="num">${pct(CN.pct)}</td>
+        <td class="dim">El sistema completo, no Elliott</td></tr>
+    </tbody></table></div>
+  <p class="note">Umbrales pre-comprometidos sobre tests limpios (n=20):
+    <b>≥13</b> aporta · <b>10–12</b> sin edge · <b>≤9</b> dañino.
+    Calibración: confianzas entre ${cal.conf_min} y ${cal.conf_max}
+    (dispersión ${cal.dispersion})${cal.dispersion < 0.25 ?
+      ' — <span class="warn">insuficiente para construir una curva</span>' : ''}.</p>`));
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
+  // ── Por versión ───────────────────────────────────────────────────────────
+  const pv = Object.entries(R.por_version).map(([v,s]) =>
+    `<tr><td><b>${v}</b></td><td class="num">${s.registradas}</td><td class="num">${s.resueltas}</td>
+     <td class="num">${pct(s.pct)}</td><td class="dim">${(d.metodo_historial[v]||'').slice(0,96)}…</td></tr>`).join('');
+  app.append($(`<h2>Por versión del método</h2>
+  <div class="scroll"><table><thead><tr><th>Ver</th><th class="num">Registradas</th>
+    <th class="num">Resueltas</th><th class="num">Acierto</th><th>Qué cambió</th></tr></thead>
+    <tbody>${pv}</tbody></table></div>
+  <p class="note">No comparar entre versiones: son prompts distintos. Congelar y acumular muestra
+    dentro de una versión antes de concluir nada.</p>`));
 
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('modal')) closeModal();
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-// ── Live price ────────────────────────────────────────────────────────────────
-async function fetchLivePrice() {
-  try {
-    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-    if (!r.ok) return null;
-    const d = await r.json();
-    return d?.bitcoin?.usd || null;
-  } catch(e) { return null; }
-}
-
-// ── Compounding ───────────────────────────────────────────────────────────────
-function compound(signals, riskPct) {
-  const closed = signals
-    .filter(s => s.resultado_r != null)
-    .sort((a,b) => a.fecha > b.fecha ? 1 : -1);
-  let cap = 100;
-  for (const s of closed) cap *= (1 + s.resultado_r * riskPct / 100);
-  return cap;
-}
-
-// ── Candlestick chart ─────────────────────────────────────────────────────────
-function buildPriceChart(prices, signals) {
-  const container = document.getElementById('chartPrecio');
-  const chart = LightweightCharts.createChart(container, {
-    layout: { background: { color: '#161b22' }, textColor: '#8b949e' },
-    grid:   { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
-    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-    rightPriceScale: { borderColor: '#30363d' },
-    timeScale: { borderColor: '#30363d', timeVisible: false },
-    handleScroll: true,
-    handleScale: true,
-    width:  container.clientWidth,
-    height: 280,
-  });
-
-  new ResizeObserver(() => chart.applyOptions({ width: container.clientWidth })).observe(container);
-
-  const candles = chart.addCandlestickSeries({
-    upColor:        '#2ea043', downColor:       '#da3633',
-    borderUpColor:  '#2ea043', borderDownColor: '#da3633',
-    wickUpColor:    '#2ea043', wickDownColor:   '#da3633',
-  });
-
-  candles.setData(prices.map(p => ({
-    time: p.ts, open: p.open, high: p.high, low: p.low, close: p.close,
-  })));
-
-  const signalDates = new Set(signals.map(s => s.fecha));
-  const markers = [...signalDates]
-    .filter(d => prices.some(p => p.ts === d))
-    .map(d => ({ time: d, position: 'belowBar', color: '#f7c948', shape: 'circle', text: '⚡' }))
-    .sort((a,b) => a.time > b.time ? 1 : -1);
-  if (markers.length) candles.setMarkers(markers);
-
-  chart.timeScale().fitContent();
-}
-
-// ── Gráfico de niveles de escenarios (Visión Semanal) ──────────────────────────
-// Los niveles de "objetivo"/"confirma"/"invalida" viven hoy como texto libre del modelo
-// (no hay un campo numérico estructurado en L1) — se extraen con una regex simple. Es un
-// complemento visual de las tarjetas de escenario (que muestran el texto completo), no
-// reemplaza el texto: si el modelo redacta una frase atípica, la línea puede no calzar
-// exactamente, pero las tarjetas de abajo siguen siendo la fuente de verdad.
-function extractNums(txt) {
-  return ((txt||'').match(/\b\d{4,7}\b/g) || []).map(Number);
-}
-// Colores por escenario (no por sesgo) — evita rojo/verde, que se confunden con las velas.
-const ESCENARIO_COLORS = ['#58a6ff', '#d29922', '#bc8cff', '#39c5cf', '#f78166'];
-
-function buildVisionChart(pricesWeekly, l1) {
-  const container = document.getElementById('chartVision');
-  if (!pricesWeekly || !pricesWeekly.length || !l1) {
-    container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:16px">Sin datos suficientes para el gráfico.</div>';
-    return;
-  }
-  const chart = LightweightCharts.createChart(container, {
-    layout: { background: { color: '#161b22' }, textColor: '#8b949e' },
-    grid:   { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
-    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-    rightPriceScale: { borderColor: '#30363d' },
-    timeScale: { borderColor: '#30363d', timeVisible: false },
-    handleScroll: true, handleScale: true,
-    width: container.clientWidth, height: 340,
-  });
-  new ResizeObserver(() => chart.applyOptions({ width: container.clientWidth })).observe(container);
-
-  const candles = chart.addCandlestickSeries({
-    upColor: '#2ea043', downColor: '#da3633',
-    borderUpColor: '#2ea043', borderDownColor: '#da3633',
-    wickUpColor: '#2ea043', wickDownColor: '#da3633',
-  });
-  candles.setData(pricesWeekly.map(p => ({ time: p.ts, open: p.open, high: p.high, low: p.low, close: p.close })));
-
-  const leyenda = [];
-  const techo = l1.techo_operativo?.precio;
-  if (techo) {
-    candles.createPriceLine({ price: techo, color: '#8b949e', lineWidth: 1,
-      lineStyle: LightweightCharts.LineStyle.Solid, axisLabelVisible: true, title: 'Techo' });
-    leyenda.push(`<span style="color:#8b949e">━</span> Techo operativo $${Math.round(techo).toLocaleString('es-CL')}`);
-  }
-
-  (l1.escenarios || []).forEach((e, idx) => {
-    const color = ESCENARIO_COLORS[idx % ESCENARIO_COLORS.length];
-    const confirma = extractNums(e.se_confirma_si)[0];
-    const invalida = extractNums(e.se_invalida_si)[0];
-    const objetivo = extractNums(e.objetivo).slice(0, 2);
-    const estiloCamino = idx % 2 === 0 ? LightweightCharts.LineStyle.Solid : LightweightCharts.LineStyle.Dashed;
-
-    // Camino del conteo: conecta los pivotes reales (I/II/III/A/B/C...) que dio el
-    // modelo para este escenario, sobre el histórico real (ohlcv_weekly, desde 2014).
-    const pivotes = (e.pivotes_onda || [])
-      .filter(p => p && p.fecha && typeof p.precio === 'number')
-      .slice()
-      .sort((a, b) => a.fecha.localeCompare(b.fecha));
-    if (pivotes.length >= 2) {
-      const camino = chart.addLineSeries({
-        color, lineWidth: 2, lineStyle: estiloCamino,
-        priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
-      });
-      camino.setData(pivotes.map(p => ({ time: p.fecha, value: p.precio })));
-      camino.setMarkers(pivotes.map(p => ({
-        time: p.fecha, position: 'inBar', color, shape: 'circle', text: p.onda,
-      })));
-    }
-
-    // Las cajas de nivel en el eje derecho (axisLabelVisible) se apilan e ilegibles cuando
-    // hay varios escenarios — la línea de color en el precio basta; el número exacto vive
-    // en la leyenda de abajo, que sí se lee bien.
-    if (confirma) {
-      candles.createPriceLine({ price: confirma, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed,
-        axisLabelVisible: false });
-    }
-    if (invalida) {
-      candles.createPriceLine({ price: invalida, color, lineWidth: 1, lineStyle: LightweightCharts.LineStyle.LargeDashed,
-        axisLabelVisible: false });
-    }
-    objetivo.forEach(nivel => {
-      candles.createPriceLine({ price: nivel, color, lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Dotted,
-        axisLabelVisible: false });
-    });
-    const estiloTxt = estiloCamino === LightweightCharts.LineStyle.Solid ? '════' : '╌╌╌╌';
-    leyenda.push(`<span style="color:${color}">${e.id}</span> (${e.sesgo_corto_plazo}): `
-      + [pivotes.length >= 2 && `conteo ${pivotes.map(p => p.onda).join('→')} (${estiloTxt})`,
-         confirma && `confirma $${confirma.toLocaleString('es-CL')} (— —)`,
-         invalida && `invalida $${invalida.toLocaleString('es-CL')} (- - -)`,
-         objetivo.length && `objetivo ${objetivo.map(n=>'$'+n.toLocaleString('es-CL')).join('–')} (····)`]
-        .filter(Boolean).join(' · '));
-  });
-
-  document.getElementById('vision-chart-legend').innerHTML = leyenda.map(l => `<div>${l}</div>`).join('');
-  chart.timeScale().fitContent();
-  // Zoom inicial a las últimas ~110 semanas (~2 años) para que la zona accionable (precio
-  // actual) no quede comprimida por el conteo histórico completo — el usuario puede hacer
-  // scroll/zoom-out para ver el camino completo desde 2014/2017 si quiere.
-  if (pricesWeekly.length > 110) {
-    chart.timeScale().setVisibleRange({
-      from: pricesWeekly[pricesWeekly.length - 110].ts,
-      to: pricesWeekly[pricesWeekly.length - 1].ts,
-    });
-  }
-}
-
-// ── Visión Semanal ────────────────────────────────────────────────────────────
-function buildVisionSemanal(l1, l1hist) {
-  if (!l1) {
-    document.getElementById('l1-resumen').textContent = 'Análisis semanal no disponible aún.';
-    return;
-  }
-
-  const techo    = l1.techo_operativo || {};
-  const acuerdo  = l1.acuerdo || {};
-  const div      = l1.divergencia || {};
-  const escenarios = l1.escenarios || [];
-
-  document.getElementById('l1-fecha').textContent   = l1.fecha_analisis || '—';
-  document.getElementById('l1-techo').textContent   = `${fmt(techo.precio)} (${techo.fecha||'—'}) — ${techo.tipo||''}`;
-  document.getElementById('l1-resumen').textContent = l1.resumen || '—';
-  document.getElementById('l1-sesgo').textContent   = acuerdo.sesgo_cercano || '—';
-  document.getElementById('l1-operar').textContent  = acuerdo.como_operar_hoy || '—';
-
-  const nivelesEl = document.getElementById('l1-niveles');
-  (acuerdo.niveles_compartidos || []).forEach(n => {
-    const chip = document.createElement('span');
-    chip.className = 'nivel-chip';
-    chip.textContent = fmt(n);
-    nivelesEl.appendChild(chip);
-  });
-
-  document.getElementById('l1-divergencia').textContent = div.pregunta_abierta || '—';
-  document.getElementById('l1-resuelve').textContent    = '→ Se resuelve si: ' + (div.se_resuelve_si || '—');
-
-  const scenEl = document.getElementById('l1-escenarios');
-  const sesgoColor = s => s === 'ALCISTA' ? 'var(--green)' : s === 'BAJISTA' ? 'var(--red)' : 'var(--yellow)';
-  escenarios.forEach((e, i) => {
-    const div = document.createElement('div');
-    div.className = 'sc-card';
-    div.innerHTML = `
-      <div class="sc-id" style="color:var(--blue)">${e.id}</div>
-      <div class="sc-title">${e.etiqueta_macro}</div>
-      <div class="sc-row" style="margin-bottom:6px"><span style="color:${sesgoColor(e.sesgo_corto_plazo)};font-weight:600">⚡ Sesgo CP: ${e.sesgo_corto_plazo}</span></div>
-      <div class="sc-row">📍 <strong>Hoy:</strong> ${e.posicion_hoy}</div>
-      <div class="sc-row">🎯 <strong>Objetivo:</strong> ${e.objetivo}</div>
-      <div class="sc-row" style="margin-top:6px">✅ <strong>Confirma:</strong> ${e.se_confirma_si}</div>
-      <div class="sc-row">❌ <strong>Invalida:</strong> ${e.se_invalida_si}</div>
-    `;
-    scenEl.appendChild(div);
-  });
-
-  // Historial L1
-  // Nota: la etiqueta E1/E2 NO es estable entre corridas (el modelo no garantiza que
-  // signifique lo mismo semana a semana) — "escenarios_resumen" se muestra por SESGO
-  // (comparable entre filas) en vez de por id, para no inducir a comparar "E1 vs E1"
-  // entre corridas que en realidad pueden ser escenarios distintos.
-  const colorSesgo = txt => (txt||'').replace(/\b(ALCISTA|BAJISTA|NEUTRO)\b/g,
-    s => `<strong style="color:${s==='ALCISTA'?'var(--green)':s==='BAJISTA'?'var(--red)':'var(--yellow)'}">${s}</strong>`);
-
-  const histEl = document.getElementById('tbl-l1-hist');
-  if (!l1hist || !l1hist.length) {
-    histEl.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:12px">Sin historial aún (se acumula cada lunes)</td></tr>';
-  } else {
-    histEl.innerHTML = l1hist.map(h => `<tr>
-      <td>${h.fecha||'—'}</td>
-      <td>${fmt(h.techo_precio)}</td>
-      <td style="font-size:11px">${colorSesgo(h.escenarios_resumen) || '—'}</td>
-      <td style="font-size:11px">${h.acuerdo_sesgo||'—'}</td>
-      <td style="color:var(--muted)">${(h.modelo||'').replace('claude-','')}</td>
-      <td style="font-size:11px;color:var(--muted)">${h.resumen||'—'}</td>
+  // ── Historial ─────────────────────────────────────────────────────────────
+  const res = d.predicciones.filter(p => p.resultado === 'acierto' || p.resultado === 'fallo');
+  if (res.length){
+    const hr = res.map(p => `<tr>
+      <td>${p.ts_resolucion||''}</td><td><b>${p.activo}</b></td>
+      <td><span class="tag">${p.metodo_version}</span></td>
+      <td class="${p.direccion==='LONG'?'long':'short'}">${p.direccion}</td>
+      <td class="${p.resultado==='acierto'?'ok':'bad'}">${p.resultado==='acierto'?'✓ acierto':'✗ fallo'}</td>
+      <td class="num">${money(p.precio_resolucion)}</td>
+      <td class="num">${p.confianza.toFixed(2)}</td>
+      <td>${p.direccion!==p.benchmark_naive_dir?'<span class="tag limpio">test limpio</span>':'<span class="dim">coincide</span>'}</td>
     </tr>`).join('');
+    app.append($(`<h2>Historial resuelto (${res.length})</h2>
+      <div class="scroll"><table><thead><tr><th>Fecha</th><th>Activo</th><th>Ver</th><th>Dir</th>
+      <th>Resultado</th><th class="num">Precio</th><th class="num">Conf</th><th>Tipo</th></tr></thead>
+      <tbody>${hr}</tbody></table></div>`));
   }
 }
-
-// ── Main load ─────────────────────────────────────────────────────────────────
-async function load() {
-  const [summary, analysis, signals, alerts, prices, l1, l1hist, pricesWeekly] = await Promise.all([
-    fetch(BASE+'summary.json').then(r=>r.json()),
-    fetch(BASE+'analysis.json').then(r=>r.json()),
-    fetch(BASE+'signals.json').then(r=>r.json()),
-    fetch(BASE+'alerts.json').then(r=>r.json()),
-    fetch(BASE+'prices.json').then(r=>r.json()),
-    fetch(BASE+'l1_vision.json').then(r=>r.json()).catch(()=>null),
-    fetch(BASE+'l1_history.json').then(r=>r.json()).catch(()=>null),
-    fetch(BASE+'prices_weekly.json').then(r=>r.json()).catch(()=>null),
-  ]);
-
-  _allSignals  = signals;
-  _allAnalysis = analysis;
-
-  // Header
-  document.getElementById('last-update').textContent =
-    'Último análisis: ' + fmtTimestamp(summary.ultimo_timestamp, summary.ultima_fecha);
-
-  // Precio live (CoinGecko) o fallback
-  const livePrice = await fetchLivePrice();
-  const precioEl = document.getElementById('precio');
-  if (livePrice) {
-    precioEl.textContent = '$' + Number(livePrice).toLocaleString('es-CL', {maximumFractionDigits:0});
-    precioEl.title = 'Precio en vivo (CoinGecko)';
-  } else {
-    precioEl.textContent = summary.ultimo_precio ? fmt(summary.ultimo_precio) : '—';
-  }
-
-  const vd = summary.ultimo_veredicto;
-  document.getElementById('veredicto-badge').innerHTML =
-    vd === 'SEÑAL' ? badge('⚡ SEÑAL','badge-senal') : badge('⏸ ESPERAR','badge-esperar');
-
-  const sg = summary.ultimo_sesgo;
-  document.getElementById('sesgo-badge').innerHTML =
-    sg === 'ALCISTA' ? badge('▲ ALCISTA','badge-long') :
-    sg === 'BAJISTA' ? badge('▼ BAJISTA','badge-short') : badge(sg||'—','');
-
-  document.getElementById('fase-texto').textContent =
-    'Fase impulso macro: ' + (summary.ultima_fase || '—');
-
-  // Cards
-  document.getElementById('stat-analisis').textContent = summary.total_analisis ?? '—';
-  document.getElementById('stat-señales').textContent  = summary.total_señales ?? '—';
-  const tasa = summary.total_señales && summary.total_analisis
-    ? Math.round(summary.total_señales / summary.total_analisis * 100) + '%' : '—';
-  document.getElementById('stat-tasa').textContent = tasa + ' tasa de señal';
-
-  const wr = summary.win_rate;
-  const wrEl = document.getElementById('stat-winrate');
-  wrEl.textContent = wr != null ? wr + '%' : 'sin datos';
-  wrEl.className = 'value ' + (wr >= 50 ? 'green' : wr != null ? 'red' : '');
-
-  const rEl = document.getElementById('stat-r');
-  rEl.textContent = summary.total_r != null ? fmtR(summary.total_r) : '—';
-  rEl.className = 'value ' + (summary.total_r > 0 ? 'green' : summary.total_r < 0 ? 'red' : '');
-  document.getElementById('stat-r-trade').textContent =
-    (summary.r_por_trade != null ? fmtR(summary.r_por_trade) : '—') + ' por trade';
-
-  const cap1 = compound(signals, 1), cap2 = compound(signals, 2);
-  const hasClosed = signals.some(s => s.resultado_r != null);
-  const cap1El = document.getElementById('cap-1p');
-  const cap2El = document.getElementById('cap-2p');
-  cap1El.textContent = hasClosed ? '$' + cap1.toFixed(2) : '—';
-  cap1El.className = 'value ' + (cap1 >= 100 ? 'green' : 'red');
-  cap2El.textContent = hasClosed ? '$' + cap2.toFixed(2) : '—';
-  cap2El.className = 'value ' + (cap2 >= 100 ? 'green' : 'red');
-
-  // Gráfico candlestick
-  buildPriceChart(prices, signals);
-
-  // Tabla señales
-  const tbS = document.getElementById('tbl-signals');
-  if (!signals.length) {
-    tbS.innerHTML = '<tr><td colspan="14" style="color:var(--muted);text-align:center;padding:16px">Sin señales aún</td></tr>';
-  } else {
-    tbS.innerHTML = signals.map((s, i) => {
-      const entry = s.entrada, stop = s.stop, o3 = s.o3;
-      const risk  = entry && stop ? Math.abs(entry - stop) : null;
-      const rr3   = risk && o3 ? (Math.abs(o3 - entry) / risk).toFixed(1) + 'x' : '—';
-      const estado = (s.estado || 'ABIERTO').toUpperCase();
-      const estadoBadge = estado === 'GANADOR'   ? badge(estado,'badge-ganador') :
-                          estado === 'PERDEDOR'  ? badge(estado,'badge-perdedor') :
-                          estado === 'INVALIDADA' ? badge(estado,'badge-invalidada') :
-                          badge(estado,'badge-abierto');
-      const rColor = s.resultado_r > 0 ? 'green' : s.resultado_r < 0 ? 'red' : '';
-      const gp1 = s.resultado_r != null ? s.resultado_r * 1 : null;
-      const gp2 = s.resultado_r != null ? s.resultado_r * 2 : null;
-      return `<tr class="clickable-row" onclick="openSignalModal(${i})">
-        <td>${s.fecha||'—'}</td>
-        <td>${s.direccion==='LONG' ? badge('LONG','badge-long') : badge('SHORT','badge-short')}</td>
-        <td style="color:var(--muted)">${(s.modo||'').replace(/_/g,' ')}</td>
-        <td style="color:var(--muted)">${s.calidad||'—'}</td>
-        <td>${fmt(s.entrada)}</td>
-        <td style="color:var(--red)">${fmt(s.stop)}</td>
-        <td>${fmt(s.o1)}</td>
-        <td>${fmt(s.o2)}</td>
-        <td>${fmt(s.o3)}</td>
-        <td>${rr3}</td>
-        <td class="${rColor}">${fmtR(s.resultado_r)}</td>
-        <td class="${gp1>0?'green':gp1<0?'red':''}">${fmtPct(gp1)}</td>
-        <td class="${gp2>0?'green':gp2<0?'red':''}">${fmtPct(gp2)}</td>
-        <td>${estadoBadge}</td>
-      </tr>`;
-    }).join('');
-  }
-
-  // Tabla análisis
-  document.getElementById('tbl-analysis').innerHTML = analysis.map(a => `<tr>
-    <td>${a.fecha||'—'}${a.analizado_at ? `<br><span style="color:var(--muted);font-size:10px">${new Date(a.analizado_at).toLocaleString('es-CL',{timeZone:'America/Santiago',hour:'2-digit',minute:'2-digit'})} CL</span>` : ''}</td>
-    <td>${fmt(a.precio_actual)}</td>
-    <td>${a.veredicto==='SEÑAL' ? badge('SEÑAL','badge-senal') : badge('ESPERAR','badge-esperar')}</td>
-    <td style="color:var(--muted);font-size:11px">${(a.modo_entrada||'—').replace(/_/g,' ')}</td>
-    <td style="color:var(--muted);font-size:11px;max-width:280px;white-space:normal;line-height:1.4">${a.sub_onda||'—'}</td>
-    <td>${a.sesgo_macro==='ALCISTA' ? badge('▲','badge-long') : a.sesgo_macro==='BAJISTA' ? badge('▼','badge-short') : '—'}</td>
-    <td style="color:var(--muted)">${a.fase_impulso||'—'}</td>
-    <td style="color:var(--muted);font-size:11px">${(a.modelo||'').replace('claude-','')}</td>
-  </tr>`).join('');
-
-  // Tabla alertas
-  const tbAl = document.getElementById('tbl-alerts');
-  if (!alerts.length) {
-    tbAl.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Sin alertas disparadas aún</td></tr>';
-  } else {
-    tbAl.innerHTML = alerts.map(a => `<tr>
-      <td>${(a.fired_at||'').replace('T',' ').slice(0,16)}</td>
-      <td><span style="color:var(--yellow)">${a.tipo||'—'}</span></td>
-      <td>${fmt(a.nivel)}</td>
-      <td>${fmt(a.precio_actual)}</td>
-      <td style="color:var(--muted);font-size:11px;max-width:250px;overflow:hidden;text-overflow:ellipsis">${(a.mensaje||'').split('\n')[0]}</td>
-    </tr>`).join('');
-  }
-
-  // Visión Semanal
-  buildVisionSemanal(l1, l1hist);
-  buildVisionChart(pricesWeekly, l1);
-}
-
-load().catch(e => console.error(e));
 </script>
 </body>
 </html>
