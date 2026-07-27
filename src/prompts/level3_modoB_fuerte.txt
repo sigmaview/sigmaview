@@ -15,11 +15,66 @@ exactos), no para BAJAR el grado del trade. Si L1 dice que el techo operativo es
 nuevo impulso es el primer tramo grande desde X, y la W2 es el rebote/retroceso mayor de ese tramo.
 Un trade anclado a un sub-impulso de 4h da objetivos pequeños y no es un swing.
 
-METODOLOGÍA — DOS MODOS DE ENTRADA:
+VALIDEZ DEL RECUENTO (Monografía 1 §1.4 — aplica a CUALQUIER impulso antes de operarlo):
+Un conteo que viola una de las 7 reglas esenciales NO es un impulso (es correctivo) y no se opera como tal:
+  1) 5 ondas · 2) 3 a favor + 2 en contra · 3) W2 no retrocede 100% de W1 · 4) W3 > W2 ·
+  5) W4 no corrige 100% de W3 · 6) W5 ≥ 38.2% de W4 · 7) W3 NUNCA la más corta de (1,3,5).
+SOLAPE (regla aparte): W4 no entra en la FRANJA DE PRECIO de W2 (entre el máximo y el mínimo de W2),
+salvo diagonal/terminal. Corolario operativo: si P3<P1 entonces P5<P3.
+
+CONSISTENCIA DE GRADO (regla de validez — se verifica con números, no con criterio):
+Todas las ondas de un MISMO conteo deben ser de magnitud comparable: cada una debe superar el mismo
+umbral de swing que declaraste en el PASO 0. Si una onda del conteo es de grado visiblemente menor
+que sus hermanas, el conteo MEZCLA GRADOS y es inválido — no importa cuán bien encaje el relato.
+Chequeo obligatorio: lista el recorrido en precio (y en por ciento) de las 5 ondas y compáralos.
+ALARMA CONCRETA: si la onda más pequeña del conteo es menos de un tercio de la más grande, casi
+seguro estás mezclando un sub-impulso de grado menor con ondas de grado mayor. Ese es el error que
+produce W1 artificialmente cortas y hace desaparecer solapes que sí existen.
+Corolario: el solape se evalúa SIEMPRE con pivotes del mismo grado. Un solape que "desaparece" al
+cambiar el ancla de una onda a un pivote de grado menor no desapareció — lo escondiste.
+
+CONGELAMIENTO DEL CONTEO (regla anti-hindsight — tan dura como las 7 esenciales):
+Un conteo ya registrado en el log prospectivo SOLO puede morir tocando su nivel de invalidación
+declarado. NO puede morir siendo re-etiquetado. Está PROHIBIDO, cuando el precio no acompaña:
+  - renombrar una sub-onda (lo que era "sub-5" pasa a ser "sub-3 extendida"),
+  - re-anclar el grado (subir o bajar el conteo de grado para que el movimiento encaje),
+  - mover un pivote ya registrado sin que haya dato nuevo que lo justifique.
+Si el precio contradice el conteo pero NO ha tocado la invalidación: el conteo sigue vivo y ERRÓNEO
+hasta que la toque — dilo así explícitamente, no lo repares. Si de verdad hay que recontar, primero
+declara FALLIDO el conteo anterior (con su id del log) y recién entonces abre uno nuevo; el fallo
+queda registrado. Un conteo que nunca puede fallar no predice nada.
+EXCEPCIÓN ÚNICA: corrección de un pivote por dato objetivamente mejor (vela de mayor resolución que
+revela un extremo distinto). Debe declararse como corrección de dato, indicando el valor viejo, el
+nuevo y la fuente — nunca como reinterpretación de la estructura.
+
+"LA CUARTA NO HA TERMINADO" — el error de recuento MÁS FRECUENTE (Santos: el 100% de las pérdidas
+documentadas vino de dar por agotada la W4 —o la W2— antes de tiempo). Chequeo obligatorio: la W4 DEBE
+ALTERNAR con la W2 en ≥1 de {{estructura, tiempo, % retroceso, intensidad}}. ALARMA: si lo que cuentas como
+W4 es MENOS subdividida y MÁS rápida que la W2 (no alterna), probablemente NO ha terminado → NO des el
+impulso por completo, NO dispares una entrada de reversión/continuación todavía.
+
+METODOLOGÍA — MODOS DE ENTRADA (A, B, C, D):
 
 MODO A — Enfoque B / entrada en RETROCESO (cuando el retroceso de W2 aún no ocurrió):
-- Se identifica la W1 del nuevo impulso; entrada en el retroceso 61.8% de W1 (la W2)
-- Stop en el origen de W1; O1=80.9%, O2=161.8%, O3=261.8% de W1 desde la entrada
+- Es la SEÑAL DE LA ONDA 2 de Santos (Monografía 5 §3, "el tesoro oculto"): tras el fin de una W2,
+  W4 o B, lo que sigue es SIEMPRE un impulso. Se identifica la W1 del nuevo impulso y se entra cuando
+  la W2 retrocede MÁS del 61.8% de W1 — orden situada en el 61.8% de W1, ejecutada al cruzarlo en
+  dirección de la tendencia. Al entrar estás al inicio de la W3 (de una 3, una C o una 5).
+- Stop en el origen de W1 (la invalidación dura: W2 no puede pasar el 100% de W1).
+- O1=80.9%, O2=161.8%, O3=261.8% de W1 desde la entrada. GESTIÓN Santos: O1 (≈mitad de camino a O2)
+  es el nivel de PROTECCIÓN — al alcanzarlo, sube el stop a la entrada (riesgo cero) y asegura parte;
+  O2=161.8% es el objetivo principal; O3=261.8% es el runner. (Python calcula los precios; esto es la
+  lógica de por qué esos niveles.)
+- CONTRACCIÓN / IMPULSO MADURANDO (mismo criterio que en Modo C): si el impulso que estás entrando
+  DESACELERA (ondas impulsivas menguando, o fase_impulso_macro cerca de terminal), los objetivos de
+  extensión O2/O3 (161.8/261.8×W1) probablemente SOBREPASAN el techo/suelo estructural real — el precio
+  "roza" O1 y revierte. Entonces: trata O1 (80.9%) como el objetivo REALISTA, NO cuentes con O2/O3, y si
+  la fase es claramente terminal → ESPERAR (regla de fase terminal, PASO 1). Refléjalo en el veredicto y
+  en "razon" (el set de multiplicadores de Modo A es fijo; el ajuste vive en tu expectativa/veredicto).
+- SALTO DE GRADO (opcional, refuerza el trade): si tras completar esta W1 el precio hace una W2 de
+  GRADO MAYOR que se queda por encima del 61.8% de todo el segmento, la misma señal se repite en grado
+  superior → se puede añadir posición usando el recorte del grado menor para entrar pero proyectando
+  los objetivos desde el grado mayor (más recorrido, mismo riesgo acotado).
 - Úsalo cuando el precio está cerca del inicio de la tendencia y falta el retroceso de W2.
 
 MODO C — Entrada en ROTURA/continuación (cuando el precio YA rompió y está en W3 o W5):
@@ -34,8 +89,26 @@ MODO C — Entrada en ROTURA/continuación (cuando el precio YA rompió y está 
   - "W5_o_C_terminal": la onda 3 (o la onda A, si esto es una corrección) YA fue la extendida
     de este impulso — esta onda terminal normalmente NO se extiende, tiende a igualdad o
     61.8% de W1, NUNCA a 2.618x. O1=0.382×W1, O2=0.618×W1, O3=1.0×W1.
+    PROYECCIÓN del fin de la W5 (Monografía 1 §1.6 — para saber si el precio YA está cerca del
+    agotamiento): la W5 tiende a IGUALARSE con W1 → proyecta P1 (recorrido de W1) desde el FIN DE W4;
+    la franja de agotamiento es [100% de P1, 61.8% de P3]. CASO ESPECIAL: si W1 fue MUY pequeña, la W5
+    suele agotarse en torno al 38.2% del segmento 03 (origen de W1 → fin de W3). Si el precio ya está
+    en esa franja, la onda terminal está madurando: no persigas objetivos lejanos.
+  - SEÑAL DE CONTRACCIÓN (criterio DECISIVO, prioritario sobre lo anterior): si las ondas impulsivas
+    del recuento van MENGUANDO en recorrido de precio (W1 > W3, o cada impulsiva menor que la anterior),
+    el impulso está DESACELERANDO → clasifícalo como "W5_o_C_terminal" y usa objetivos terminales,
+    AUNQUE no puedas señalar cuál fue "la extendida". Regla dura: un impulso que contrae proyecta
+    objetivos MÁS CORTOS; usar objetivos de extensión (1.618/2.618×W1) sobre un impulso que contrae
+    SOBREESTIMA el recorrido — el O1 de extensión suele quedar FUERA de alcance (más allá del techo/suelo
+    real) y el trade "roza" el objetivo y revierte. Ante contracción visible → terminal, sin excepción.
   - Declara tu clasificación en pivotes.onda_iniciada. Si tienes dudas, usa "W5_o_C_terminal"
     (más conservador — evita proyectar objetivos que ya no tienen espacio estructural).
+- GATE DE R:R (continuación en onda terminal): si onda_iniciada="W5_o_C_terminal", el recorrido
+  estructural restante es limitado. Estima R:R(O3) = distancia(entrada→O3)/distancia(entrada→stop).
+  Si R:R(O3) < 2.0x → veredicto=ESPERAR (no dispares una continuación terminal con mal R:R; mismo
+  principio que el gate >5x de Modo B, calibrado para onda terminal). Deja constancia del número en "razon".
+  (Es un salvavidas COMPLEMENTARIO: el filtro principal de una onda 5 es la regla de fase terminal
+  del PASO 1 — no entrar en la quinta como continuación —, no el R:R.)
 - Úsalo cuando la lectura estructural dice que estamos entrando/dentro de una onda impulsiva.
 
 Ambos (A y C) usan el checklist de 3 señales Santos (ver abajo).
@@ -50,10 +123,117 @@ MODO B — Fin de corrección ABC (entrada ANTICIPADA, sin confirmación):
   ajustado que puede ser alcanzado es el riesgo ACEPTADO POR DISEÑO; lo que valida el trade
   es que el R:R compense (>5x) y la invalidación sea clara. Ese es el núcleo del Modo B.
 
+MODO D — Reversión de PAUTA TERMINAL (diagonal/cuña en onda 5 o C que se agota):
+Una Pauta Terminal (PT) NO se opera en su dirección (es el último tramo de una tendencia que
+muere); se opera su REVERSIÓN una vez CONFIRMADA por el corte de la línea 2-4. Aplica típicamente
+cuando fase_impulso_macro="terminal" Y la sub-estructura terminal es una diagonal.
+Diferencia con Modo B: Modo B entra ANTICIPADO (sin confirmación); Modo D exige el corte de la 2-4
+como confirmación — es una reversión confirmada, no anticipada.
+
+REQUISITO — CONFIRMAR PRIMERO QUE ES UNA PT (si no se cumplen, NO es PT y Modo D no aplica):
+- 5 sub-ondas (1-2-3-4-5 o a-b-c-d-e), TODAS correctivas (cada una en 3 tramos), no impulsivas.
+- La onda 1 es la EXTENDIDA / más larga — al revés de un impulso normal (donde suele serlo la 3).
+- Ondas 2 y 4 se SOLAPAN (esperado en una PT, no es violación).
+- Cuña CONTRACTIVA: cada onda impulsiva es menor que la anterior.
+
+- ⚠️ LAS RELACIONES FIBONACCI SON CRITERIO DURO, NO GUÍAS. Monografía 3 (p.14), y es la trampa más
+  peligrosa de este modo: "En una PT, como sus ondas uno, tres y cinco NO son pautas de impulso, es
+  decir no tienen cinco ondas, su final no puede venir dado por el final de la quinta onda. POR ESO
+  SON SOLO LAS RELACIONES DE FIBONACCI LAS QUE NOS MARCAN LOS PUNTOS FINALES DE CADA UNA DE LAS
+  CINCO ONDAS DE LAS TERMINALES."
+  En un impulso normal las Fibonacci son guías y la estructura manda. En una PT es AL REVÉS: no hay
+  quinta interna que marque el fin de onda, así que las Fibonacci son lo ÚNICO que define dónde
+  termina cada onda. Está PROHIBIDO razonar "la estructura manda sobre las guías" aquí.
+  Los CINCO criterios, y hay que contarlos:
+    (1) onda2 ≤ 61.8% de onda1
+    (2) onda3 entre 38.2% y 61.8% de onda1
+    (3) onda4 ≈ 61.8% de onda2 — EN PRECIO Y TAMBIÉN EN TIEMPO (verifica ambos)
+    (4) onda5 ≤ onda3, normalmente 38.2%-61.8% de onda3 (nunca igualdad, nunca extensión)
+    (5) implícito en lo anterior: onda1 ≥ 161.8% de onda3 (la regla de la extensión)
+  Santos (p.43): "hemos de verificar que la figura cumple, o por lo menos que NO SE ALEJA DEMASIADO
+  de las exigencias en cuanto a las relaciones de Fibonacci entre sus cinco ondas."
+  UMBRAL DE DECISIÓN: cumple 4-5 de 5 → PT válida. Cumple 3 → dudosa, baja mucho el peso y exige
+  confirmación extra. Cumple ≤2 → NO es una PT; descarta el conteo y busca otra lectura.
+  Muestra los cinco ratios calculados. No los omitas ni los redondees a favor.
+
+- DÓNDE APARECE (test estructural, Monografía 3 p.24): las PT se forman "en las ondas cinco de las
+  pautas de impulso, o en las ondas C de las planas y de los zigzag". Una PT propuesta en una onda A,
+  o en una onda 3, está fuera de lugar estructuralmente → es una alarma fuerte contra el conteo.
+
+- NO HAY AGOTAMIENTOS DE GRADO MENOR (Monografía 3 §1.5.5): como las ondas 1/3/5 son correctivas, no
+  tienen quinta interna que dé aviso anticipado. "Habrá que esperar a la perforación de la 2-4 de
+  grado mayor para adoptar posiciones." NO intentes entrar antes vía cascada de 2-4 de grado menor —
+  esa técnica funciona en impulsos, no en PT.
+
+GATILLO Y TRADE:
+- Gatillo: corte de la línea 2-4 de la PT — DOS condiciones, ambas obligatorias (Monografía 1 §1.6.1):
+  (a) EN MENOS TIEMPO del que tardó la onda 5 en formarse, y
+  (b) de forma BRUSCA, con fuerza. Santos es explícito: un primer corte que llega en tiempo pero sin
+      violencia NO confirma — "deberíamos de esperar a un segundo intento". Un corte lento, o por
+      simple deriva lateral, no es señal.
+  TRAMPA DE LA DIRECTRIZ MÓVIL: la línea 2-4 tiene pendiente, así que con el tiempo se acerca sola al
+  precio y puede terminar cruzándolo sin que el precio haya hecho nada. Ese cruce pasivo NO es un
+  corte. Exige que sea el PRECIO el que va a buscar la línea con impulso, no la línea la que baja
+  (o sube) hasta el precio. Si el cruce ocurre por paso del tiempo, la señal es nula.
+- Entrada: en/tras el corte de la 2-4, en dirección CONTRARIA a la PT.
+- Stop: el extremo terminal de la PT (fin de onda 5) es la invalidación última. Stop más ajustado
+  (mejor R:R): si el retroceso posterior al corte supera el 61.8% de la onda 5, el recuento
+  probablemente está mal — ahí va el stop.
+- Objetivo: 100% de retroceso de TODO el recorrido de la PT (origen de onda 1 → fin de onda 5),
+  normalmente en menos tiempo del que tardó la PT en formarse. Fin-de-onda-4 / 50% / 61.8% son
+  soportes/resistencias DE PASO, no el destino final.
+- TEST TEMPORAL DEL RETROCESO (Monografía 3, p.20-23): "la pauta será retrocedida en su totalidad, y
+  además empleará en este retroceso MENOS TIEMPO del empleado en su formación". Calcula la duración
+  de la PT y declara la fecha límite. Si el retroceso del 100% está tardando MÁS que la formación,
+  "este hecho debe de hacernos revisar el recuento" — no es solo lentitud, es señal de que la lectura
+  está mal.
+- STOP CONCRETO TRAS EL CORTE (Monografía 3, p.17-18, validado por el autor sobre todas las PT del
+  libro): tras la rotura de la 2-4 el retroceso "no suele tener un recorrido mayor al 61,8%" de la
+  onda en la que se dio el corte. Ahí va el stop. Y si el precio llega a esa zona, "lo más probable
+  es que nos hayamos equivocado en el recuento y que la línea 2-4 esté mal trazada. Sin duda lo mejor
+  es ESCAPAR lo antes posible". Trátalo como salida, no como zona de aguante.
+- LA DIFICULTAD #1 (Monografía 3, p.17): "lo que hemos considerado como quinta onda, no es sino
+  continuación de la cuarta", lo que obliga a trazar una SEGUNDA línea 2-4. Si el primer corte falla
+  y el precio vuelve en contra, no abandones el escenario: re-traza la 2-4 con el nuevo 4 y el nuevo
+  5, y opera el segundo corte con su propio stop. Santos lo hace explícitamente.
+    O1 = 38.2% retroceso PT · O2 = 61.8% retroceso PT · O3 = 100% retroceso PT (el objetivo real).
+- CONFIRMACIÓN opcional con indicadores (refuerza, no obligatoria) — LEE los valores REALES del
+  bloque INDICADORES CALCULADOS, NUNCA los estimes desde las velas OHLC:
+  ADX "tiburón": en la SERIE de ADX14/+DI/-DI provista, ¿el ADX estuvo bajo/lateral durante la PT y
+  cruza al alza +DI (PT bajista → reversión alcista) o -DI (PT alcista → reversión bajista) justo en
+  el corte de la 2-4, superando ~30? Es un patrón sobre la serie real, no un juicio visual.
+  MACD "el fallo": en la SERIE de MACD/señal provista, ¿hay divergencia donde la línea MACD ni
+  siquiera cruza la señal? Si el bloque de indicadores no está disponible → "n/a".
+
+LA "FIGURA IDEAL" — setup de convergencia (Monografía 2, §1.6.4). Aplica a MODO B y MODO D:
+Cuando estos cuatro elementos coinciden, Santos dice tener "una gran seguridad de que se ha formado
+un suelo y de que el precio va a rebotar de forma significativa":
+  1. El RSI entró en zona de sobreventa (o sobrecompra, si es techo) y SALE formando divergencia.
+  2. El MACD forma divergencia CON FALLO (ver jerarquía abajo).
+  3. El análisis de la pauta indica agotamiento.
+  4. El corte de la línea 2-4 lo confirma.
+Stop concreto del autor: por encima (o por debajo) del extremo alcanzado por la quinta onda.
+Si ves la figura ideal completa, dilo — es el contexto de mayor confianza que describe el método, y
+justifica subir la probabilidad declarada por encima del techo de fase.
+
+JERARQUÍA DE DIVERGENCIAS (Monografía 2, §1.6.2-1.6.3 — de más fuerte a más débil):
+  a) DIVERGENCIA CON FALLO (la más fuerte): el precio hace nuevo extremo y la línea rápida del MACD
+     ni siquiera llega a cortar a la lenta. "Refuerza aún más la señal". Es el "fallo de MACD".
+  b) Divergencia normal: precio hace nuevo extremo, el indicador hace el contrario.
+  c) La más DÉBIL: el indicador no logra nuevo extremo pero se queda al mismo nivel que el anterior,
+     sin divergir claramente.
+Clasifica cuál de las tres ves; no las trates como equivalentes.
+
+AVISO CONTRA-INTUITIVO (Monografía 2, p.38): que el RSI entre en sobrecompra o sobreventa NO es señal
+de giro. "Más bien al contrario, cuando el RSI entra en zonas de sobrecompra o de sobreventa es en
+muchas ocasiones cuando se produce una ACELERACIÓN en el movimiento del precio." Solo la DIVERGENCIA
+informa; el nivel por sí solo, no. No uses "RSI>70" ni "RSI<30" como argumento de reversión.
+
 CHECKLIST DE 3 SEÑALES SANTOS (aplica al MODO A):
 1. Retroceso >38.2% de la última onda impulsiva
 2. Estructura 1-2 contable en la nueva dirección
-3. Rotura de línea 2-4 del impulso previo (en menos tiempo del que duró W5)
+3. Rotura de línea 2-4 del impulso previo: en menos tiempo del que duró W5 Y de forma BRUSCA
+   (ambas; un corte en tiempo pero sin fuerza no cuenta — esperar segundo intento)
 - 3/3 → DEFINITIVA | 2/3 → FUERTE | <2/3 → ESPERAR (Modo A)
 
 ---
@@ -66,20 +246,90 @@ CONTEXTO L2 (señal diaria, {fecha_l2}):
 
 ---
 
-DATOS DE PRECIO (últimas {candle_count} velas de 4 HORAS — Fecha,Open,High,Low,Close,Volume):
+DATOS DE PRECIO (últimas {candle_count} velas de {timeframe_label} — Fecha,Open,High,Low,Close,Volume):
 
 {price_data}
+
+INDICADORES CALCULADOS (valores REALES computados por Python — Fecha,ADX14,+DI,-DI,MACD,señal,histograma,RSI14):
+NO los estimes tú desde las velas. Úsalos SOLO desde este bloque. Si este bloque viene vacío o dice
+"NO_DISPONIBLE", entonces adx_tiburon y macd_fallo = "n/a" obligatorio — NUNCA los aproximes a ojo.
+
+{indicadores}
 
 ---
 
 TAREA:
 
+PASO 0 — DERIVACIÓN MECÁNICA DE PIVOTES (ANTES de interpretar nada)
+
+Regla anti-anclaje. El modo de falla más común no es contar mal: es partir de los niveles que ya
+tenías en la cabeza (o en la memoria de la sesión anterior) y acomodar la estructura alrededor de
+ellos. Para evitarlo, los pivotes los pone el PRECIO, no tu recuerdo.
+
+a) Antes de proponer ningún conteo, extrae los pivotes con un detector mecánico de swings sobre los
+   datos provistos: un zigzag por porcentaje, que marca un extremo cada vez que el precio retrocede
+   más de X por ciento desde el extremo previo. DECLARA el umbral X que usaste.
+b) Hazlo en AL MENOS DOS umbrales: uno de grado mayor o macro y otro de grado swing (el del trade).
+   Los umbrales típicos son 20-30 por ciento para macro y 7-15 por ciento para swing, pero ajústalos
+   al activo y a su volatilidad; lo que importa es declararlos.
+c) Recién con esa lista de pivotes en la mano, interpreta la estructura de Elliott. El conteo se
+   construye SOBRE los pivotes mecánicos, no al revés.
+d) REGLA CON DIENTES: si tu conteo usa un pivote que el detector NO produjo al umbral declarado, ese
+   pivote es de grado MENOR que el conteo. O bien lo justificas explícitamente (y explicas por qué no
+   estás mezclando grados), o lo descartas. No lo uses en silencio.
+e) Si no dispones de un detector mecánico en esta corrida, dilo abiertamente y trata todo el análisis
+   como preliminar y de menor confianza — no como un conteo firme.
+
 PASO 1 — LECTURA ESTRUCTURAL (SIEMPRE)
+
+1.0 — GATE DE RÉGIMEN (lo PRIMERO de todo; si falla, no hay setup y se acabó el análisis)
+
+Elliott NO se aplica siempre. Cava y Santos son explícitos en las tres monografías:
+  "Cuando la tendencia es débil, hay ausencia de pautas de impulso, las ondas se quiebran con
+   facilidad dificultando los recuentos. Cuando eso suceda... se debería actuar en consecuencia,
+   aplicando un sistema distinto al seguido en fases con acusada tendencia." (Monografía 1)
+  "Habrá situaciones en las que será imposible identificar la tendencia, simplemente porque NO HABRÁ
+   TENDENCIA... se formarán pautas, algunas de ellas serán planas que lógicamente no podremos
+   considerar como pautas de continuación al no haber tendencia, y QUE NO NOS VAN A INTERESAR."
+   (Monografía 2)
+
+Una pauta plana solo vale como CONTINUACIÓN DE ALGO. Sin ese algo, es ruido con forma bonita. Lo
+mismo con un impulso: sin tendencia previa que reanudar, el conteo no informa nada operable.
+
+a) Responde primero, antes de contar nada: ¿HAY una tendencia previa identificable en el grado del
+   trade? Descríbela en una frase (dirección, desde qué nivel y desde qué fecha) o di que no la hay.
+b) Apóyate en los indicadores REALES del bloque provisto, no a ojo:
+   - ADX por debajo de ~20 y plano, con +DI y -DI entrelazados y cruzándose repetidamente, es la
+     firma de ausencia de dirección. ADX sobre ~25 con separación clara entre los DI indica tendencia.
+   - OJO con el matiz de la Monografía 3: un ADX bajo DENTRO de una pauta terminal o un triángulo ya
+     identificados NO significa "no operar" — ahí el ADX arrastrándose por mínimos es precisamente
+     parte del setup ("el tiburón"), y anticipa la ruptura. Distingue "no hay tendencia y no sé qué
+     está pasando" de "no hay tendencia PORQUE se está formando una figura de agotamiento que ya
+     tengo identificada".
+c) VEREDICTO DEL GATE:
+   - Sin tendencia previa identificable Y sin figura de agotamiento identificada → veredicto=ESPERAR,
+     regimen_ok=false, y NO sigas construyendo un trade. Dilo explícitamente en "razon": el método no
+     aplica en este régimen. Esto es un resultado válido y frecuente, no un fracaso del análisis.
+   - Con tendencia identificable, o con una PT/triángulo ya reconocido → regimen_ok=true, continúa.
+
+d) GATE DE LIQUIDEZ (una sola vez por activo, mismo espíritu): Elliott "solo funciona cuando se
+   aplica a productos muy líquidos donde se dé una participación masiva, donde ningún agente ejerza
+   un poder dominante en la formación del precio". Si el activo no cumple esto, dilo y trata todo el
+   análisis como de baja confianza.
+
+1.1 — LECTURA ESTRUCTURAL (solo si el gate de régimen pasó)
 Cuenta la estructura fina en 4h dentro del marco macro de L1.
 Identifica EXACTAMENTE en qué sub-onda estamos hoy.
 Determina el SESGO MACRO: la dirección del impulso de GRADO MAYOR que esperamos se reanude
 (no la corrección actual). Ej: si estamos en una corrección bajista DENTRO de un ciclo alcista
 que aún no terminó, el sesgo macro es ALCISTA. Un trade direccional NO debe ir contra él.
+
+REGLA DE ORO DEL RETROCESO (Monografía 1 §1.6.4.2 — para leer si una corrección reanuda o revierte):
+mide el retroceso de la corrección actual sobre el segmento impulsivo previo. Si SUPERA el 61.8% de ese
+segmento → probabilidades a favor de que llegue al 100% (cambio de tendencia, no simple pausa). Si NO
+supera el 61.8% → lo más probable es que la tendencia previa se reanude. Objetivos de retroceso típicos:
+fin de la onda 4, luego 50%, luego 61.8% de toda la pauta (el más probable en impulsos x3/x5); las
+pautas terminales y las de "fallo de quinta" retroceden el 100%. Usa esto para calibrar sesgo/dirección.
 
 Determina la FASE DEL IMPULSO MACRO (la del grado mayor, en dirección del sesgo macro):
 - "temprana": ondas 1-2 del impulso mayor (recién empieza)
@@ -101,22 +351,92 @@ REGLA: si la fase es "terminal", NO tomes un trade de CONTINUACIÓN en la direcc
 (estarías comprando el techo / vendiendo el suelo de un movimiento que se agota). Aunque veas
 una sub-estructura fina favorable (ej. una W3 menor dentro de la W5 mayor), NO la operes:
 la quinta onda es zona de salida/reversión, no de entrada. Espera la reversión.
+Si esa onda 5 (o C) terminal es una DIAGONAL confirmada, la reversión se opera vía MODO D
+(ver descripción arriba y el paso de evaluación abajo) — no como continuación Modo C.
 
 PASO 2 — EVALUACIÓN MODO B (OBLIGATORIO si hay una corrección ABC en curso o completándose)
-a) Identifica los pivotes de la ABC: inicio de a, fin de a, fin de c.
-b) Calcula el ratio c/a con los precios (muéstralo).
+a) Identifica los pivotes de la ABC: inicio de a, fin de a (=inicio de b), fin de b (=inicio de c), fin de c.
+b) Calcula DOS ratios con los precios (muéstralos ambos):
+   - b/a = tamaño(B) / tamaño(A)   → retroceso de B dentro de A (DEFINE la tipología)
+   - c/a = tamaño(C) / tamaño(A)   → recorrido de C respecto de A
+
+a.1) TIPOLOGÍA DE LA CORRECCIÓN (metodología Santos — determina si C se proyecta desde A o desde B):
+   Error a evitar: proyectar TODA corrección como zigzag. El tipo cambia DÓNDE termina C
+   (= dónde entras) y por tanto la condición de disparo.
+
+   • b/a ≤ 0.618  → ZIGZAG (A y C impulsivas, B correctiva).
+       Santos (Monografía 2, §3.1) define el objetivo de C como una BANDA CONTINUA, no como nodos:
+       desde el 61.8% de A proyectado desde B (interno) hasta el 161.8% de A desde el fin de A
+       (externo). Y advierte: "la relación MÁS FRECUENTE entre la onda A y la onda C es próxima a la
+       IGUALDAD; NUNCA he visto un zigzag en el que la onda A y la C se relacionen externamente por
+       el 161,8%".
+       → Disparo SOLO en la IGUALDAD: c/a ≈ 1.0 (±15%). El nodo 1.618 queda ELIMINADO — disparar ahí
+         es disparar en una relación que el propio autor dice no haber visto nunca.
+       → El ±15% es FUZZ OPERATIVO declarado, no una regla de Santos: nunca se toca el nodo exacto, y
+         en una entrada anticipada quieres C en su nodo de máxima probabilidad, no en cualquier punto
+         de la banda. Dilo así si lo citas; no lo presentes como metodología del libro.
+       → Si c/a está dentro de la banda pero lejos de la igualdad (ej. 0.70), NO dispares: la C
+         todavía puede extenderse. Regístralo como alerta anticipada, no como señal.
+
+   • b/a > 0.618  → PLANA (la correctiva más frecuente; a-b correctivas, c impulsiva).
+       C se proyecta DESDE B (ratio c/b), NO desde A. Clasifica la FUERZA de B (Tabla 1 Santos):
+         - Débil   (b/a 0.618-0.80):  c/b esperado > 1.0     (C larga)
+         - Normal  (b/a 0.80-1.00):   c/b esperado 1.0-1.382
+         - Fuerte  (b/a 1.00-1.236):  c/b esperado ≈ 1.0 exacto   ← el más frecuente
+         - Fuerte+ (b/a > 1.236):     c/b esperado < 1.0     (C corta, sin piso definido)
+       Regla inversa: B fuerte ⇒ C probablemente débil, y viceversa.
+       → Disparo: c/b DENTRO del rango de Tabla 1 según la fuerza de B (el rango YA es la banda de
+         Santos — no le agregues tolerancia extra). Calcula y muestra c/b.
+
+   • a-b-c-d-e, TODAS correctivas, cada onda retrocede ≥50% de la anterior → TRIÁNGULO, NO es fin de ABC.
+       Modo B NO dispara. Marca tipologia_abc="triangulo" y espera la rotura de la línea b-d
+       (eso se evalúa como Modo A/C, no como entrada anticipada). No proyectes C como fin de corrección.
+
 b.1) Indica la FECHA exacta (YYYY-MM-DD) de la vela donde se originó la onda A (el techo/suelo
      desde el que arranca la corrección ABC). Python verificará este pivote contra los datos
      reales — sé preciso, no aproximes.
 c) Estima el R:R a O3: entrada = fin de c; stop = extremo de c; objetivo O3 ≈ entrada + 1.618×(tamaño de la corrección).
    R:R(O3) ≈ distancia(entrada→O3) / distancia(entrada→stop).
-d) Decide: ¿c≈1.618×a o ≈1.0×a (±15%)? ¿R:R(O3)>5x? ¿invalidación clara?
-   Si las tres se cumplen → MODO B DISPARA (veredicto SEÑAL), sin exigir las 3 confirmaciones.
+   (O3 es el objetivo del NUEVO impulso de reversión — usa el tamaño total de la ABC, independiente de la tipología.)
+d) Decide según la tipología (a.1) — la condición de "C completó" cambia:
+   - ZIGZAG: ¿c/a ≈ 1.0 o 1.618? (tolerancia ±15% alrededor del nodo — es un fuzz operativo, no
+     una regla de Santos: nunca tocas el nodo exacto, y para una entrada anticipada quieres que C
+     esté en su nodo de mayor probabilidad, no en cualquier punto de la banda 61.8%-161.8%.)
+   - PLANA:  ¿c/b dentro del rango de Tabla 1 según la fuerza de B? (el rango ES la banda; sin ±15%.)
+   - TRIÁNGULO: Modo B NO dispara.
+   Y además: ¿R:R(O3)>5x? ¿invalidación clara (cierre más allá del extremo de C)?
+
+e) CHECKLIST DE SANTOS PARA MODO B — los 6 puntos, textuales de la Monografía 2 (p.49). Este es el
+   criterio del autor para entrar en el fin de una correctiva; respóndelos uno a uno con SÍ/NO:
+     1. ¿Había una tendencia previa clara? (es el gate de régimen del PASO 1.0 — si es NO, no sigas)
+     2. ¿El precio se paró / se detuvo esa tendencia?
+     3. ¿Tengo un recuento que apunta como probable el desarrollo de una correctiva (ej. la onda 4)?
+     4. ¿Se cumplen las condiciones esenciales de esa correctiva (según la tipología de a.1)?
+     5. ¿Identifico una estructura de precio conocida Y una confirmación del final de la c?
+        (la c SIEMPRE es un impulso de 5 → su línea 2-4 rota es la confirmación operativa)
+     6. ¿Tengo divergencias en RSI Y en MACD? (léelas del bloque de indicadores, nunca a ojo)
+   Santos: "Pues entonces entro: sean galgos o sean podencos, echamos a correr por si acaso. Eso sí,
+   CON UN STOP DE PROTECCIÓN SIEMPRE."
+   Regla: 6/6 → señal plena. 5/6 → señal con gestión prudente, indicando cuál falta. ≤4/6 → ESPERAR.
+   El punto 1 es ELIMINATORIO, no puntuable: sin tendencia previa no hay plana de continuación.
+
+f) NO ESPERES LA CONFIRMACIÓN FORMAL (Monografía 2, p.47 y p.85). Santos es tajante: "no es la teoría
+   la que manda sino el precio... NO vamos a esperar a que la línea OB sea perforada, porque el precio
+   ya se habrá ido". La señal operativa es el corte de la línea 2-4 DE LA ONDA C, no la línea O-B ni
+   el retroceso completo. La O-B sirve para AÑADIR posiciones o para quien necesite más seguridad.
+   Medido por el autor (p.49): entrando por la O-B habrías soportado pérdida; entrando por la 2-4 con
+   stop en el extremo, ninguna.
+
+   Si (condición de tipología) + R:R>5x + invalidación clara + checklist ≥5/6 → MODO B DISPARA
+   (veredicto SEÑAL), sin exigir las 3 confirmaciones del checklist de Modo A.
 
 ALERTA ANTICIPATORIA (CRÍTICO — distingue un sistema proactivo de uno reactivo):
-Si detectas una corrección ABC donde A y B ya se completaron pero C AÚN NO llegó a la zona
-Fibonacci (1.0×A o 1.618×A desde el fin de B), el Modo B no puede disparar hoy pero la
-oportunidad SE ACERCA. En ese caso puebla "alerta_anticipada" con los niveles proyectados.
+Si detectas una corrección ABC donde A y B ya se completaron pero C AÚN NO llegó a su zona
+Fibonacci objetivo, el Modo B no puede disparar hoy pero la oportunidad SE ACERCA.
+La zona objetivo depende de la TIPOLOGÍA (ver a.1):
+  - ZIGZAG (b/a ≤ 0.618): 1.0×A o 1.618×A proyectado desde el fin de B.
+  - PLANA  (b/a > 0.618):  c/b según la fuerza de B (Tabla 1), proyectado desde el fin de B.
+En ese caso puebla "alerta_anticipada" con los niveles proyectados.
 Esto permite pre-armar una orden límite ANTES de que C llegue al target, en vez de analizar
 después de que el mínimo ya ocurrió.
 Condición: abc_detectada=true Y (c_sobre_a < 0.8 O abc_c_fin es el extremo parcial actual,
@@ -126,7 +446,21 @@ inicio de A (mismo pivote que abc_a_inicio), fin de A / inicio de B (a_fin_fecha
 inicio de C (b_fin_fecha). Sé preciso con las fechas — la magnitud de A y la proyección de C
 dependen de que correspondan al MISMO movimiento, no a mezclar un tramo con otro.
 
-PASO 3 — EVALUACIÓN MODO A (si no aplica Modo B)
+PASO 2-bis — EVALUACIÓN MODO D (OBLIGATORIO si fase_impulso_macro="terminal" o ves una diagonal)
+a) ¿La estructura terminal cumple los 6 requisitos de PT (ver MODO D arriba)? Respóndelos uno a uno.
+   Si NO es una PT, marca es_pauta_terminal=false y salta a PASO 3 (no fuerces una reversión).
+b) Si ES una PT: identifica el origen de onda 1 (inicio de la PT) y el fin de onda 5 (extremo
+   terminal). Indica sus FECHAS exactas (YYYY-MM-DD) — Python las verificará contra los datos.
+c) ¿Se rompió ya la línea 2-4 de la PT, y en menos tiempo del que tardó la onda 5?
+   - NO rota aún → Modo D NO dispara; puebla modo_d_check con es_pauta_terminal=true y
+     linea_24_rota=false (queda en vigilancia — la reversión se acerca pero falta el gatillo).
+   - SÍ rota en tiempo → Modo D DISPARA: entrada contra la PT, stop en el extremo terminal
+     (o el 61.8% de onda 5 si buscas mejor R:R), objetivo O3 = 100% retroceso de la PT.
+d) Reporta el objetivo 100% (precio). Para ADX "tiburón" y MACD "el fallo", usa EXCLUSIVAMENTE el
+   bloque INDICADORES CALCULADOS (valores reales de Python); si no está disponible, marca "n/a".
+   Prohibido estimar indicadores desde las velas OHLC.
+
+PASO 3 — EVALUACIÓN MODO A (si no aplica Modo B ni Modo D)
 Evalúa el checklist de 3 señales Santos sobre TU lectura de los datos 4h (no la de L2).
 - 3/3 → SEÑAL (DEFINITIVA)
 - 2/3 → SEÑAL (FUERTE) — indica cuál falta; el trade se toma con gestión prudente
@@ -134,6 +468,80 @@ Evalúa el checklist de 3 señales Santos sobre TU lectura de los datos 4h (no l
 L2 es el gatillo que te dice cuándo mirar de cerca; la decisión de trade la toma TU checklist en 4h.
 NO exijas que L2 haya confirmado las 3 señales para disparar: 2/3 ya es señal fuerte (metodología Santos).
 La 'rotura del mínimo de W1' (en la nueva dirección) cuenta como confirmación de la estructura 1-2 (señal 2).
+
+PASO 4 — PREDICCIÓN FALSABLE (OBLIGATORIO en TODO análisis direccional, incluso si el veredicto es ESPERAR)
+
+Por qué existe este paso: los tests de robustez sobre este mismo método mostraron que el Elliott
+MECÁNICO no tiene edge — la dirección aleatoria le ganó, y los backtests previos eran beta más suerte
+de parámetro. Por lo tanto el conteo, por sí solo, NO es evidencia de nada. La única evidencia limpia
+posible es pre-registrar predicciones falsables HOY y puntuarlas con el tiempo. Un análisis sin este
+paso no se puede distinguir de una narrativa construida a posteriori.
+
+a) CONTEO PRIMARIO Y ALTERNATIVO — los DOS, siempre.
+   Un solo conteo invita al exceso de confianza: en grado fino la ambigüedad es MAYOR, no menor
+   (el nivel L1 ya razona en escenarios; L3 debe hacer lo mismo). Entrega:
+   - conteo primario: la lectura que defiendes, con su peso (0 a 1).
+   - conteo alternativo: la lectura REAL que compite, con su peso. Los pesos suman 1.0.
+     No vale un alternativo de paja: debe ser el conteo que un analista competente defendería.
+     Constrúyelo como abogado del diablo del primario, respetando también las 7 reglas y el solape.
+   - nivel discriminador: el PRECIO exacto que mata a uno y confirma al otro, y qué implica cada lado.
+   Si no logras construir un alternativo válido, dilo — y baja tu probabilidad, no la subas: significa
+   que no exploraste el espacio, no que el primario sea seguro.
+
+b) PROBABILIDAD EXPLÍCITA — un número, no una etiqueta.
+   Da la probabilidad (0.00 a 1.00) de que la predicción direccional acierte ANTES de tocar su
+   invalidación. Sin probabilidades no hay curva de calibración y no se puede saber nunca si el
+   sistema aporta. Reglas: 0.50 significa moneda al aire (dilo cuando sea así, es un resultado válido
+   y frecuente); por encima de 0.75 necesitas justificar qué información concreta te da esa ventaja;
+   NO ancles todo entre 0.50 y 0.65 por comodidad — un sistema que nunca se moja no es medible.
+   La probabilidad debe ser coherente con el peso del conteo primario en el punto (a).
+
+   TECHO DE CONFIANZA SEGÚN LA FASE (Monografía 1, prólogo — regla de calibración, no opinión):
+   Santos y Cava son explícitos: "en la mitad del desarrollo de las pautas, los analistas que aplican
+   Elliott NO se ponen de acuerdo en sus recuentos, y solo lo consiguen al final, cuando concluye la
+   pauta". Y "en la práctica no vamos a detectar una posible pauta de impulso hasta que no haya
+   terminado la tercera onda". Por lo tanto la confianza NO puede ser plana a lo largo de la pauta:
+     - Pauta en curso ANTES de que termine la W3: el impulso ni siquiera es identificable todavía.
+       Techo de probabilidad 0.60. Cualquier conteo aquí es tentativo por definición.
+     - En W4 (la onda más difícil de contar, donde se dan las señales falsas): techo 0.65.
+     - En W5 avanzada, o con la pauta completada y esperando confirmación: aquí sí puede subir —
+       es el único momento en que los analistas convergen.
+   Si tu probabilidad supera el techo de la fase en que estás, bájala o justifica explícitamente qué
+   información extraordinaria tienes. Declara la fase que usaste para calibrar.
+
+c) PREDICCIÓN FALSABLE — precios y fecha, sin ambigüedad.
+   Objetivo (precio), invalidación (precio) y fecha horizonte. Criterio fijo: ACIERTO si toca objetivo
+   antes que invalidación dentro del horizonte; FALLO si toca invalidación primero; EXPIRADO si
+   ninguno. Ambos niveles deben ser alcanzables dentro del horizonte — una invalidación tan lejana
+   que jamás se tocará convierte la predicción en incaducable, o sea inútil.
+
+   SIMETRÍA OBLIGATORIA (protege la integridad de TODA la medición):
+   La distancia porcentual desde el precio actual al objetivo y a la invalidación debe ser parecida.
+   Regla dura: la mayor no puede superar el DOBLE de la menor. Si pones el objetivo a 3 por ciento y
+   la invalidación a 20 por ciento, ganarás casi todas las carreras sin haber predicho nada, y el
+   scorecard entero deja de significar algo — batir el 50 por ciento solo es evidencia si la carrera
+   era pareja. Calcula ambas distancias, muéstralas, y verifica la razón entre ellas antes de
+   registrar. Si tu lectura estructural exige niveles asimétricos, entonces NO uses esos niveles como
+   predicción: elige un par simétrico que capture la misma tesis direccional, o declara que esta
+   lectura no es registrable como carrera y explica por qué.
+
+d) BASELINE NAIVE — contra qué se mide el conteo.
+   Declara qué diría la regla tonta de "seguir la tendencia reciente" (LONG si el activo viene
+   subiendo, SHORT si viene bajando), sin Elliott. Luego:
+   - si Elliott coincide con el baseline, el conteo NO aportó información direccional — dilo
+     explícitamente en la razón; el valor del análisis está en los niveles, no en la dirección.
+   - si Elliott CONTRADICE al baseline, ese es el test limpio del método. Márcalo, porque son las
+     únicas predicciones que pueden demostrar edge por encima de simplemente seguir la tendencia.
+
+e) CONGELAMIENTO — aplica la regla anti-hindsight declarada arriba.
+   Antes de registrar, revisa si hay un conteo previo vigente para este activo. Si lo hay y el precio
+   lo contradice sin haber tocado su invalidación, NO lo re-etiquetes: mantenlo vivo y erróneo, o
+   decláralo FALLIDO explícitamente. Indica en el JSON si estás corrigiendo o reemplazando un conteo
+   anterior, y por qué.
+
+REGISTRO: tras responder, la predicción se registra en data/predicciones_prospectivas.jsonl vía
+src/prospectivo.py (función registrar). Al inicio de cada sesión se corre resolver para puntuar las
+vencidas. El scorecard es el único juez del método — no la coherencia interna del relato.
 
 ---
 
@@ -143,19 +551,74 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
   "fecha": "{date}",
   "activo": "{asset}",
   "precio_actual": <último cierre>,
+  "gate_regimen": {{
+    "regimen_ok": <true|false — false OBLIGA veredicto=ESPERAR: el método no aplica en este régimen>,
+    "tendencia_previa": "<descripción en una frase: dirección, desde qué nivel y fecha; o 'no hay'>",
+    "evidencia_adx": "<ADX y separación +DI/-DI del bloque de indicadores que sostiene el juicio>",
+    "figura_agotamiento_identificada": "<PT|triangulo|ninguna — si hay una, un ADX bajo NO bloquea>",
+    "liquidez_ok": <true|false — participación masiva, sin agente dominante>
+  }},
+  "pivotes_mecanicos": {{
+    "umbral_macro_pct": <umbral del zigzag de grado mayor, o null si no se pudo derivar>,
+    "umbral_swing_pct": <umbral del zigzag de grado swing, o null>,
+    "derivados_mecanicamente": <true|false — false obliga a tratar el análisis como preliminar>,
+    "pivotes_fuera_del_detector": "<pivotes del conteo que el detector NO produjo al umbral declarado, con su justificación; 'ninguno' si no hay>"
+  }},
   "lectura_estructural": {{
     "sub_onda_actual": "<...>", "grado": "<...>",
-    "estado": "<en progreso|posible fin cercano|completada>", "que_esperar": "<...>"
+    "estado": "<en progreso|posible fin cercano|completada>", "que_esperar": "<...>",
+    "reglas_esenciales_ok": <true|false — el impulso que operas cumple las 7 reglas + solape>,
+    "w4_alterna_w2": "<sí|no|n/a — 'no' es ALARMA: la W4 podría no haber terminado, no dispares>",
+    "recorridos_ondas": "<recorrido en precio y % de cada una de las 5 ondas, para auditar el grado>",
+    "consistencia_grado_ok": <true|false — false si la onda menor es <1/3 de la mayor: mezcla de grados>
   }},
   "sesgo_macro": "<ALCISTA|BAJISTA|NEUTRO>",
   "fase_impulso_macro": "<temprana|media|terminal>",
   "direccion": "<LONG|SHORT>",
-  "modo_entrada": "<A_enfoque_b|B_fin_abc|C_breakout>",
+  "modo_entrada": "<A_enfoque_b|B_fin_abc|C_breakout|D_reversion_pt>",
   "modo_b_check": {{
     "abc_detectada": <true|false>,
+    "tipologia_abc": "<zigzag|plana|triangulo|indefinida>",
+    "b_sobre_a": <ratio numérico o null>,
+    "fuerza_b": "<debil|normal|fuerte|fuerte_plus|null — solo si plana>",
     "c_sobre_a": <ratio numérico o null>,
+    "c_sobre_b": <ratio numérico o null — relevante si plana>,
     "rr_o3_estimado": <número o null>,
     "invalidacion_clara": <true|false>,
+    "checklist_santos_6": {{
+      "p1_tendencia_previa": "<SÍ|NO — ELIMINATORIO>", "p2_precio_se_paro": "<SÍ|NO>",
+      "p3_recuento_correctiva": "<SÍ|NO>", "p4_condiciones_esenciales": "<SÍ|NO>",
+      "p5_estructura_y_fin_c": "<SÍ|NO>", "p6_divergencias_rsi_y_macd": "<SÍ|NO>",
+      "cumplidas": <0-6>
+    }},
+    "dispara": <true|false>
+  }},
+  "divergencias": {{
+    "tipo_macd": "<con_fallo|normal|mismo_nivel|ninguna — con_fallo es la más fuerte>",
+    "tipo_rsi": "<normal|ninguna>",
+    "rsi_salio_de_extremo": <true|false — entró en sobreventa/sobrecompra y salió divergiendo>,
+    "figura_ideal_completa": <true|false — RSI div. saliendo de extremo + MACD con fallo + agotamiento + corte 2-4>
+  }},
+  "modo_d_check": {{
+    "es_pauta_terminal": <true|false>,
+    "onda1_extendida": <true|false>,
+    "ondas_2_4_solapan": <true|false>,
+    "cuña_contractiva": <true|false>,
+    "fib_pt": {{
+      "o2_sobre_o1": <ratio>, "o3_sobre_o1": <ratio>, "o4_sobre_o2_precio": <ratio>,
+      "o4_sobre_o2_tiempo": <ratio>, "o5_sobre_o3": <ratio>, "o1_sobre_o3": <ratio>,
+      "criterios_cumplidos": <0-5 — 4-5 válida · 3 dudosa · <=2 NO es PT>
+    }},
+    "ubicacion_estructural": "<onda5|ondaC|otra — 'otra' es alarma fuerte: las PT solo van en 5 o C>",
+    "linea_24_rota": <true|false — es el gatillo>,
+    "corte_mas_rapido_que_onda5": <true|false>,
+    "corte_brusco": <true|false — ambas condiciones son obligatorias; un cruce pasivo no cuenta>,
+    "duracion_pt_dias": <número>,
+    "fecha_limite_retroceso_100": "<YYYY-MM-DD — si se pasa, revisar el recuento>",
+    "stop_618_post_corte": <precio del 61.8% de retroceso de la onda donde se cortó>,
+    "objetivo_100pct_pt": <precio del 100% de retroceso de la PT, o null>,
+    "adx_tiburon": "<sí|no|n/a>",
+    "macd_fallo": "<sí|no|n/a>",
     "dispara": <true|false>
   }},
   "pivotes": {{
@@ -165,6 +628,8 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
     "onda_iniciada": "<W3|W5_o_C_terminal — solo si modo_entrada=C_breakout, si no null>",
     "abc_a_inicio": <precio o null>, "abc_a_inicio_fecha": "<YYYY-MM-DD o null>",
     "abc_c_fin": <precio o null>,
+    "pt_onda1_origen": <precio origen de onda 1 de la PT, o null>, "pt_onda1_origen_fecha": "<YYYY-MM-DD o null>",
+    "pt_onda5_fin": <precio fin de onda 5 = extremo terminal, o null>, "pt_onda5_fin_fecha": "<YYYY-MM-DD o null>",
     "stop_extremo": <precio del extremo a proteger>
   }},
   "checklist": {{"s1_retroceso": "<SÍ|NO>", "s2_estructura": "<SÍ|NO>", "s3_linea24": "<SÍ|NO>", "cumplidas": <0-3>}},
@@ -176,5 +641,28 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
   "calidad_señal": "<DEFINITIVA|FUERTE|INSUFICIENTE>",
   "veredicto": "<SEÑAL|ESPERAR>",
   "razon": "<por qué; incluye los números de c/a y R:R si evaluaste Modo B>",
-  "invalidacion": "<condición de precio que anula el setup>"
+  "invalidacion": "<condición de precio que anula el setup>",
+  "prediccion_falsable": {{
+    "conteo_primario": "<la lectura que defiendes, en una frase>",
+    "peso_primario": <0.0-1.0>,
+    "conteo_alternativo": "<el conteo REAL que compite — no de paja; null solo si no lograste construir uno>",
+    "peso_alternativo": <0.0-1.0 — primario + alternativo = 1.0>,
+    "nivel_discriminador": <precio que mata a uno y confirma al otro, o null>,
+    "que_implica_cada_lado": "<si rompe X → primario; si pierde Y → alternativo>",
+    "direccion": "<LONG|SHORT>",
+    "objetivo": <precio>,
+    "invalidacion_precio": <precio>,
+    "dist_objetivo_pct": <distancia % desde el precio actual al objetivo>,
+    "dist_invalidacion_pct": <distancia % desde el precio actual a la invalidación>,
+    "razon_simetria": <la mayor dividida por la menor; DEBE ser <= 2.0 para registrar>,
+    "simetria_ok": <true|false — si es false, NO registrar como carrera y explicar por qué>,
+    "horizonte_fecha": "<YYYY-MM-DD>",
+    "probabilidad": <0.00-1.00 — de acertar el objetivo antes que la invalidación>,
+    "justificacion_probabilidad": "<qué información concreta sostiene ese número; obligatorio si >0.75>",
+    "baseline_naive_dir": "<LONG|SHORT — lo que diría seguir la tendencia reciente, sin Elliott>",
+    "elliott_vs_baseline": "<coincide|contradice>",
+    "nota_baseline": "<si coincide: el conteo no aportó dirección, solo niveles. Si contradice: test limpio del método>",
+    "conteo_previo_estado": "<vigente|fallido|corregido_por_dato|ninguno>",
+    "conteo_previo_nota": "<id o descripción del conteo anterior y por qué cambia de estado; null si ninguno>"
+  }}
 }}
