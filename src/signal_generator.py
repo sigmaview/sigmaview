@@ -44,18 +44,18 @@ def _enviar_telegram(mensaje: str) -> None:
 
 # ── Datos ─────────────────────────────────────────────────────────────────────
 
-def fetch_4h_data(candles: int, asof: str | None = None) -> str:
+def fetch_4h_data(candles: int, asof: str | None = None, ticker: str = TICKER) -> str:
     # Prefiere DB propia (historia acumulada) sobre yfinance (límite ~730d 1h)
     try:
         import database
-        csv = database.fetch_4h_from_db(TICKER, candles, asof)
+        csv = database.fetch_4h_from_db(ticker, candles, asof)
         if csv:
             return csv
     except Exception:
         pass
     # yfinance: 4h no es nativo; bajamos 1h y resampleamos a 4h
     # Nota: yfinance solo guarda ~730 días de datos horarios → asof debe estar en esa ventana
-    df = yf.Ticker(TICKER).history(period="730d", interval="1h")
+    df = yf.Ticker(ticker).history(period="730d", interval="1h")
     df.index = df.index.tz_localize(None) if df.index.tz else df.index
     agg = {"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}
     df4 = df.resample("4h").agg(agg).dropna()
@@ -65,6 +65,24 @@ def fetch_4h_data(candles: int, asof: str | None = None) -> str:
     df4 = df4.tail(candles)
     df4.index = df4.index.strftime("%Y-%m-%d %H:%M")
     return df4.to_csv()
+
+def fetch_1h_native_data(candles: int, asof: str | None = None, ticker: str = TICKER) -> str:
+    """Velas 1h nativas, SIN resample. Para activos sin mercado 24/7 (ej. S&P 500): resamplear
+    a bloques de 4h alineados a reloj UTC dejaría la mayoría vacíos (mercado abre ~6.5h/día)."""
+    df = yf.Ticker(ticker).history(period="730d", interval="1h")
+    df.index = df.index.tz_localize(None) if df.index.tz else df.index
+    if asof:
+        df = df[df.index < pd.Timestamp(asof) + pd.Timedelta(days=1)]
+    df = df.tail(candles)[["Open", "High", "Low", "Close", "Volume"]]
+    df.index = df.index.strftime("%Y-%m-%d %H:%M")
+    return df.to_csv()
+
+def fetch_price_data(candles: int, asof: str | None = None, ticker: str = TICKER,
+                      modo: str = "4h_resample") -> str:
+    """Despachador de velas para L3 según el modo configurado del ticker (ver asset_config.py)."""
+    if modo == "1h_native":
+        return fetch_1h_native_data(candles, asof, ticker)
+    return fetch_4h_data(candles, asof, ticker)
 
 def load_json(path: Path, label: str) -> dict:
     if not path.exists():
@@ -518,31 +536,47 @@ def print_report(r: dict, trade: dict | None, usage, model: str) -> None:
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def build_l3_prompt_from(l1: dict, l2: dict, price_csv: str, date: str) -> str:
+def build_l3_prompt_from(l1: dict, l2: dict, price_csv: str, date: str,
+                          asset: str = ASSET, candle_count: int = CANDLE_COUNT,
+                          timeframe_label: str = "4 HORAS") -> str:
     ctx_l1 = json.dumps({k: l1.get(k) for k in ("techo_operativo", "escenarios", "acuerdo",
                                                 "divergencia", "niveles_para_l2")}, ensure_ascii=False)
     ctx_l2 = json.dumps({k: l2.get(k) for k in ("escenario_favorecido", "resolutorios_cruzados",
                                                 "score_santos", "resumen")}, ensure_ascii=False)
     template = PROMPT_PATH.read_text()
     return template.format(
-        asset=ASSET, date=date,
+        asset=asset, date=date,
         fecha_l1=l1.get("fecha_analisis", "?"), contexto_l1=ctx_l1,
         fecha_l2=l2.get("fecha", "?"), contexto_l2=ctx_l2,
-        candle_count=CANDLE_COUNT, price_data=price_csv,
+        candle_count=candle_count, price_data=price_csv,
+        timeframe_label=timeframe_label,
     )
 
-def build_l3_prompt(date: str, asof: str | None = None) -> tuple[str, dict, dict]:
-    l1 = load_json(L1_FILE, "analyzer_weekly.py")
-    l2 = load_json(L2_FILE, "monitor_daily.py")
-    price_csv = fetch_4h_data(CANDLE_COUNT, asof=asof)
-    return build_l3_prompt_from(l1, l2, price_csv, date), l1, l2
+def build_l3_prompt(date: str, asof: str | None = None, ticker: str = TICKER) -> tuple[str, dict, dict]:
+    import asset_config
+    cfg = asset_config.get_config(ticker)
+    l1_file = DATA_DIR / f"l1_{cfg['ticker_slug']}_latest.json"
+    l2_file = DATA_DIR / f"l2_{cfg['ticker_slug']}_latest.json"
+    l1 = load_json(l1_file, "analyzer_weekly.py")
+    l2 = load_json(l2_file, "monitor_daily.py")
+    price_csv = fetch_price_data(cfg["l3_candle_count"], asof=asof, ticker=ticker,
+                                  modo=cfg["l3_candle_mode"])
+    timeframe_label = "1 HORA" if cfg["l3_candle_mode"] == "1h_native" else "4 HORAS"
+    prompt = build_l3_prompt_from(l1, l2, price_csv, date, asset=cfg["asset_label"],
+                                   candle_count=cfg["l3_candle_count"], timeframe_label=timeframe_label)
+    return prompt, l1, l2
 
-def run(model: str | None = None) -> dict:
+def run(model: str | None = None, ticker: str = "BTC-USD") -> dict:
+    import asset_config
+    cfg = asset_config.get_config(ticker)
+    l2_file = DATA_DIR / f"l2_{cfg['ticker_slug']}_latest.json"
+    output_file = DATA_DIR / f"l3_{cfg['ticker_slug']}_latest.json"
+
     DATA_DIR.mkdir(exist_ok=True)
     date = datetime.now().strftime("%Y-%m-%d")
 
-    print("Cargando contexto L1/L2 y bajando datos 4h...", end=" ", flush=True)
-    prompt, l1, l2 = build_l3_prompt(date)
+    print(f"Cargando contexto L1/L2 y bajando datos de precio ({cfg['l3_candle_mode']})...", end=" ", flush=True)
+    prompt, l1, l2 = build_l3_prompt(date, ticker=ticker)
     print("OK")
 
     # Tiered: Opus solo cuando L2 confirma SEÑAL; Sonnet para el datapoint diario.
@@ -632,8 +666,8 @@ def run(model: str | None = None) -> dict:
     print_report(result, trade, usage, model)
 
     result["_meta"] = {"generado": date, "modelo": model}
-    OUTPUT_FILE.write_text(json.dumps(result, ensure_ascii=False, indent=2))
-    print(f"\n  Guardado en: {OUTPUT_FILE}")
+    output_file.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+    print(f"\n  Guardado en: {output_file}")
 
     # Actualiza el plan de alertas que vigilará price_watcher.py
     try:
@@ -646,13 +680,13 @@ def run(model: str | None = None) -> dict:
     # Guarda análisis y señales en DB histórica
     try:
         import database
-        l2 = json.loads(L2_FILE.read_text()) if L2_FILE.exists() else {}
-        n_inv = database.invalidar_señales_pendientes(TICKER, date)
+        l2 = json.loads(l2_file.read_text()) if l2_file.exists() else {}
+        n_inv = database.invalidar_señales_pendientes(ticker, date)
         if n_inv:
             print(f"  {n_inv} señal(es) anterior(es) invalidada(s) — entrada nunca se tocó")
-        database.log_analysis(date, TICKER, result, l2.get("nivel_alerta", ""))
+        database.log_analysis(date, ticker, result, l2.get("nivel_alerta", ""))
         if result.get("veredicto") == "SEÑAL":
-            database.log_signal(date, TICKER, result)
+            database.log_signal(date, ticker, result)
     except Exception as e:
         print(f"  ⚠ No se pudo guardar en DB: {e}")
 

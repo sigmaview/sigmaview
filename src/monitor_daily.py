@@ -28,8 +28,8 @@ def clean_api_key() -> str:
 
 # ── Datos ─────────────────────────────────────────────────────────────────────
 
-def fetch_daily_data(candles: int, asof: str | None = None) -> str:
-    df = yf.Ticker(TICKER).history(period="max", interval="1d")
+def fetch_daily_data(candles: int, asof: str | None = None, ticker: str = TICKER) -> str:
+    df = yf.Ticker(ticker).history(period="max", interval="1d")
     df.index = df.index.tz_localize(None) if df.index.tz else df.index
     if asof:
         df = df[df.index <= pd.Timestamp(asof)]
@@ -37,10 +37,10 @@ def fetch_daily_data(candles: int, asof: str | None = None) -> str:
     df.index = df.index.strftime("%Y-%m-%d")
     return df.to_csv()
 
-def load_l1() -> dict:
-    if not L1_FILE.exists():
-        sys.exit(f"ERROR: no existe {L1_FILE}. Corre analyzer_weekly.py primero.")
-    return json.loads(L1_FILE.read_text())
+def load_l1(path: Path = L1_FILE) -> dict:
+    if not path.exists():
+        sys.exit(f"ERROR: no existe {path}. Corre analyzer_weekly.py primero.")
+    return json.loads(path.read_text())
 
 # ── Prompt ────────────────────────────────────────────────────────────────────
 
@@ -54,13 +54,14 @@ def format_escenarios(escenarios: list) -> str:
         )
     return "\n".join(out)
 
-def build_prompt(template: str, l1: dict, price_csv: str, date: str) -> str:
+def build_prompt(template: str, l1: dict, price_csv: str, date: str,
+                  asset: str = ASSET, candle_count: int = CANDLE_COUNT) -> str:
     techo = l1.get("techo_operativo", {})
     l2n = l1.get("niveles_para_l2", {})
     acuerdo = l1.get("acuerdo", {})
     div = l1.get("divergencia", {})
     return template.format(
-        asset=ASSET,
+        asset=asset,
         date=date,
         fecha_l1=l1.get("fecha_analisis", "?"),
         techo=f"${techo.get('precio','')} ({techo.get('fecha','')})",
@@ -72,7 +73,7 @@ def build_prompt(template: str, l1: dict, price_csv: str, date: str) -> str:
         retroceso_50=l2n.get("retroceso_50", ""),
         retroceso_618=l2n.get("retroceso_618", ""),
         resolutorios=l2n.get("niveles_resolutorios", ""),
-        candle_count=CANDLE_COUNT,
+        candle_count=candle_count,
         price_data=price_csv,
     )
 
@@ -117,19 +118,26 @@ def print_report(r: dict, usage) -> None:
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def run() -> dict:
+def run(ticker: str = "BTC-USD") -> dict:
+    sys.path.insert(0, str(Path(__file__).parent))
+    import asset_config
+    cfg = asset_config.get_config(ticker)
+    l1_file = DATA_DIR / f"l1_{cfg['ticker_slug']}_latest.json"
+    output_file = DATA_DIR / f"l2_{cfg['ticker_slug']}_latest.json"
+
     DATA_DIR.mkdir(exist_ok=True)
     date = datetime.now().strftime("%Y-%m-%d")
 
-    l1 = load_l1()
+    l1 = load_l1(l1_file)
     print(f"Mapa L1 cargado ({l1.get('fecha_analisis','?')})")
 
-    print("Bajando datos BTC diarios...", end=" ", flush=True)
-    price_csv = fetch_daily_data(CANDLE_COUNT)
+    print(f"Bajando datos {cfg['asset_label']} diarios...", end=" ", flush=True)
+    price_csv = fetch_daily_data(cfg["l2_candle_count"], ticker=ticker)
     print(f"OK ({len(price_csv.splitlines())-1} velas)")
 
     template = PROMPT_PATH.read_text()
-    prompt = build_prompt(template, l1, price_csv, date)
+    prompt = build_prompt(template, l1, price_csv, date,
+                           asset=cfg["asset_label"], candle_count=cfg["l2_candle_count"])
 
     print(f"Llamando a {MODEL} (L2)...", end=" ", flush=True)
     result, usage = call_model(prompt)
@@ -138,8 +146,8 @@ def run() -> dict:
     print_report(result, usage)
 
     result["_meta"] = {"generado": date, "modelo": MODEL, "l1_fecha": l1.get("fecha_analisis")}
-    OUTPUT_FILE.write_text(json.dumps(result, ensure_ascii=False, indent=2))
-    print(f"\n  Guardado en: {OUTPUT_FILE}")
+    output_file.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+    print(f"\n  Guardado en: {output_file}")
 
     if result.get("nivel_alerta") == "SEÑAL":
         print(f"\n{'!'*60}\n  🔴 SEÑAL — considera correr Nivel 3\n{'!'*60}")
@@ -147,4 +155,4 @@ def run() -> dict:
     return result
 
 if __name__ == "__main__":
-    run()
+    run(sys.argv[1] if len(sys.argv) > 1 else "BTC-USD")

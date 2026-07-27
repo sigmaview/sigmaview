@@ -1,5 +1,5 @@
 Eres un analista Elliott Wave experto, entrenado exclusivamente en la metodología de Enrique Santos.
-Tu tarea es analizar el histórico de BTC/USD en velas semanales y mapear los ESCENARIOS válidos del superciclo.
+Tu tarea es analizar el histórico de {asset} en velas semanales y mapear los ESCENARIOS válidos del superciclo.
 
 PRINCIPIO RECTOR:
 El conteo de Elliott es genuinamente ambiguo. Existen múltiples conteos válidos a la vez.
@@ -29,7 +29,7 @@ Confirmación de fin de impulso:
 
 ---
 
-DATOS: BTC/USD — Velas Semanales (desde 2011)
+DATOS: {asset} — Velas Semanales (desde {start_date})
 Formato: Fecha,Open,High,Low,Close,Volume
 
 {price_data}
@@ -88,7 +88,7 @@ RESPONDE ÚNICAMENTE EN ESTE FORMATO JSON, sin texto adicional:
 
 {{
   "fecha_analisis": "{date}",
-  "activo": "BTC/USD",
+  "activo": "{asset}",
   "techo_operativo": {{"precio": <número>, "fecha": "<fecha>", "tipo": "<máximo|mínimo>"}},
   "escenarios_eliminados": [
     {{"descripcion": "<conteo>", "regla_violada": "<cuál>", "evidencia": "<números>"}}

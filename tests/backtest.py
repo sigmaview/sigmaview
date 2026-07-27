@@ -14,19 +14,25 @@ import analyzer_weekly as l1m
 import monitor_daily as l2m
 import signal_generator as l3m
 import fill_simulator
+import asset_config
 
 CACHE_DIR = Path(__file__).parent.parent / "data" / "backtest_cache"
 
-def cached(asof: str, nivel: str, fn):
-    """Cachea el resultado de L1/L2 por fecha. Re-corridas solo rehacen L3."""
+def cost_of(usage, model: str) -> float:
+    r_in, r_out = l3m.RATES.get(model, (15, 75))
+    return (usage.input_tokens * r_in + usage.output_tokens * r_out) / 1_000_000
+
+def cached(asof: str, nivel: str, ticker_slug: str, fn):
+    """Cachea el resultado de L1/L2 por fecha+ticker. Re-corridas solo rehacen L3.
+    fn() debe devolver (resultado, costo_usd) — costo es 0.0 si viene de cache."""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    path = CACHE_DIR / f"{asof}_{nivel}.json"
+    path = CACHE_DIR / f"{asof}_{ticker_slug}_{nivel}.json"
     if path.exists():
         print(f"  ({nivel} desde cache)", end=" ", flush=True)
-        return json.loads(path.read_text())
-    res = fn()
+        return json.loads(path.read_text()), 0.0
+    res, cost = fn()
     path.write_text(json.dumps(res, ensure_ascii=False, indent=2))
-    return res
+    return res, cost
 
 # Checkpoints conocidos del backtest documentado
 CHECKPOINTS = [
@@ -35,10 +41,12 @@ CHECKPOINTS = [
     {"asof": "2026-02-06", "esperado": "Gestión + esperar (suelo de onda, no nueva entrada)"},
 ]
 
-def compute_l1(asof: str) -> dict:
-    df = l1m.fetch_weekly_df(asof=asof)
-    p1 = l1m.PROMPT_PATH.read_text().format(price_data=l1m.df_to_csv(df), date=asof)
-    l1res, _ = l1m.call_model(p1)
+def compute_l1(asof: str, ticker: str = "BTC-USD", cfg: dict | None = None) -> tuple[dict, float]:
+    cfg = cfg or asset_config.get_config(ticker)
+    df = l1m.fetch_weekly_df(ticker, asof=asof, start_date=cfg["l1_start_date"])
+    p1 = l1m.PROMPT_PATH.read_text().format(price_data=l1m.df_to_csv(df), date=asof,
+                                             asset=cfg["asset_label"], start_date=cfg["l1_start_date"])
+    l1res, usage = l1m.call_model(p1)
     techo = l1res.get("techo_operativo", {})
     fib = l1m.compute_operative_levels(df, float(techo.get("precio", 0) or 0),
                                        techo.get("fecha", ""), techo.get("tipo", ""))
@@ -48,24 +56,33 @@ def compute_l1(asof: str) -> dict:
             "retroceso_50": fib["retroceso_50"], "retroceso_618": fib["retroceso_618"],
             "_fib_calculado_por": "python",
         })
-    return l1res
+    return l1res, cost_of(usage, l1m.MODEL)
 
-def compute_l2(asof: str, l1res: dict) -> dict:
-    dcsv = l2m.fetch_daily_data(l2m.CANDLE_COUNT, asof=asof)
-    p2 = l2m.build_prompt(l2m.PROMPT_PATH.read_text(), l1res, dcsv, asof)
-    l2res, _ = l2m.call_model(p2)
-    return l2res
+def compute_l2(asof: str, l1res: dict, ticker: str = "BTC-USD", cfg: dict | None = None) -> tuple[dict, float]:
+    cfg = cfg or asset_config.get_config(ticker)
+    dcsv = l2m.fetch_daily_data(cfg["l2_candle_count"], asof=asof, ticker=ticker)
+    p2 = l2m.build_prompt(l2m.PROMPT_PATH.read_text(), l1res, dcsv, asof,
+                           asset=cfg["asset_label"], candle_count=cfg["l2_candle_count"])
+    l2res, usage = l2m.call_model(p2)
+    return l2res, cost_of(usage, l2m.MODEL)
 
-def run_pipeline(asof: str, modelo_l3: str | None = None) -> dict:
-    # L1 y L2 se cachean por fecha; las re-corridas solo rehacen L3
-    l1res = cached(asof, "l1", lambda: compute_l1(asof))
-    l2res = cached(asof, "l2", lambda: compute_l2(asof, l1res))
+def run_pipeline(asof: str, ticker: str = "BTC-USD", modelo_l3: str | None = None) -> dict:
+    cfg = asset_config.get_config(ticker)
+
+    # L1 y L2 se cachean por fecha+ticker; las re-corridas solo rehacen L3
+    l1res, cost_l1 = cached(asof, "l1", cfg["ticker_slug"], lambda: compute_l1(asof, ticker, cfg))
+    l2res, cost_l2 = cached(asof, "l2", cfg["ticker_slug"], lambda: compute_l2(asof, l1res, ticker, cfg))
 
     # ── L3 ── modelo_l3 fuerza un modelo (backtest riguroso); None = tiered según L2
     model = modelo_l3 or ("claude-opus-4-8" if l2res.get("nivel_alerta") == "SEÑAL" else "claude-sonnet-4-6")
-    c4 = l3m.fetch_4h_data(l3m.CANDLE_COUNT, asof=asof)
-    p3 = l3m.build_l3_prompt_from(l1res, l2res, c4, asof)
-    l3res, _ = l3m.call_model(p3, model)
+    price_csv = l3m.fetch_price_data(cfg["l3_candle_count"], asof=asof, ticker=ticker,
+                                      modo=cfg["l3_candle_mode"])
+    timeframe_label = "1 HORA" if cfg["l3_candle_mode"] == "1h_native" else "4 HORAS"
+    p3 = l3m.build_l3_prompt_from(l1res, l2res, price_csv, asof, asset=cfg["asset_label"],
+                                   candle_count=cfg["l3_candle_count"], timeframe_label=timeframe_label)
+    l3res, usage3 = l3m.call_model(p3, model)
+    cost_l3 = cost_of(usage3, model)
+    cost_total = cost_l1 + cost_l2 + cost_l3
 
     # Decisión de disparo determinista en Python (extremos operativos de L1 → Modo B reproducible)
     l1_levels = {
@@ -85,9 +102,11 @@ def run_pipeline(asof: str, modelo_l3: str | None = None) -> dict:
     if trade:
         sim = fill_simulator.simular(
             l3res.get("direccion", "LONG"), trade["entrada"], trade["stop"],
-            trade["O1"], trade["O2"], trade["O3"], asof)
+            trade["O1"], trade["O2"], trade["O3"], asof,
+            dias=cfg["fill_sim_dias"], ticker=ticker)
 
-    return {"l1": l1res, "l2": l2res, "l3": l3res, "trade": trade, "sim": sim, "modelo_l3": model}
+    return {"l1": l1res, "l2": l2res, "l3": l3res, "trade": trade, "sim": sim,
+            "modelo_l3": model, "cost": cost_total}
 
 def print_result(asof: str, esperado: str, r: dict) -> None:
     l2, l3, trade = r["l2"], r["l3"], r["trade"]

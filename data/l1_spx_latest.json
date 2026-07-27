@@ -1,0 +1,131 @@
+{
+  "fecha_analisis": "2026-06-28",
+  "activo": "S&P 500",
+  "techo_operativo": {
+    "precio": 7620.89990234375,
+    "fecha": "2026-06-01",
+    "tipo": "máximo"
+  },
+  "escenarios_eliminados": [
+    {
+      "descripcion": "Wave III termina en el techo de 2025-02 (6147) con Wave IV bajista en 2025-03/04 y Wave V actual desde 5069",
+      "regla_violada": "Ninguna dura, pero proporcionalidad de extensión la hace inferior; se conserva como variante implícita de E2",
+      "evidencia": "El tramo desde 5069 (abr-2025) a 7620 (jun-2026) +50% sería una Wave V demasiado extensa para etiqueta de quinta sin extensión justificada; preferimos contar el rally como continuación de Wave III/V mayor"
+    }
+  ],
+  "escenarios": [
+    {
+      "id": "E1",
+      "etiqueta_macro": "Wave V de gran ciclo en curso (desde mínimo COVID 2020), techo reciente = posible fin de Wave (3) de V con Wave (4) menor pendiente",
+      "wave_III_fin": "4818.62 (2022-01-03)",
+      "posicion_hoy": "Tras Wave IV mayor (bear 2022) completada en 3491 (oct-2022), Wave V en desarrollo. El techo de 7620 marca un máximo de quinta de grado menor dentro de V; corrección menor en curso",
+      "sesgo_corto_plazo": "BAJISTA",
+      "objetivo": "Retroceso hacia 7050-7240 (0.382-0.236 del último tramo) antes de reanudar alcista a 7900+",
+      "se_confirma_si": "Precio recupera 7620 y cierra semanal por encima, confirmando Wave V intacta",
+      "se_invalida_si": "Cierre semanal por debajo de 6356 (mínimo Wave 4 menor mar-2026), rompiendo estructura impulsiva de V",
+      "extension": "Wave III extendida (>161.8% de Wave I) en el ciclo de gran grado; dentro de V, la onda (3) es la extendida",
+      "pivotes_onda": [
+        {
+          "onda": "0",
+          "precio": 2191.86,
+          "fecha": "2020-03-23"
+        },
+        {
+          "onda": "I",
+          "precio": 4818.62,
+          "fecha": "2022-01-03"
+        },
+        {
+          "onda": "II",
+          "precio": 3491.58,
+          "fecha": "2022-10-10"
+        },
+        {
+          "onda": "III",
+          "precio": 6147.43,
+          "fecha": "2025-02-17"
+        },
+        {
+          "onda": "IV",
+          "precio": 5069.89,
+          "fecha": "2025-03-31"
+        },
+        {
+          "onda": "V",
+          "precio": 7620.89,
+          "fecha": "2026-06-01"
+        }
+      ]
+    },
+    {
+      "id": "E2",
+      "etiqueta_macro": "Wave III de superciclo aún en curso; el techo de 7620 es máximo de Wave III mayor, con Wave IV correctiva pendiente",
+      "wave_III_fin": "7620.89 (2026-06-01)",
+      "posicion_hoy": "Wave III de superciclo recién culminada en 7620; iniciando Wave IV correctiva de grado mayor que buscaría 6300-6800",
+      "sesgo_corto_plazo": "BAJISTA",
+      "objetivo": "Corrección Wave IV hacia 6356-6750 (zona 0.236-0.382 desde mínimo 4835 abr-2025), luego Wave V a nuevos máximos >7900",
+      "se_confirma_si": "Cierre semanal por debajo de 6356 confirma inicio de Wave IV correctiva",
+      "se_invalida_si": "Cierre semanal por encima de 7620 reanuda Wave III (no habría terminado)",
+      "extension": "Wave III extendida del superciclo; tramo desde 4835 (abr-2025) impulsivo y extenso",
+      "pivotes_onda": [
+        {
+          "onda": "0",
+          "precio": 2191.86,
+          "fecha": "2020-03-23"
+        },
+        {
+          "onda": "I",
+          "precio": 4818.62,
+          "fecha": "2022-01-03"
+        },
+        {
+          "onda": "II",
+          "precio": 3491.58,
+          "fecha": "2022-10-10"
+        },
+        {
+          "onda": "III",
+          "precio": 7620.89,
+          "fecha": "2026-06-01"
+        }
+      ]
+    }
+  ],
+  "acuerdo": {
+    "sesgo_cercano": "Ambos escenarios coinciden en sesgo BAJISTA de corto plazo: el techo de 7620 (jun-2026) detuvo el avance y se espera una corrección antes de continuación alcista",
+    "niveles_compartidos": [
+      7620.89,
+      6356.08,
+      6750
+    ],
+    "como_operar_hoy": "Esperar corrección; no perseguir largos cerca de 7620. Vigilar 6356 como nivel pivote clave de soporte estructural"
+  },
+  "divergencia": {
+    "pregunta_abierta": "¿El techo de 7620 es solo el fin de una quinta menor dentro de Wave V (E1, corrección somera) o el fin de Wave III de superciclo (E2, corrección de mayor grado)?",
+    "se_resuelve_si": "Profundidad de la corrección: si frena en 7050-7240 y rebota fuerte = E1 (quinta menor); si rompe 6356 con cierre semanal = E2 (Wave IV mayor en curso)"
+  },
+  "niveles_para_l2": {
+    "extremo_impulso": {
+      "precio": 7620.89990234375,
+      "fecha": "2026-06-01"
+    },
+    "retroceso_382": 7384.18,
+    "retroceso_618": 7474.57,
+    "w2_fin_precio": 3491.58,
+    "w4_fin_precio": 5069.89,
+    "w5_duracion_dias": null,
+    "niveles_resolutorios": [
+      7050.0,
+      6356.08,
+      7620.89
+    ],
+    "low_operativo": 7237.85,
+    "retroceso_50": 7429.38,
+    "_fib_calculado_por": "python"
+  },
+  "resumen": "Techo operativo en 7620.89 (jun-2026). Ambos escenarios supervivientes coinciden en sesgo bajista de corto plazo y esperan una corrección antes de continuar al alza. La duda macro: corrección somera (fin de quinta menor, E1) vs. corrección mayor (fin de Wave III superciclo, E2). El nivel 6356 resuelve la divergencia: defenderlo favorece E1; romperlo con cierre semanal confirma E2.",
+  "_meta": {
+    "generado": "2026-06-28",
+    "modelo": "claude-opus-4-8"
+  }
+}

@@ -25,7 +25,8 @@ def clean_api_key() -> str:
 
 # ── Datos ─────────────────────────────────────────────────────────────────────
 
-def fetch_weekly_df(ticker: str = "BTC-USD", asof: str | None = None) -> pd.DataFrame:
+def fetch_weekly_df(ticker: str = "BTC-USD", asof: str | None = None,
+                     start_date: str = "2014-01-01") -> pd.DataFrame:
     """Devuelve el DataFrame semanal con índice datetime (para cálculos).
     Construye las semanas desde DIARIAS filtradas al asof, para que la última semana
     (parcial) NO incluya datos posteriores al asof — sin fuga de futuro en backtesting."""
@@ -33,7 +34,7 @@ def fetch_weekly_df(ticker: str = "BTC-USD", asof: str | None = None) -> pd.Data
     d.index = d.index.tz_localize(None) if d.index.tz else d.index
     if asof:
         d = d[d.index <= pd.Timestamp(asof)]
-    d = d[d.index >= "2014-01-01"]
+    d = d[d.index >= start_date]
     agg = {"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}
     wk = d.resample("W-MON", label="left", closed="left").agg(agg).dropna()
     return wk[["Open", "High", "Low", "Close", "Volume"]]
@@ -147,17 +148,23 @@ def print_report(result: dict, usage) -> None:
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def run() -> dict:
+def run(ticker: str = "BTC-USD") -> dict:
+    sys.path.insert(0, str(Path(__file__).parent))
+    import asset_config
+    cfg = asset_config.get_config(ticker)
+    output_file = OUTPUT_DIR / f"l1_{cfg['ticker_slug']}_latest.json"
+
     OUTPUT_DIR.mkdir(exist_ok=True)
     date = datetime.now().strftime("%Y-%m-%d")
 
-    print("Bajando datos BTC semanales...", end=" ", flush=True)
-    df = fetch_weekly_df()
+    print(f"Bajando datos {cfg['asset_label']} semanales...", end=" ", flush=True)
+    df = fetch_weekly_df(ticker, start_date=cfg["l1_start_date"])
     price_csv = df_to_csv(df)
     print(f"OK ({len(df)} velas)")
 
     template = PROMPT_PATH.read_text()
-    prompt   = template.format(price_data=price_csv, date=date)
+    prompt   = template.format(price_data=price_csv, date=date,
+                                asset=cfg["asset_label"], start_date=cfg["l1_start_date"])
 
     print(f"Llamando a {MODEL} (L1)...", end=" ", flush=True)
     result, usage = call_model(prompt)
@@ -181,15 +188,14 @@ def run() -> dict:
     print_report(result, usage)
 
     result["_meta"] = {"generado": date, "modelo": MODEL}
-    OUTPUT_FILE.write_text(json.dumps(result, ensure_ascii=False, indent=2))
-    print(f"\n  Guardado en: {OUTPUT_FILE}")
+    output_file.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+    print(f"\n  Guardado en: {output_file}")
 
     try:
-        sys.path.insert(0, str(Path(__file__).parent))
         import database
-        database.log_l1(date, "BTC-USD", result)
+        database.log_l1(date, ticker, result)
         print("  L1 guardado en DB.")
-        n = database.upsert_ohlcv_weekly("BTC-USD", df)
+        n = database.upsert_ohlcv_weekly(ticker, df)
         print(f"  ohlcv_weekly actualizado ({n} velas nuevas).")
     except Exception as e:
         print(f"  (db log_l1 error: {e})")
@@ -197,4 +203,4 @@ def run() -> dict:
     return result
 
 if __name__ == "__main__":
-    run()
+    run(sys.argv[1] if len(sys.argv) > 1 else "BTC-USD")

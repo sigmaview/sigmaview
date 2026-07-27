@@ -15,18 +15,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import backtest as bt
+import asset_config
 
-RESULTS_FILE = Path(__file__).parent.parent / "data" / "walkforward_results.json"
-L3_DIR       = Path(__file__).parent.parent / "data" / "walkforward_l3"
-START_DATE   = date(2024, 7, 1)   # inicio seguro de la ventana 4h en yfinance
+START_DATES  = {"BTC-USD": date(2024, 7, 1), "^GSPC": date(2023, 8, 1)}  # ventana 1h yfinance (~730d)
 STEP_DAYS    = 7                   # semanal
 MODELO_L3    = "claude-opus-4-8"  # Opus en todo L3 para calidad uniforme
 
 # ── Generación de fechas ───────────────────────────────────────────────────────
 
-def generate_dates() -> list[str]:
+def generate_dates(start_date: date) -> list[str]:
     today = date.today()
-    dates, d = [], START_DATE
+    dates, d = [], start_date
     while d <= today:
         dates.append(d.strftime("%Y-%m-%d"))
         d += timedelta(days=STEP_DAYS)
@@ -34,43 +33,57 @@ def generate_dates() -> list[str]:
 
 # ── Persistencia ──────────────────────────────────────────────────────────────
 
-def load_results() -> dict:
-    if RESULTS_FILE.exists():
-        return json.loads(RESULTS_FILE.read_text())
+def load_results(results_file: Path) -> dict:
+    if results_file.exists():
+        return json.loads(results_file.read_text())
     return {}
 
-def save_results(results: dict) -> None:
-    RESULTS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    RESULTS_FILE.write_text(json.dumps(results, ensure_ascii=False, indent=2))
+def save_results(results: dict, results_file: Path) -> None:
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+    results_file.write_text(json.dumps(results, ensure_ascii=False, indent=2))
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def main() -> None:
-    dates   = generate_dates()
-    results = load_results()
+def main(ticker: str = "BTC-USD", limit: int | None = None) -> None:
+    cfg = asset_config.get_config(ticker)
+    data_dir     = Path(__file__).parent.parent / "data"
+    results_file = data_dir / (f"walkforward_results_{cfg['ticker_slug']}.json"
+                                if ticker != "BTC-USD" else "walkforward_results.json")
+    l3_dir       = data_dir / (f"walkforward_l3_{cfg['ticker_slug']}"
+                                if ticker != "BTC-USD" else "walkforward_l3")
+    start_date   = START_DATES[ticker]
+
+    dates   = generate_dates(start_date)
+    results = load_results(results_file)
 
     pending  = [d for d in dates if d not in results]
     done     = [d for d in dates if d in results]
+    if limit:
+        pending = pending[:limit]
 
-    print(f"Walk-forward semanal BTC/USD")
+    print(f"Walk-forward semanal {cfg['asset_label']}")
     print(f"  Ventana:    {dates[0]} → {dates[-1]}")
     print(f"  Total:      {len(dates)} fechas")
-    print(f"  Completadas:{len(done)}  |  Por correr: {len(pending)}")
+    print(f"  Completadas:{len(done)}  |  Por correr ahora: {len(pending)}"
+          + (f" (limitado con --limit {limit})" if limit else ""))
     if not pending:
         print("  Nada nuevo que correr — mostrando resumen del archivo guardado.")
 
+    costo_acumulado = 0.0
     for i, asof in enumerate(pending):
         print(f"\n[{i+1}/{len(pending)}] {asof}...", flush=True)
         try:
-            r = bt.run_pipeline(asof, modelo_l3=MODELO_L3)
+            r = bt.run_pipeline(asof, ticker=ticker, modelo_l3=MODELO_L3)
         except Exception as e:
             print(f"  ERROR: {e}")
             results[asof] = {"error": str(e)}
-            save_results(results)
+            save_results(results, results_file)
             continue
 
-        l3  = r["l3"]
-        sim = r.get("sim")
+        l3   = r["l3"]
+        sim  = r.get("sim")
+        cost = r.get("cost", 0.0)
+        costo_acumulado += cost
         results[asof] = {
             "veredicto":   l3.get("veredicto"),
             "direccion":   l3.get("direccion"),
@@ -83,12 +96,13 @@ def main() -> None:
             "r":           sim.get("r") if sim and sim.get("filled") else (0.0 if sim else None),
             "resultado":   sim.get("resultado") if sim else "—",
             "razon":       (l3.get("razon") or "")[:300],
+            "cost":        round(cost, 4),
         }
-        save_results(results)   # ← resumen guardado inmediato tras cada fecha
+        save_results(results, results_file)   # ← resumen guardado inmediato tras cada fecha
 
         # JSON completo de L3 (razonamiento, pivotes, plan de trade) para auditoría
-        L3_DIR.mkdir(parents=True, exist_ok=True)
-        (L3_DIR / f"{asof}_l3.json").write_text(
+        l3_dir.mkdir(parents=True, exist_ok=True)
+        (l3_dir / f"{asof}_l3.json").write_text(
             json.dumps({"l3": r["l3"], "trade": r.get("trade"), "sim": r.get("sim")},
                        ensure_ascii=False, indent=2)
         )
@@ -97,7 +111,8 @@ def main() -> None:
         r_val = results[asof]["r"]
         r_str = f"{r_val:+.2f}R" if r_val is not None else "—"
         print(f"  → {v} {results[asof]['direccion'] or '—'} | "
-              f"{results[asof]['calidad'] or '—'} | {r_str}")
+              f"{results[asof]['calidad'] or '—'} | {r_str}  "
+              f"(${cost:.3f} esta fecha — ${costo_acumulado:.2f} acumulado en esta corrida)")
 
     # ── Tabla y estadísticas ─────────────────────────────────────────────────
     all_r   = [v for v in results.values() if "error" not in v]
@@ -133,7 +148,17 @@ def main() -> None:
         print(f"  R total:              {r_total:+.2f}R")
         print(f"  R promedio/trade:     {r_total/len(trades):+.2f}R")
         print(f"  Expectancy:           {r_total/len(all_r):+.3f}R/fecha")
-    print(f"\n  Guardado en: {RESULTS_FILE}")
+    costo_total_archivo = sum(x.get("cost") or 0.0 for x in all_r)
+    print(f"  Costo API acumulado (fechas con dato de costo): ${costo_total_archivo:.2f}")
+    print(f"  Costo API de esta corrida:                       ${costo_acumulado:.2f}")
+    print(f"\n  Guardado en: {results_file}")
 
 if __name__ == "__main__":
-    main()
+    arg_ticker = "BTC-USD"
+    arg_limit  = None
+    args = sys.argv[1:]
+    if "--ticker" in args:
+        arg_ticker = args[args.index("--ticker") + 1]
+    if "--limit" in args:
+        arg_limit = int(args[args.index("--limit") + 1])
+    main(arg_ticker, limit=arg_limit)

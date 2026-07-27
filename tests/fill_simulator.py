@@ -11,9 +11,9 @@ import yfinance as yf
 
 def simular(direccion: str, entrada: float, stop: float,
             o1: float, o2: float, o3: float,
-            fecha_armado: str, dias: int = 400) -> dict:
+            fecha_armado: str, dias: int = 400, ticker: str = "BTC-USD") -> dict:
     long = direccion.upper() == "LONG"
-    df = yf.Ticker("BTC-USD").history(start=fecha_armado, interval="1d")
+    df = yf.Ticker(ticker).history(start=fecha_armado, interval="1d")
     df = df.head(dias)
     if df.empty:
         return {"error": "sin datos"}
