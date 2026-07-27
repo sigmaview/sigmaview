@@ -138,6 +138,9 @@ function render(d){
   }).sort((a,b) => a.prox - b.prox);
 
   app.append($(`<h2>Señales vivas (${vivas.length})</h2>`));
+  const rr_s = (v) => v==null ? '<span class="dim">—</span>'
+                              : (v < 1 ? `<span class="warn">${v.toFixed(2)}</span>`
+                                       : `<span class="ok">${v.toFixed(2)}</span>`);
   const rows = vivas.map(({p,px,dObj,dInv,dias}) => {
     const limpio = p.direccion !== p.benchmark_naive_dir;
     const cerca = Math.min(dObj ?? 999, dInv ?? 999) < 5;
@@ -145,7 +148,9 @@ function render(d){
       <td><b>${p.activo}</b>${limpio?' <span class="tag limpio">test limpio</span>':''}</td>
       <td><span class="tag">${p.metodo_version}</span></td>
       <td class="${p.direccion==='LONG'?'long':'short'}">${p.direccion}</td>
+      <td class="num">${money(p.entrada_efectiva)}</td>
       <td class="num">${money(px)}</td>
+      <td class="num">${rr_s(p.rr)}</td>
       <td class="num">${money(p.objetivo)} <span class="dim">${pct(dObj)}</span></td>
       <td class="num">${money(p.invalidacion)} <span class="dim">${pct(dInv)}</span></td>
       <td class="num">${p.confianza.toFixed(2)}</td>
@@ -153,11 +158,15 @@ function render(d){
       <td>${cerca?'<span class="warn">◆ cerca</span>':'<span class="dim">—</span>'}</td>
     </tr>`;}).join('');
   app.append($(`<div class="scroll"><table>
-    <thead><tr><th>Activo</th><th>Ver</th><th>Dir</th><th class="num">Precio</th>
+    <thead><tr><th>Activo</th><th>Ver</th><th>Dir</th><th class="num">Entrada</th>
+      <th class="num">Actual</th><th class="num">R:R</th>
       <th class="num">Objetivo</th><th class="num">Invalidación</th><th class="num">Conf</th>
       <th class="num">Horiz</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table></div>`));
-  app.append($(`<p class="note">Ordenadas por proximidad al gatillo. <b>◆ cerca</b> = a menos de 5% de
-    resolverse. <b>test limpio</b> = la lectura contradice al momentum, único caso que mide Elliott.</p>`));
+  app.append($(`<p class="note">Ordenadas por proximidad al gatillo. <b>Entrada</b> = precio fijo del setup ·
+    <b>Actual</b> = último cierre diario · <b>R:R</b> = riesgo:beneficio medido en la entrada
+    (<span class="warn">amarillo</span> = &lt;1, se arriesga más de lo que se busca — no se filtra, se observa).
+    <b>◆ cerca</b> = a menos de 5% de resolverse. <b>test limpio</b> = la lectura contradice al momentum,
+    único caso que mide Elliott.</p>`));
 
   // ── Edge y calibración ────────────────────────────────────────────────────
   const CN = R.coinciden_naive, cal = R.calibracion;
@@ -199,12 +208,13 @@ function render(d){
       <td class="${p.direccion==='LONG'?'long':'short'}">${p.direccion}</td>
       <td class="${p.resultado==='acierto'?'ok':'bad'}">${p.resultado==='acierto'?'✓ acierto':'✗ fallo'}</td>
       <td class="num">${money(p.precio_resolucion)}</td>
+      <td class="num">${rr_s(p.rr)}</td>
       <td class="num">${p.confianza.toFixed(2)}</td>
       <td>${p.direccion!==p.benchmark_naive_dir?'<span class="tag limpio">test limpio</span>':'<span class="dim">coincide</span>'}</td>
     </tr>`).join('');
     app.append($(`<h2>Historial resuelto (${res.length})</h2>
       <div class="scroll"><table><thead><tr><th>Fecha</th><th>Activo</th><th>Ver</th><th>Dir</th>
-      <th>Resultado</th><th class="num">Precio</th><th class="num">Conf</th><th>Tipo</th></tr></thead>
+      <th>Resultado</th><th class="num">Precio</th><th class="num">R:R</th><th class="num">Conf</th><th>Tipo</th></tr></thead>
       <tbody>${hr}</tbody></table></div>`));
   }
 }

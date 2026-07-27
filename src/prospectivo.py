@@ -239,6 +239,9 @@ def export_web():
     import yfinance as yf
     from datetime import date, datetime as _dt
     rows = _load()
+    for r in rows:                       # campos derivados (no tocan el log): entrada fija y R:R de diseño
+        r["entrada_efectiva"] = _entrada(r)
+        r["rr"] = _rr(r)
     vivos = [r for r in rows if r.get("resultado") is None]
 
     precios = {}
@@ -326,30 +329,57 @@ def vivas(solo_version=None):
         d_obj = abs(p - obj) / p * 100
         d_inv = abs(p - inv) / p * 100
         dias = (date.fromisoformat(r["horizonte_fecha"]) - hoy).days
-        pt = r.get("plan_trade") or {}
-        est = r.get("trade_estado")
-        d_ent = abs(p - pt["entry"]) / p * 100 if pt and est == "pendiente" else None
-        filas.append((min(d_obj, d_inv), r, p, d_obj, d_inv, d_ent, dias, est))
+        entrada = _entrada(r); rr = _rr(r)
+        filas.append((min(d_obj, d_inv), r, p, d_obj, d_inv, entrada, rr, dias))
     filas.sort(key=lambda x: x[0])
 
-    print(f"\n{'='*94}")
+    print(f"\n{'='*100}")
     print(f"  SEÑALES VIVAS ({len(filas)})  —  ordenadas por proximidad al gatillo   [{hoy}]")
-    print(f"{'='*94}")
-    print(f"  {'activo':10s} {'ver':3s} {'dir':5s} {'precio':>10s} {'objetivo':>10s} {'inval':>10s} "
-          f"{'entrada':>10s} {'días':>5s}  estado")
-    print(f"  {'-'*90}")
-    for _, r, p, d_obj, d_inv, d_ent, dias, est in filas:
-        ent = f"{r['plan_trade']['entry']:,.2f}({d_ent:+.0f}%)" if d_ent is not None else (est or "—")
+    print(f"{'='*100}")
+    print(f"  {'activo':10s} {'ver':3s} {'dir':5s} {'entrada':>9s} {'actual':>9s} {'R:R':>5s} "
+          f"{'objetivo':>11s} {'inval':>11s} {'días':>5s}  estado")
+    print(f"  {'-'*96}")
+    for _, r, p, d_obj, d_inv, entrada, rr, dias in filas:
+        rr_s = (f"{rr:.2f}" + ("!" if rr < 1 else "")) if rr is not None else "—"
         alerta = "  ⚠ CERCA" if min(d_obj, d_inv) < 5 else ("  ⏰ VENCE" if dias < 14 else "")
         print(f"  {r['activo']:10s} {r.get('metodo_version','?'):3s} {r['direccion']:5s} "
-              f"{p:>10,.2f} {obj_s(r['objetivo'], d_obj):>10s} {obj_s(r['invalidacion'], d_inv):>10s} "
-              f"{ent:>10s} {dias:>5d}{alerta}")
-    print(f"\n  Formato objetivo/inval: precio(distancia%).  ⚠ = a menos de 5% de resolverse.")
+              f"{entrada:>9,.2f} {p:>9,.2f} {rr_s:>5s} "
+              f"{obj_s(r['objetivo'], d_obj):>11s} {obj_s(r['invalidacion'], d_inv):>11s} "
+              f"{dias:>5d}{alerta}")
+    print(f"\n  entrada = precio fijo del setup · actual = último cierre · R:R = riesgo:beneficio en la entrada"
+          f" ('!' = R:R<1, se arriesga más de lo que se busca; no se filtra, se observa).")
+    print(f"  Formato objetivo/inval: precio(distancia% desde actual).  ⚠ = a menos de 5% de resolverse.")
     print(f"  Detalle completo de cualquiera: grep '<id>' data/predicciones_prospectivas.jsonl")
 
 
 def obj_s(v, d):
     return f"{v:,.0f}({d:.0f}%)" if v >= 100 else f"{v:,.2f}({d:.0f}%)"
+
+
+def _entrada(r):
+    """Precio de entrada de la señal: el del plan_trade si existe, si no el de registro.
+    Es FIJO — el precio con que se concibió el trade, no el de mercado de hoy."""
+    pt = r.get("plan_trade") or {}
+    e = pt.get("entry")
+    return e if e is not None else r.get("precio_registro")
+
+
+def _rr(r):
+    """Reward:Risk del setup medido EN LA ENTRADA (no en el precio actual, que se mueve).
+    Es la calidad de diseño del trade: cuánto se arriesga por unidad de objetivo, fija desde el
+    registro. NO se usa para filtrar señales — solo se muestra y se acumula para aprender si un R:R
+    bajo efectivamente pierde más. Devuelve None si el riesgo es incoherente con la dirección."""
+    e = _entrada(r)
+    obj, inv = r.get("objetivo"), r.get("invalidacion")
+    if e is None or obj is None or inv is None:
+        return None
+    if r.get("direccion") == "LONG":
+        reward, risk = obj - e, e - inv
+    else:
+        reward, risk = e - obj, inv - e
+    if risk <= 0:
+        return None
+    return round(reward / risk, 2)
 
 
 def scorecard():
