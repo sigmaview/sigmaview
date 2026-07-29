@@ -1,6 +1,6 @@
 {
- "generado": "2026-07-28T13:05:14Z",
- "fecha": "2026-07-28",
+ "generado": "2026-07-29T13:11:31Z",
+ "fecha": "2026-07-29",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -9,17 +9,17 @@
  },
  "precios": {
   "AAPL": 336.91,
-  "BTC-USD": 63453.7305,
-  "CL=F": 80.76,
-  "CLP=X": 936.76,
-  "ETH-USD": 1889.16,
-  "EURUSD=X": 1.1371,
-  "GC=F": 4032.2,
-  "JPY=X": 163.866,
+  "BTC-USD": 64208.4492,
+  "CL=F": 84.46,
+  "CLP=X": 934.84,
+  "ETH-USD": 1902.2,
+  "EURUSD=X": 1.1382,
+  "GC=F": 4084.0,
+  "JPY=X": 163.79,
   "MSFT": 389.1,
   "NFLX": 70.4,
   "TSLA": 309.22,
-  "^GDAXI": 25357.3691,
+  "^GDAXI": 25503.4297,
   "^GSPC": 7413.1802
  },
  "predicciones": [
@@ -172,8 +172,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.2,
-   "trade_detalle": "abierto@25357",
+   "trade_r": 0.0,
+   "trade_detalle": "abierto@25503",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -277,8 +277,8 @@
     "o3": 1006.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.14,
-   "trade_detalle": "abierto@937",
+   "trade_r": -0.24,
+   "trade_detalle": "abierto@935",
    "metodo_version": "v1",
    "entrada_efectiva": 940.0,
    "rr": 0.17
@@ -399,8 +399,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.43,
-   "trade_detalle": "abierto@63454",
+   "trade_r": -0.22,
+   "trade_detalle": "abierto@64214",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -505,8 +505,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": -0.29,
-   "trade_detalle": "abierto@81",
+   "trade_r": 0.04,
+   "trade_detalle": "abierto@84",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -575,8 +575,8 @@
     "o3": 394.18
    },
    "trade_estado": "abierto",
-   "trade_r": 0.0,
-   "trade_detalle": "abierto@336",
+   "trade_r": NaN,
+   "trade_detalle": "abierto@nan",
    "entrada_efectiva": 336.0,
    "rr": 0.65
   },
