@@ -1,6 +1,6 @@
 {
- "generado": "2026-07-30T12:57:19Z",
- "fecha": "2026-07-30",
+ "generado": "2026-07-31T13:10:25Z",
+ "fecha": "2026-07-31",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,19 +8,17 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "AAPL": 338.19,
-  "BTC-USD": 64842.8906,
-  "CL=F": 83.96,
-  "CLP=X": 928.65,
-  "ETH-USD": 1923.2,
-  "EURUSD=X": 1.1474,
-  "GC=F": 4132.2998,
-  "JPY=X": 162.912,
-  "MSFT": 390.54,
-  "NFLX": 73.63,
-  "TSLA": 298.32,
-  "^GDAXI": 25493.5996,
-  "^GSPC": 7316.1499
+  "AAPL": 333.43,
+  "BTC-USD": 63665.1016,
+  "CL=F": 85.81,
+  "CLP=X": 925.7,
+  "ETH-USD": 1882.12,
+  "GC=F": 4093.3999,
+  "JPY=X": 160.399,
+  "NFLX": 73.17,
+  "TSLA": 308.85,
+  "^GDAXI": 25649.6309,
+  "^GSPC": 7437.6299
  },
  "predicciones": [
   {
@@ -172,8 +170,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.01,
-   "trade_detalle": "abierto@25494",
+   "trade_r": 0.22,
+   "trade_detalle": "abierto@25651",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -230,10 +228,10 @@
    "modo_elliott": "máximos decrecientes",
    "prediccion_texto": "EUR/USD downtrend desde 1.2024: rompe 1.1250 antes que 1.1500",
    "notas": "Techo 1.2024 ene; lower highs 1.1851; cerca de mínimos.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-07-30",
+   "precio_resolucion": 1.15,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 1.13,
     "stop": 1.15,
@@ -277,8 +275,8 @@
     "o3": 1006.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.52,
-   "trade_detalle": "abierto@929",
+   "trade_r": -0.65,
+   "trade_detalle": "abierto@926",
    "metodo_version": "v1",
    "entrada_efectiva": 940.0,
    "rr": 0.17
@@ -329,10 +327,10 @@
    "modo_elliott": "onda B correctiva (opuesto al naive → test limpio)",
    "prediccion_texto": "MSFT: rebote tras caída 466→349 es correctivo, vuelve a 360 antes que 420",
    "notas": "Caída fuerte 466→349; bounce a 396. Podría ser suelo; convicción baja, sin trade.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-07-30",
+   "precio_resolucion": 420.0,
+   "benchmark_resultado": "acierto",
    "plan_trade": null,
    "trade_estado": null,
    "trade_r": null,
@@ -399,8 +397,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.04,
-   "trade_detalle": "abierto@64843",
+   "trade_r": -0.37,
+   "trade_detalle": "abierto@63665",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -505,8 +503,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": -0.0,
-   "trade_detalle": "abierto@84",
+   "trade_r": 0.16,
+   "trade_detalle": "abierto@86",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -575,8 +573,8 @@
     "o3": 394.18
    },
    "trade_estado": "abierto",
-   "trade_r": 0.12,
-   "trade_detalle": "abierto@338",
+   "trade_r": -0.14,
+   "trade_detalle": "abierto@333",
    "entrada_efectiva": 336.0,
    "rr": 0.65
   },
@@ -610,8 +608,8 @@
     "o3": 55.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.25,
-   "trade_detalle": "abierto@74",
+   "trade_r": -0.18,
+   "trade_detalle": "abierto@73",
    "entrada_efectiva": 72.0,
    "rr": 1.86
   },
@@ -653,32 +651,32 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 16,
-  "resueltas": 3,
+  "vivas": 14,
+  "resueltas": 5,
   "tests_limpios": {
    "registrados": 5,
-   "resueltos": 0,
-   "resueltas": 0,
+   "resueltos": 1,
+   "resueltas": 1,
    "aciertos": 0,
-   "pct": null
+   "pct": 0.0
   },
   "coinciden_naive": {
-   "resueltas": 3,
+   "resueltas": 4,
    "aciertos": 1,
-   "pct": 33.3
+   "pct": 25.0
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.2902
+   "brier": 0.2908
   },
   "por_version": {
    "v1": {
     "registradas": 12,
-    "resueltas": 3,
+    "resueltas": 5,
     "aciertos": 1,
-    "pct": 33.3
+    "pct": 20.0
    },
    "v2": {
     "registradas": 1,
@@ -715,14 +713,14 @@
     "pct": null
    },
    "equity_us": {
-    "resueltas": 1,
+    "resueltas": 2,
     "aciertos": 1,
-    "pct": 100.0
+    "pct": 50.0
    },
    "fx": {
-    "resueltas": 0,
+    "resueltas": 1,
     "aciertos": 0,
-    "pct": null
+    "pct": 0.0
    },
    "fx_em": {
     "resueltas": 0,
