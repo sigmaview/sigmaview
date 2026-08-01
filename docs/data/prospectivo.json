@@ -1,6 +1,6 @@
 {
- "generado": "2026-07-31T13:10:25Z",
- "fecha": "2026-07-31",
+ "generado": "2026-08-01T12:15:55Z",
+ "fecha": "2026-08-01",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,17 +8,16 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "AAPL": 333.43,
-  "BTC-USD": 63665.1016,
-  "CL=F": 85.81,
-  "CLP=X": 925.7,
-  "ETH-USD": 1882.12,
-  "GC=F": 4093.3999,
-  "JPY=X": 160.399,
-  "NFLX": 73.17,
-  "TSLA": 308.85,
-  "^GDAXI": 25649.6309,
-  "^GSPC": 7437.6299
+  "BTC-USD": 63040.8711,
+  "CL=F": 84.67,
+  "CLP=X": 930.47,
+  "ETH-USD": 1865.9301,
+  "GC=F": 4049.1001,
+  "JPY=X": 157.4,
+  "NFLX": 71.71,
+  "TSLA": 311.21,
+  "^GDAXI": 25629.2402,
+  "^GSPC": 7489.7202
  },
  "predicciones": [
   {
@@ -170,8 +169,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.22,
-   "trade_detalle": "abierto@25651",
+   "trade_r": 0.18,
+   "trade_detalle": "abierto@25629",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -275,8 +274,8 @@
     "o3": 1006.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.65,
-   "trade_detalle": "abierto@926",
+   "trade_r": -0.43,
+   "trade_detalle": "abierto@930",
    "metodo_version": "v1",
    "entrada_efectiva": 940.0,
    "rr": 0.17
@@ -397,8 +396,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.37,
-   "trade_detalle": "abierto@63665",
+   "trade_r": -0.54,
+   "trade_detalle": "abierto@63041",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -466,9 +465,9 @@
     "o2": 1650.0,
     "o3": 1506.51
    },
-   "trade_estado": "pendiente",
-   "trade_r": null,
-   "trade_detalle": null,
+   "trade_estado": "abierto",
+   "trade_r": -0.13,
+   "trade_detalle": "abierto@1866",
    "metodo_version": "v3",
    "entrada_efectiva": 1847.77,
    "rr": 0.39
@@ -503,8 +502,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 0.16,
-   "trade_detalle": "abierto@86",
+   "trade_r": 0.06,
+   "trade_detalle": "abierto@85",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -561,10 +560,10 @@
    "modo_elliott": "C_breakout (W3 en progreso)",
    "prediccion_texto": "AAPL toca $348.18 (igualdad W3=W1) antes que perder $317.40 (techo de la franja de W2)",
    "notas": "GATE PASA: ADX 27.70, +DI domina (dif 20.61), RSI 66.9. Impulso alcista desde $242.97(20-ene): W1->$317.40(8-jun), W2->$273.75(25-jun, retroceso 58.6%<61.8% = regla de oro OK), W3 en progreso, nuevo maximo $339.57 hoy. Objetivo igualdad W3=W1: 273.75+74.43=$348.18. Invalidacion en $317.40 = techo de la franja de W2 (regla del solape). Techo de confianza 0.60 por estar DENTRO de W3 sin completarla (regla de calibracion por fase). Elliott COINCIDE con naive.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-07-31",
+   "precio_resolucion": 317.4,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 336.0,
     "stop": 317.4,
@@ -572,9 +571,9 @@
     "o2": 370.0,
     "o3": 394.18
    },
-   "trade_estado": "abierto",
-   "trade_r": -0.14,
-   "trade_detalle": "abierto@333",
+   "trade_estado": "perdido",
+   "trade_r": -1.0,
+   "trade_detalle": "STOP@317",
    "entrada_efectiva": 336.0,
    "rr": 0.65
   },
@@ -608,8 +607,8 @@
     "o3": 55.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.18,
-   "trade_detalle": "abierto@73",
+   "trade_r": 0.05,
+   "trade_detalle": "abierto@72",
    "entrada_efectiva": 72.0,
    "rr": 1.86
   },
@@ -651,8 +650,8 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 14,
-  "resueltas": 5,
+  "vivas": 13,
+  "resueltas": 6,
   "tests_limpios": {
    "registrados": 5,
    "resueltos": 1,
@@ -661,15 +660,15 @@
    "pct": 0.0
   },
   "coinciden_naive": {
-   "resueltas": 4,
+   "resueltas": 5,
    "aciertos": 1,
-   "pct": 25.0
+   "pct": 20.0
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.2908
+   "brier": 0.3023
   },
   "por_version": {
    "v1": {
@@ -686,9 +685,9 @@
    },
    "v3": {
     "registradas": 6,
-    "resueltas": 0,
+    "resueltas": 1,
     "aciertos": 0,
-    "pct": null
+    "pct": 0.0
    }
   },
   "por_clase": {
@@ -713,9 +712,9 @@
     "pct": null
    },
    "equity_us": {
-    "resueltas": 2,
+    "resueltas": 3,
     "aciertos": 1,
-    "pct": 50.0
+    "pct": 33.3
    },
    "fx": {
     "resueltas": 1,
