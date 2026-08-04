@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-03T13:56:30Z",
- "fecha": "2026-08-03",
+ "generado": "2026-08-04T13:13:26Z",
+ "fecha": "2026-08-04",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,16 +8,15 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "BTC-USD": 63137.6211,
-  "CL=F": 78.61,
-  "CLP=X": 923.52,
-  "ETH-USD": 1853.1,
-  "GC=F": 4087.0,
-  "JPY=X": 156.419,
-  "NFLX": 73.735,
-  "TSLA": 318.49,
-  "^GDAXI": 26002.9395,
-  "^GSPC": 7555.25
+  "BTC-USD": 63901.0312,
+  "CL=F": 77.55,
+  "CLP=X": 917.02,
+  "ETH-USD": 1874.3,
+  "GC=F": 4123.7002,
+  "JPY=X": 157.522,
+  "NFLX": 73.33,
+  "TSLA": 322.08,
+  "^GSPC": 7600.5
  },
  "predicciones": [
   {
@@ -157,10 +156,10 @@
    "modo_elliott": "continuación alcista",
    "prediccion_texto": "DAX uptrend con nuevos máximos: >26,100 antes que perder 24,044",
    "notas": "Máximos y mínimos ascendentes; nuevo máximo 25,900 el 6-jul.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "acierto",
+   "ts_resolucion": "2026-08-04",
+   "precio_resolucion": 26100.0,
+   "benchmark_resultado": "acierto",
    "plan_trade": {
     "entry": 25500.0,
     "stop": 24800.0,
@@ -169,8 +168,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.72,
-   "trade_detalle": "abierto@26003",
+   "trade_r": 0.95,
+   "trade_detalle": "O1 → abierto@26149",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -273,9 +272,9 @@
     "o2": 984.0,
     "o3": 1006.0
    },
-   "trade_estado": "abierto",
-   "trade_r": -0.75,
-   "trade_detalle": "abierto@924",
+   "trade_estado": "perdido",
+   "trade_r": -1.0,
+   "trade_detalle": "STOP@918",
    "metodo_version": "v1",
    "entrada_efectiva": 940.0,
    "rr": 0.17
@@ -396,8 +395,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.52,
-   "trade_detalle": "abierto@63140",
+   "trade_r": -0.31,
+   "trade_detalle": "abierto@63901",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -466,8 +465,8 @@
     "o3": 1506.51
    },
    "trade_estado": "abierto",
-   "trade_r": -0.04,
-   "trade_detalle": "abierto@1854",
+   "trade_r": -0.19,
+   "trade_detalle": "abierto@1874",
    "metodo_version": "v3",
    "entrada_efectiva": 1847.77,
    "rr": 0.39
@@ -502,8 +501,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": -0.49,
-   "trade_detalle": "abierto@79",
+   "trade_r": -0.59,
+   "trade_detalle": "abierto@78",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -536,9 +535,9 @@
     "o2": 230.0,
     "o3": 195.0
    },
-   "trade_estado": "pendiente",
-   "trade_r": null,
-   "trade_detalle": null,
+   "trade_estado": "abierto",
+   "trade_r": 0.0,
+   "trade_detalle": "abierto@320",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
@@ -607,8 +606,8 @@
     "o3": 55.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.27,
-   "trade_detalle": "abierto@74",
+   "trade_r": -0.21,
+   "trade_detalle": "abierto@73",
    "entrada_efectiva": 72.0,
    "rr": 1.86
   },
@@ -650,8 +649,8 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 13,
-  "resueltas": 6,
+  "vivas": 12,
+  "resueltas": 7,
   "tests_limpios": {
    "registrados": 5,
    "resueltos": 1,
@@ -660,22 +659,22 @@
    "pct": 0.0
   },
   "coinciden_naive": {
-   "resueltas": 5,
-   "aciertos": 1,
-   "pct": 20.0
+   "resueltas": 6,
+   "aciertos": 2,
+   "pct": 33.3
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.3023
+   "brier": 0.2855
   },
   "por_version": {
    "v1": {
     "registradas": 12,
-    "resueltas": 5,
-    "aciertos": 1,
-    "pct": 20.0
+    "resueltas": 6,
+    "aciertos": 2,
+    "pct": 33.3
    },
    "v2": {
     "registradas": 1,
@@ -707,9 +706,9 @@
     "pct": 0.0
    },
    "equity_eu": {
-    "resueltas": 0,
-    "aciertos": 0,
-    "pct": null
+    "resueltas": 1,
+    "aciertos": 1,
+    "pct": 100.0
    },
    "equity_us": {
     "resueltas": 3,
