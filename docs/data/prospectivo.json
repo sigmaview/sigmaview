@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-09T11:50:45Z",
- "fecha": "2026-08-09",
+ "generado": "2026-08-10T12:04:09Z",
+ "fecha": "2026-08-10",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,11 +8,11 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "BTC-USD": 64931.5195,
-  "CL=F": 78.18,
-  "CLP=X": 912.03,
-  "ETH-USD": 1918.21,
-  "JPY=X": 157.745,
+  "BTC-USD": 65148.8008,
+  "CL=F": 79.62,
+  "CLP=X": 913.28,
+  "ETH-USD": 1920.63,
+  "JPY=X": 158.821,
   "NFLX": 74.14,
   "TSLA": 328.58
  },
@@ -166,8 +166,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.11,
-   "trade_detalle": "O1 → abierto@26319",
+   "trade_r": 1.19,
+   "trade_detalle": "O1 → abierto@26404",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -393,8 +393,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.02,
-   "trade_detalle": "abierto@64917",
+   "trade_r": 0.04,
+   "trade_detalle": "abierto@65149",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -463,8 +463,8 @@
     "o3": 1506.51
    },
    "trade_estado": "abierto",
-   "trade_r": -0.51,
-   "trade_detalle": "abierto@1919",
+   "trade_r": -0.53,
+   "trade_detalle": "abierto@1921",
    "metodo_version": "v3",
    "entrada_efectiva": 1847.77,
    "rr": 0.39
@@ -499,8 +499,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": -0.53,
-   "trade_detalle": "abierto@78",
+   "trade_r": -0.4,
+   "trade_detalle": "abierto@80",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
