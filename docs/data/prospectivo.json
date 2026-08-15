@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-14T12:02:03Z",
- "fecha": "2026-08-14",
+ "generado": "2026-08-15T11:39:38Z",
+ "fecha": "2026-08-15",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,13 +8,12 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "BTC-USD": 62782.4805,
-  "CL=F": 81.45,
-  "CLP=X": 910.48,
-  "ETH-USD": 1874.61,
-  "JPY=X": 159.079,
-  "NFLX": 78.24,
-  "TSLA": 339.96
+  "BTC-USD": 62970.0781,
+  "CL=F": 82.4,
+  "CLP=X": 914.45,
+  "ETH-USD": 1878.22,
+  "JPY=X": 159.305,
+  "TSLA": 342.27
  },
  "predicciones": [
   {
@@ -166,8 +165,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.31,
-   "trade_detalle": "O1 → abierto@26522",
+   "trade_r": 1.23,
+   "trade_detalle": "O1 → abierto@26440",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -393,8 +392,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.62,
-   "trade_detalle": "abierto@62772",
+   "trade_r": -0.56,
+   "trade_detalle": "abierto@62970",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -463,8 +462,8 @@
     "o3": 1506.51
    },
    "trade_estado": "abierto",
-   "trade_r": -0.19,
-   "trade_detalle": "abierto@1875",
+   "trade_r": -0.22,
+   "trade_detalle": "abierto@1878",
    "metodo_version": "v3",
    "entrada_efectiva": 1847.77,
    "rr": 0.39
@@ -499,8 +498,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": -0.23,
-   "trade_detalle": "abierto@81",
+   "trade_r": -0.15,
+   "trade_detalle": "abierto@82",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -534,8 +533,8 @@
     "o3": 195.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.31,
-   "trade_detalle": "abierto@340",
+   "trade_r": -0.35,
+   "trade_detalle": "abierto@342",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
@@ -592,10 +591,10 @@
    "modo_elliott": "continuacion bajista",
    "prediccion_texto": "NFLX toca $60 antes que $78.44: tendencia bajista con maximos decrecientes, rebote correctivo agotandose",
    "notas": "GATE PASA con el ADX MAS ALTO del basket: 33.92, -DI domina (dif 11.36), RSI 41.6. Maximos claramente decrecientes: $124.86(21-oct) -> $108.95(16-abr) -> $78.44(2-jul) -> $71.65(hoy). El rebote desde $65.08(17-jul) retrocede 49% del tramo $78.44->$65.08 — zona correctiva clasica (38.2%=$70.18, 50%=$71.76, 61.8%=$73.34) y el precio esta justo ahi. Invalidacion en $78.44 (maximo previo) y no en el 61.8%, para no morir por un rebote normal. Elliott COINCIDE con naive.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-08-14",
+   "precio_resolucion": 78.44,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 72.0,
     "stop": 78.44,
@@ -603,9 +602,9 @@
     "o2": 60.0,
     "o3": 55.0
    },
-   "trade_estado": "abierto",
-   "trade_r": -0.97,
-   "trade_detalle": "abierto@78",
+   "trade_estado": "perdido",
+   "trade_r": -1.0,
+   "trade_detalle": "STOP@78",
    "entrada_efectiva": 72.0,
    "rr": 1.86
   },
@@ -647,8 +646,8 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 10,
-  "resueltas": 9,
+  "vivas": 9,
+  "resueltas": 10,
   "tests_limpios": {
    "registrados": 5,
    "resueltos": 1,
@@ -657,15 +656,15 @@
    "pct": 0.0
   },
   "coinciden_naive": {
-   "resueltas": 8,
+   "resueltas": 9,
    "aciertos": 3,
-   "pct": 37.5
+   "pct": 33.3
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.2753
+   "brier": 0.2838
   },
   "por_version": {
    "v1": {
@@ -682,7 +681,7 @@
    },
    "v3": {
     "registradas": 6,
-    "resueltas": 1,
+    "resueltas": 2,
     "aciertos": 0,
     "pct": 0.0
    }
@@ -709,9 +708,9 @@
     "pct": 100.0
    },
    "equity_us": {
-    "resueltas": 4,
+    "resueltas": 5,
     "aciertos": 2,
-    "pct": 50.0
+    "pct": 40.0
    },
    "fx": {
     "resueltas": 1,
