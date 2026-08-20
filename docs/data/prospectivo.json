@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-19T11:45:26Z",
- "fecha": "2026-08-19",
+ "generado": "2026-08-20T11:48:29Z",
+ "fecha": "2026-08-20",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,12 +8,11 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "BTC-USD": 64428.5703,
-  "CL=F": 84.67,
-  "CLP=X": 925.97,
-  "ETH-USD": 1920.9,
-  "JPY=X": 159.159,
-  "TSLA": 336.87
+  "BTC-USD": 72182.1719,
+  "CL=F": 87.15,
+  "CLP=X": 924.08,
+  "JPY=X": 158.681,
+  "TSLA": 351.12
  },
  "predicciones": [
   {
@@ -57,10 +56,10 @@
    "modo_elliott": "Onda B contra-tendencia, techo capado $75-85K",
    "prediccion_texto": "El rebote (Onda B) tiene más recorrido: BTC toca $67,255 antes que $57,721",
    "notas": "Sesgo macro BAJISTA pero rebote Onda B vivo mientras aguante 57,721. Ver btc_current_count.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "acierto",
+   "ts_resolucion": "2026-08-19",
+   "precio_resolucion": 67255.0,
+   "benchmark_resultado": "fallo",
    "metodo_version": "v1",
    "clase": "cripto",
    "entrada_efectiva": 62031.0,
@@ -82,10 +81,10 @@
    "modo_elliott": "A_enfoque_b (rebote Onda B, objetivos capados)",
    "prediccion_texto": "Trade MODO A long: entra $60,372, O1 $67,255 · O2 $75K · O3 $85K, stop $57,721",
    "notas": "Setup pendiente del análisis 13-jul (veredicto ESPERAR). Correlaciona con BTC-002 en dirección; su valor es medir el R real si llena. R=$2,651.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "acierto",
+   "ts_resolucion": "2026-08-19",
+   "precio_resolucion": 67255.0,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 60372.0,
     "stop": 57721.0,
@@ -165,8 +164,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.92,
-   "trade_detalle": "O1 → abierto@26115",
+   "trade_r": 0.79,
+   "trade_detalle": "O1 → abierto@25982",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -392,8 +391,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.16,
-   "trade_detalle": "abierto@64429",
+   "trade_r": 1.54,
+   "trade_detalle": "O1 → abierto@72182",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -415,10 +414,10 @@
    "modo_elliott": "D_reversion_pt (en VIGILANCIA — línea 2-4 no rota)",
    "prediccion_texto": "BTC toca $71,900 (línea 2-4 de la pauta terminal) antes que $57,748 (mínimo del patrón)",
    "notas": "CONTEO NUEVO desde cero con pivotes mecánicos (zigzag 15%). Primario 0.55: PAUTA TERMINAL descendente $126,198→$57,748 (W1 extendida, solape W2/W4, cuña contractiva, ADX 36.7→17.4, divergencia MACD alcista en el mínimo). Alternativo 0.45: impulso de 5 ondas = Onda A → Onda B actual → Onda C a $40-48K. Discriminador = línea 2-4. Reemplaza el conteo del 21-jul, declarado FALLIDO por decisión de analista (no tocó su invalidación $63,702).",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "acierto",
+   "ts_resolucion": "2026-08-20",
+   "precio_resolucion": 71900.0,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 71900.0,
     "stop": 63686.0,
@@ -426,9 +425,9 @@
     "o2": 100050.0,
     "o3": 126198.0
    },
-   "trade_estado": "pendiente",
-   "trade_r": null,
-   "trade_detalle": null,
+   "trade_estado": "abierto",
+   "trade_r": 0.0,
+   "trade_detalle": "abierto@71900",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -450,10 +449,10 @@
    "modo_elliott": "B_fin_abc (PLANA — en vigilancia, checklist 4.5/6)",
    "prediccion_texto": "ETH toca $1,750 antes que $2,100: la plana correctiva al alza se agota y se reanuda la tendencia bajista",
    "notas": "Primario 0.60: PLANA correctiva al alza a-b-c desde $1,506.51 (b/a=98.8% -> plana con b NORMAL; c/b=131.8% DENTRO del rango 100-138.2% de Tabla 1). Retroceso 46.8% de la caida $2,464.78->$1,506.51, zona clasica de Onda B. Al completarse -> reanudacion bajista a nuevos minimos. Alternativo 0.40: el rebote es impulsivo (1-2-3) y $1,506.51 fue suelo real -> sigue a $2,100-$2,250. Discriminador: perdida de $1,847.77 (techo franja de b) confirma la plana; superar $2,098.72 (61.8%) la invalida. Checklist Santos 4.5/6 -> ESPERAR, no señal: falta confirmar el fin de la c (precio a $13 del maximo) y la divergencia MACD es incipiente. Simetria 1.21. ADX 22.55 con +DI 29.93 >> -DI 16.60.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-08-19",
+   "precio_resolucion": 2100.0,
+   "benchmark_resultado": "acierto",
    "plan_trade": {
     "entry": 1847.77,
     "stop": 1985.64,
@@ -461,9 +460,9 @@
     "o2": 1650.0,
     "o3": 1506.51
    },
-   "trade_estado": "abierto",
-   "trade_r": -0.53,
-   "trade_detalle": "abierto@1921",
+   "trade_estado": "perdido",
+   "trade_r": -1.0,
+   "trade_detalle": "STOP@1986",
    "metodo_version": "v3",
    "entrada_efectiva": 1847.77,
    "rr": 0.39
@@ -498,8 +497,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 0.06,
-   "trade_detalle": "abierto@85",
+   "trade_r": 0.29,
+   "trade_detalle": "abierto@87",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -533,8 +532,8 @@
     "o3": 195.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.26,
-   "trade_detalle": "abierto@337",
+   "trade_r": -0.49,
+   "trade_detalle": "abierto@351",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
@@ -646,14 +645,14 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 9,
-  "resueltas": 10,
+  "vivas": 5,
+  "resueltas": 14,
   "tests_limpios": {
    "registrados": 5,
-   "resueltos": 1,
-   "resueltas": 1,
-   "aciertos": 0,
-   "pct": 0.0
+   "resueltos": 5,
+   "resueltas": 5,
+   "aciertos": 3,
+   "pct": 60.0
   },
   "coinciden_naive": {
    "resueltas": 9,
@@ -664,24 +663,24 @@
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.2838
+   "brier": 0.2731
   },
   "por_version": {
    "v1": {
     "registradas": 12,
-    "resueltas": 8,
-    "aciertos": 3,
-    "pct": 37.5
+    "resueltas": 10,
+    "aciertos": 5,
+    "pct": 50.0
    },
    "v2": {
     "registradas": 1,
-    "resueltas": 0,
-    "aciertos": 0,
-    "pct": null
+    "resueltas": 1,
+    "aciertos": 1,
+    "pct": 100.0
    },
    "v3": {
     "registradas": 6,
-    "resueltas": 2,
+    "resueltas": 3,
     "aciertos": 0,
     "pct": 0.0
    }
@@ -693,9 +692,9 @@
     "pct": 0.0
    },
    "cripto": {
-    "resueltas": 1,
-    "aciertos": 0,
-    "pct": 0.0
+    "resueltas": 5,
+    "aciertos": 3,
+    "pct": 60.0
    },
    "energy": {
     "resueltas": 1,
