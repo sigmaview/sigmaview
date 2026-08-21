@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-20T11:48:29Z",
- "fecha": "2026-08-20",
+ "generado": "2026-08-21T11:47:14Z",
+ "fecha": "2026-08-21",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,11 +8,10 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "BTC-USD": 72182.1719,
-  "CL=F": 87.15,
-  "CLP=X": 924.08,
-  "JPY=X": 158.681,
-  "TSLA": 351.12
+  "CL=F": 86.22,
+  "CLP=X": 916.87,
+  "JPY=X": 158.674,
+  "TSLA": 345.13
  },
  "predicciones": [
   {
@@ -164,8 +163,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.79,
-   "trade_detalle": "O1 → abierto@25982",
+   "trade_r": 0.87,
+   "trade_detalle": "O1 → abierto@26063",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -379,10 +378,10 @@
    "modo_elliott": "C_breakout",
    "prediccion_texto": "BTC MODO C: W3 de Onda B rompiendo $64,660. Objetivo Onda B $75-85K, capado (contra-tendencia).",
    "notas": "W1: $57,721→$64,660. W2: →$62,031 (retroceso 38%). W3 iniciando. Conteo 7 reglas OK. Onda B contra la tendencia bajista mayor (caso base: Onda C a $40-48K después). Holder desde $10K: vender 30-50% en $75-85K.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "acierto",
+   "ts_resolucion": "2026-08-21",
+   "precio_resolucion": 75000.0,
+   "benchmark_resultado": "acierto",
    "plan_trade": {
     "entry": 65000.0,
     "stop": 61400.0,
@@ -391,8 +390,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.54,
-   "trade_detalle": "O1 → abierto@72182",
+   "trade_r": 2.23,
+   "trade_detalle": "O1 → O2 → abierto@76797",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -426,8 +425,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.0,
-   "trade_detalle": "abierto@71900",
+   "trade_r": 0.6,
+   "trade_detalle": "abierto@76797",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -497,8 +496,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 0.29,
-   "trade_detalle": "abierto@87",
+   "trade_r": 0.2,
+   "trade_detalle": "abierto@86",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -532,8 +531,8 @@
     "o3": 195.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.49,
-   "trade_detalle": "abierto@351",
+   "trade_r": -0.39,
+   "trade_detalle": "abierto@345",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
@@ -645,8 +644,8 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 5,
-  "resueltas": 14,
+  "vivas": 4,
+  "resueltas": 15,
   "tests_limpios": {
    "registrados": 5,
    "resueltos": 5,
@@ -655,22 +654,22 @@
    "pct": 60.0
   },
   "coinciden_naive": {
-   "resueltas": 9,
-   "aciertos": 3,
-   "pct": 33.3
+   "resueltas": 10,
+   "aciertos": 4,
+   "pct": 40.0
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.2731
+   "brier": 0.2645
   },
   "por_version": {
    "v1": {
     "registradas": 12,
-    "resueltas": 10,
-    "aciertos": 5,
-    "pct": 50.0
+    "resueltas": 11,
+    "aciertos": 6,
+    "pct": 54.5
    },
    "v2": {
     "registradas": 1,
@@ -692,9 +691,9 @@
     "pct": 0.0
    },
    "cripto": {
-    "resueltas": 5,
-    "aciertos": 3,
-    "pct": 60.0
+    "resueltas": 6,
+    "aciertos": 4,
+    "pct": 66.7
    },
    "energy": {
     "resueltas": 1,
