@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-22T11:40:37Z",
- "fecha": "2026-08-22",
+ "generado": "2026-08-23T11:40:44Z",
+ "fecha": "2026-08-23",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,7 +8,6 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "CL=F": 87.06,
   "CLP=X": 914.28,
   "JPY=X": 158.94,
   "TSLA": 362.86
@@ -390,8 +389,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": 2.26,
-   "trade_detalle": "O1 → O2 → abierto@77111",
+   "trade_r": 2.28,
+   "trade_detalle": "O1 → O2 → abierto@77355",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -425,8 +424,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.63,
-   "trade_detalle": "abierto@77111",
+   "trade_r": 0.66,
+   "trade_detalle": "abierto@77355",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -484,10 +483,10 @@
    "modo_elliott": "continuacion post-regla-de-oro (gate regimen PASA)",
    "prediccion_texto": "Petroleo toca $95 antes que $73: el rebote supero el 61.8% de la caida, regla de oro favorece ir al 100% ($109)",
    "notas": "GATE: ADX 29.25 con +DI 29.84 >> -DI 18.35 (dif 11.49) = direccion clara. RSI 52.4. Caida $109.47(18-may)->$67.04(2-jul); rebote a $93.50(23-jul) = 62.4% de retroceso, SUPERA el 61.8%. Regla de oro (Monografia 1 §1.6.4.2): si el retroceso supera 61.8%, probabilidades a favor del 100%. Pullback actual a $82.76. Primario 0.58: continua al alza hacia $95-109. Alternativo 0.42: el rebote fue una onda B y se reanuda la caida bajo $67. Elliott COINCIDE con el naive -> el conteo no aporto direccion, solo niveles.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-08-21",
+   "precio_resolucion": 73.0,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 84.0,
     "stop": 73.0,
@@ -495,9 +494,9 @@
     "o2": 102.0,
     "o3": 109.47
    },
-   "trade_estado": "abierto",
-   "trade_r": 0.28,
-   "trade_detalle": "abierto@87",
+   "trade_estado": "pendiente",
+   "trade_r": null,
+   "trade_detalle": "aún no llena",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -644,8 +643,8 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 4,
-  "resueltas": 15,
+  "vivas": 3,
+  "resueltas": 16,
   "tests_limpios": {
    "registrados": 5,
    "resueltos": 5,
@@ -654,15 +653,15 @@
    "pct": 60.0
   },
   "coinciden_naive": {
-   "resueltas": 10,
+   "resueltas": 11,
    "aciertos": 4,
-   "pct": 40.0
+   "pct": 36.4
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.2645
+   "brier": 0.269
   },
   "por_version": {
    "v1": {
@@ -679,7 +678,7 @@
    },
    "v3": {
     "registradas": 6,
-    "resueltas": 3,
+    "resueltas": 4,
     "aciertos": 0,
     "pct": 0.0
    }
@@ -696,7 +695,7 @@
     "pct": 66.7
    },
    "energy": {
-    "resueltas": 1,
+    "resueltas": 2,
     "aciertos": 0,
     "pct": 0.0
    },
