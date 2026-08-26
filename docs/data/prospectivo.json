@@ -1,6 +1,6 @@
 {
- "generado": "2026-08-25T11:49:48Z",
- "fecha": "2026-08-25",
+ "generado": "2026-08-26T11:51:11Z",
+ "fecha": "2026-08-26",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,9 +8,9 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "CLP=X": 911.58,
-  "JPY=X": 159.241,
-  "TSLA": 348.95
+  "CLP=X": 912.19,
+  "JPY=X": 159.115,
+  "TSLA": 350.25
  },
  "predicciones": [
   {
@@ -126,9 +126,9 @@
     "o2": 7975.0,
     "o3": 8150.0
    },
-   "trade_estado": "pendiente",
+   "trade_estado": "no_lleno",
    "trade_r": null,
-   "trade_detalle": null,
+   "trade_detalle": "no llenó dentro del horizonte",
    "metodo_version": "v1",
    "entrada_efectiva": 7625.0,
    "rr": 0.06
@@ -162,8 +162,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.1,
-   "trade_detalle": "O1 → abierto@26307",
+   "trade_r": 1.13,
+   "trade_detalle": "O1 → abierto@26338",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -389,8 +389,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": 2.44,
-   "trade_detalle": "O1 → O2 → abierto@79076",
+   "trade_r": 2.38,
+   "trade_detalle": "O1 → O2 → abierto@78419",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -424,8 +424,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.87,
-   "trade_detalle": "abierto@79076",
+   "trade_r": 0.79,
+   "trade_detalle": "abierto@78419",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -495,8 +495,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": -0.15,
-   "trade_detalle": "abierto@82",
+   "trade_r": -0.33,
+   "trade_detalle": "abierto@80",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -530,8 +530,8 @@
     "o3": 195.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.45,
-   "trade_detalle": "abierto@349",
+   "trade_r": -0.47,
+   "trade_detalle": "abierto@350",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
