@@ -1,6 +1,6 @@
 {
- "generado": "2026-09-01T15:29:27Z",
- "fecha": "2026-09-01",
+ "generado": "2026-09-02T15:08:58Z",
+ "fecha": "2026-09-02",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,8 +8,8 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "JPY=X": 160.082,
-  "TSLA": 359.55
+  "JPY=X": 158.711,
+  "TSLA": 353.76
  },
  "predicciones": [
   {
@@ -161,8 +161,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.75,
-   "trade_detalle": "O1 → abierto@25936",
+   "trade_r": 0.66,
+   "trade_detalle": "O1 → abierto@25838",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -388,8 +388,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": 2.32,
-   "trade_detalle": "O1 → O2 → abierto@77839",
+   "trade_r": 2.23,
+   "trade_detalle": "O1 → O2 → abierto@76840",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -423,8 +423,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.72,
-   "trade_detalle": "abierto@77834",
+   "trade_r": 0.6,
+   "trade_detalle": "abierto@76840",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -494,8 +494,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 0.36,
-   "trade_detalle": "abierto@88",
+   "trade_r": 0.6,
+   "trade_detalle": "abierto@91",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -529,8 +529,8 @@
     "o3": 195.0
    },
    "trade_estado": "abierto",
-   "trade_r": -0.62,
-   "trade_detalle": "abierto@360",
+   "trade_r": -0.53,
+   "trade_detalle": "abierto@354",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
