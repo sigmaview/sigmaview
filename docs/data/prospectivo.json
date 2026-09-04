@@ -1,6 +1,6 @@
 {
- "generado": "2026-09-03T15:03:28Z",
- "fecha": "2026-09-03",
+ "generado": "2026-09-04T15:00:28Z",
+ "fecha": "2026-09-04",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,8 +8,7 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "JPY=X": 155.454,
-  "TSLA": 379.268
+  "JPY=X": 156.142
  },
  "predicciones": [
   {
@@ -161,8 +160,8 @@
     "o3": 27600.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.75,
-   "trade_detalle": "O1 → abierto@25938",
+   "trade_r": 0.86,
+   "trade_detalle": "O1 → abierto@26050",
    "metodo_version": "v1",
    "entrada_efectiva": 25500.0,
    "rr": 0.41
@@ -388,8 +387,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": 2.6,
-   "trade_detalle": "O1 → O2 → abierto@80832",
+   "trade_r": 2.42,
+   "trade_detalle": "O1 → O2 → abierto@78877",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -423,8 +422,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.09,
-   "trade_detalle": "abierto@80832",
+   "trade_r": 0.85,
+   "trade_detalle": "abierto@78877",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -494,8 +493,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 0.73,
-   "trade_detalle": "abierto@92",
+   "trade_r": 0.59,
+   "trade_detalle": "abierto@90",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
@@ -517,10 +516,10 @@
    "modo_elliott": "continuacion bajista (gate regimen PASA fuerte)",
    "prediccion_texto": "TSLA toca $265 antes que $384: tendencia bajista establecida con maximos decrecientes y ruptura violenta",
    "notas": "GATE: ADX 21.82 con -DI 41.53 >> +DI 11.74 (dif 29.79 = la separacion mas grande del basket). Maximos decrecientes 453.40(13-may) -> 445.60(27-may) -> 432.86(1-jul), y ruptura violenta a $304.28 (-29.7% en 26 dias), por debajo del minimo de abril ($337.24). RSI 27.1 sobrevendido — OJO (Monografia 2 p.38): sobreventa NO es señal de giro, suele acompañar aceleracion. Invalidacion puesta en el 61.8% del rebote ($384) y NO en el 38.2% ($353), porque un rebote correctivo normal tocaria ese nivel sin invalidar la tesis. Elliott COINCIDE con el naive.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
-   "benchmark_resultado": null,
+   "resultado": "fallo",
+   "ts_resolucion": "2026-09-03",
+   "precio_resolucion": 384.0,
+   "benchmark_resultado": "fallo",
    "plan_trade": {
     "entry": 320.0,
     "stop": 384.0,
@@ -528,9 +527,9 @@
     "o2": 230.0,
     "o3": 195.0
    },
-   "trade_estado": "abierto",
-   "trade_r": -0.93,
-   "trade_detalle": "abierto@379",
+   "trade_estado": "perdido",
+   "trade_r": -1.0,
+   "trade_detalle": "STOP@384",
    "entrada_efectiva": 320.0,
    "rr": 0.86
   },
@@ -642,8 +641,8 @@
  ],
  "resumen": {
   "total": 19,
-  "vivas": 2,
-  "resueltas": 16,
+  "vivas": 1,
+  "resueltas": 17,
   "tests_limpios": {
    "registrados": 5,
    "resueltos": 5,
@@ -652,15 +651,15 @@
    "pct": 60.0
   },
   "coinciden_naive": {
-   "resueltas": 11,
+   "resueltas": 12,
    "aciertos": 4,
-   "pct": 36.4
+   "pct": 33.3
   },
   "calibracion": {
    "conf_min": 0.5,
    "conf_max": 0.62,
    "dispersion": 0.12,
-   "brier": 0.269
+   "brier": 0.271
   },
   "por_version": {
    "v1": {
@@ -677,7 +676,7 @@
    },
    "v3": {
     "registradas": 6,
-    "resueltas": 4,
+    "resueltas": 5,
     "aciertos": 0,
     "pct": 0.0
    }
@@ -704,9 +703,9 @@
     "pct": 100.0
    },
    "equity_us": {
-    "resueltas": 5,
+    "resueltas": 6,
     "aciertos": 2,
-    "pct": 40.0
+    "pct": 33.3
    },
    "fx": {
     "resueltas": 1,
