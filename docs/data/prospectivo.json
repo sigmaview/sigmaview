@@ -1,6 +1,6 @@
 {
- "generado": "2026-09-19T14:31:36Z",
- "fecha": "2026-09-19",
+ "generado": "2026-09-20T14:44:47Z",
+ "fecha": "2026-09-20",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -387,8 +387,8 @@
     "o3": 85000.0
    },
    "trade_estado": "abierto",
-   "trade_r": 2.66,
-   "trade_detalle": "O1 → O2 → abierto@81515",
+   "trade_r": 2.58,
+   "trade_detalle": "O1 → O2 → abierto@80591",
    "metodo_version": "v1",
    "entrada_efectiva": 65000.0,
    "rr": 2.78
@@ -422,8 +422,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.17,
-   "trade_detalle": "abierto@81515",
+   "trade_r": 1.06,
+   "trade_detalle": "abierto@80591",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -493,8 +493,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 1.37,
-   "trade_detalle": "O1 → O2 → abierto@100",
+   "trade_r": 1.24,
+   "trade_detalle": "O1 → O2 → abierto@96",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
