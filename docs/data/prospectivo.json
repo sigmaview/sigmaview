@@ -1,6 +1,6 @@
 {
- "generado": "2026-09-27T15:41:34Z",
- "fecha": "2026-09-27",
+ "generado": "2026-09-28T18:38:31Z",
+ "fecha": "2026-09-28",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -8,7 +8,7 @@
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
  "precios": {
-  "JPY=X": 157.185
+  "JPY=X": 157.424
  },
  "predicciones": [
   {
@@ -422,8 +422,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 1.51,
-   "trade_detalle": "O1 → abierto@84490",
+   "trade_r": 1.46,
+   "trade_detalle": "O1 → abierto@83859",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -493,8 +493,8 @@
     "o3": 109.47
    },
    "trade_estado": "abierto",
-   "trade_r": 1.13,
-   "trade_detalle": "O1 → O2 → abierto@92",
+   "trade_r": 1.14,
+   "trade_detalle": "O1 → O2 → abierto@93",
    "entrada_efectiva": 84.0,
    "rr": 1.0
   },
