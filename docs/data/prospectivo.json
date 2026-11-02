@@ -1,15 +1,13 @@
 {
- "generado": "2026-11-01T17:11:11Z",
- "fecha": "2026-11-01",
+ "generado": "2026-11-02T20:49:47Z",
+ "fecha": "2026-11-02",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
   "v2": "2026-07-26: + PASO 0 (pivotes mecánicos), consistencia de grado, PASO 4 (predicción falsable con primario/alternativo y probabilidad), simetría obj/inval, congelamiento del conteo",
   "v3": "2026-07-27: + gate de régimen y liquidez (PASO 1.0), checklist de 6 puntos de Santos para Modo B, nodo 1.618 eliminado del zigzag, figura ideal + jerarquía de divergencias, Modo D con Fibonacci como criterio duro, corte 2-4 brusco, techo de confianza por fase, RSI(14)"
  },
- "precios": {
-  "JPY=X": 157.804
- },
+ "precios": {},
  "predicciones": [
   {
    "id": "2026-07-14-BTC-001",
@@ -422,8 +420,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.98,
-   "trade_detalle": "O1 → abierto@78020",
+   "trade_r": 0.89,
+   "trade_detalle": "O1 → abierto@76853",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
@@ -621,9 +619,9 @@
    "modo_elliott": "continuacion alcista",
    "prediccion_texto": "USD/JPY toca 170 antes que 152.28: tendencia alcista con minimos y maximos ascendentes",
    "notas": "GATE PASA: ADX 20.94, +DI domina (dif 10.20). Minimos ascendentes 139.89(abr-25) -> 142.13(may-25) -> 152.28(12-feb-26); maximos ascendentes 148.58 -> 159.44 -> 163.98(23-jul, nuevo maximo). RSI 69.4 elevado — OJO: sobrecompra NO es señal de giro (Monografia 2 p.38), suele acompañar aceleracion. INDEPENDIENTE del resto de la muestra: correlacion -0.05 vs S&P500 y -0.02 vs BTC, aporta poder estadistico real. Elliott COINCIDE con naive.",
-   "resultado": null,
-   "ts_resolucion": null,
-   "precio_resolucion": null,
+   "resultado": "expirado",
+   "ts_resolucion": "2026-11-02",
+   "precio_resolucion": 157.87,
    "benchmark_resultado": null,
    "plan_trade": {
     "entry": 164.0,
@@ -632,16 +630,16 @@
     "o2": 176.0,
     "o3": 182.0
    },
-   "trade_estado": "pendiente",
+   "trade_estado": "no_lleno",
    "trade_r": null,
-   "trade_detalle": null,
+   "trade_detalle": "no llenó dentro del horizonte",
    "entrada_efectiva": 164.0,
    "rr": 0.51
   }
  ],
  "resumen": {
   "total": 19,
-  "vivas": 1,
+  "vivas": 0,
   "resueltas": 17,
   "tests_limpios": {
    "registrados": 5,
