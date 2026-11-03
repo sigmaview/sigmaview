@@ -1,6 +1,6 @@
 {
- "generado": "2026-11-02T20:49:47Z",
- "fecha": "2026-11-02",
+ "generado": "2026-11-03T18:29:18Z",
+ "fecha": "2026-11-03",
  "metodo_version_actual": "v3",
  "metodo_historial": {
   "v1": "prompt original 348 líneas (hasta 2026-07-25): Modos A/B/C/D, checklist 3 señales, sin registro obligatorio ni conteo alternativo",
@@ -420,8 +420,8 @@
     "o3": 126198.0
    },
    "trade_estado": "abierto",
-   "trade_r": 0.89,
-   "trade_detalle": "O1 → abierto@76853",
+   "trade_r": 0.95,
+   "trade_detalle": "O1 → abierto@77572",
    "metodo_version": "v2",
    "entrada_efectiva": 71900.0,
    "rr": 0.0
